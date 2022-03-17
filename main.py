@@ -23,7 +23,7 @@ def main():
     automaton.states[-1].isAcceptance = True
 
     configuration = automaton.parse_configuration()
-    Diagramer.show(automaton)
+    Diagramer.show(automaton, expression)
     File.write("configuration.txt", configuration)
     matches_automaton = Automaton.matches(
         automaton, expression, "aaabbabababaabababbababababab")
