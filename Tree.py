@@ -21,6 +21,18 @@ class Tree:
         self.af_operators = af_operators
         self.cache = []
 
+    # Function that returns a binary tree as a string
+    def print_tree(self, root: Node, level: int = 0) -> str:
+        if root is None:
+            return
+        self.print_tree(root.right, level + 1)
+        print("\t" * level, root.content)
+        self.print_tree(root.left, level + 1)
+
+    def __str__(self) -> str:
+        self.print_tree(self.root())
+        return "\n\n\nTop -----------------------------------> Bottom"
+
     def length(self) -> int:
         if self._length is None:
             self._length = len(self.expression)

@@ -12,20 +12,10 @@ def main():
 
     # Generate the tree
     root = tree.generate()
-    print()
-    print()
-    print()
-    print_tree(root)
-    print("\n\n\nTop -----------------------------------> Bottom")
+    print(tree)
 
 
 # Function that prints a binary tree from bottom to top
-def print_tree(root: Node, level: int = 0) -> None:
-    if root is None:
-        return
-    print_tree(root.right, level + 1)
-    print("\t" * level, root.content)
-    print_tree(root.left, level + 1)
 
 
 if __name__ == '__main__':
