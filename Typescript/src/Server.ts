@@ -4,12 +4,14 @@ async function main() {
     const config = await fs.read();
     const parsedConfig = CObject.parseConfig(config);
     const inputData = new CFileSystem('../' + parsedConfig.input);
-    const tree = new CTree(await inputData.read());
+    const parsed: string = await inputData.read();
+    const tree = new CTree(parsed);
     // Generate the Thompson Tree
     const root = tree.generate();
 
     // Generate a graph for the automaton
-    const automaton = new CAutomaton(root);
+    const automaton = new CAutomaton(root, parsed);
+    automaton.generateGraph();
     console.log(JSON.stringify(root));
 }
 

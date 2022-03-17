@@ -1,4 +1,4 @@
-export const NULLSPACE = "ε";
+import { NULLSPACE } from '.';
 export const STATES: string[] = ["a", "b", "c", "d", "e"]
     .flatMap(char => [char, char.toUpperCase()])
     .concat(NULLSPACE);
