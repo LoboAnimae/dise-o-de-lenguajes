@@ -1,4 +1,7 @@
+from DiagramController import Diagramer
+from File import File
 from Tree import Tree, Node
+from Automaton import Automaton
 from Constants import *
 
 
@@ -13,9 +16,14 @@ def main():
     # Generate the tree
     root = tree.generate()
     print(tree)
+    automaton = Automaton(expression)
+    graph = Automaton.parse(root, automaton)
+    # Make it so that the last state is an acceptance state
+    automaton.states[-1].isAcceptance = True
 
-
-# Function that prints a binary tree from bottom to top
+    configuration = automaton.parse_configuration()
+    Diagramer.show(automaton)
+    File.write("configuration.txt", configuration)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,8 @@
 *.o
 .vscode
 node_modules
+*.pdf
+*.gv
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
@@ -10,6 +12,7 @@ node_modules
 __pycache__/
 *.py[cod]
 *$py.class
+.DS_Store
 
 # C extensions
 *.so
@@ -160,3 +163,5 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+.DS_Store
+.DS_Store
