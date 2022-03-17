@@ -6,6 +6,7 @@ from Constants import *
 
 
 def main():
+    # expression = "((a|b)|(a|c))*"
     expression = "a.a.a.b.b.(b|a)*"
     tree = Tree(expression,
                 null_state=NULL_STATE,
@@ -24,6 +25,10 @@ def main():
     configuration = automaton.parse_configuration()
     Diagramer.show(automaton)
     File.write("configuration.txt", configuration)
+    matches_automaton = Automaton.matches(
+        automaton, expression, "aaabbabababaabababbababababab")
+    print(
+        f"The expression {expression} does{'' if matches_automaton else ' not'} match the automaton.")
 
 
 if __name__ == '__main__':

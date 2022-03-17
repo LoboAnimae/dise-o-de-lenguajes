@@ -40,6 +40,43 @@ class Automaton:
         return len(self.states)
 
     @staticmethod
+    def epsilon_lock(automaton, current_state):
+        for state in current_state:
+            for transition in automaton.states[state].goes_to:
+                if transition.t == NULL_STATE and transition.to not in current_state:
+                    current_state.append(transition.to)
+        return current_state
+
+    @staticmethod
+    def in_accepted_states(letter, accepted_states):
+        return letter in accepted_states
+
+    @staticmethod
+    def matching_checkpoint(regex: str, text: str) -> bool:
+        accepted_states = [substate if is_state(
+            Node(substate)) and regex != '(' else [] for substate in regex]
+        return all(letter in accepted_states or letter == [] for letter in text)
+
+    @staticmethod
+    def matches(automaton, regex: str, text: str) -> bool:
+        # First, check if the regex
+        if not Automaton.matching_checkpoint(regex, text):
+            return False
+
+        possible_states = Automaton.epsilon_lock(automaton, [0])
+        # Navigate the graph
+        for i in range(len(text) - 1):
+            substates = []
+            for state in possible_states:
+                substates.extend(
+                    transition.to for transition in automaton.states[state].goes_to if (transition.t == text[i] and transition.to not in substates))
+            possible_states = Automaton.epsilon_lock(automaton, substates)
+            if not possible_states and regex == NULL_STATE:
+                break
+        # Check if any of the possible states is an acceptance state
+        return any(automaton.states[state].isAcceptance for state in possible_states)
+
+    @staticmethod
     def is_or(node: Node) -> bool:
         return node.content == '|'
 
