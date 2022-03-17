@@ -114,11 +114,12 @@ class Tree:
             current = self.expression[self.iterations]
         self.add_to_cache(current)
 
-    def generate(self) -> None:
-        has_reached_three = False
+    def generate(self) -> Node:
+        """
+        Generates the tree and returns the root node.
+        """
         while self.remaining():
             current = self.expression[self.iterations]
-            has_reached_three = len(self.cache) == 3
             # If the current character opens a new branch
             if current == '(':
                 self.handle_open_bracket()
