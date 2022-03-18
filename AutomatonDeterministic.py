@@ -16,6 +16,9 @@ class AutomatonDeterministic:
         """
         self.states.append(new_state)
 
+    def get_subsets(self):
+        return self.states
+
     def convert(self, from_tree: Node = None, with_expression: str = ""):
         """
         This method converts a tree (usually from a non-deterministic automaton) into a deterministic one.

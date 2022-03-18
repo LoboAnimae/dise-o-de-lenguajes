@@ -75,6 +75,7 @@ def main():
         deterministic_automaton = ad.convert(root_d, expression)
         deterministic_automaton.states[-1].isAcceptance = True
         deterministic_time = time() - deterministic_start
+
         Diagramer.show(deterministic_automaton,
                        configuration_pdf_d, False)
         dconfiguration = ad.parse_configuration()
@@ -96,6 +97,8 @@ def main():
         print(
             "Matches Deterministic: " + str(matches_deterministic_string))
         print("Time Deterministic: \t\t" + str(deterministic_time))
+
+        print("The following subsets were generated: " + str(ad.get_subsets()))
         return True
     except:
         print("\033[31mError. Please ensure that your regex is correct. If you see the syntactic tree above, then this might mean that the parser failed!.\033[0m")
