@@ -24,7 +24,7 @@ class Tree:
     # Function that returns a binary tree as a string
     def print_tree(self, root: Node, level: int = 0) -> str:
         """
-        Prints the tree using recursion
+        Prints the tree using recursion. Part of this code was suggested by Github Copilot.
         """
         if root is None:
             return

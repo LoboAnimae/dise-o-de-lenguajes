@@ -1,3 +1,0 @@
-input=input.txt
-output=output.txt
-test=aaaa

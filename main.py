@@ -19,8 +19,13 @@ def print_with_color(text, color):
 
 def main():
     # expression = "((a|b)|(a|c))*"
-    expression = "a?a.a.b.b.(b|a)*"
-    to_match = "aabba"
+    expression = input(
+        "Input a regex with a dot to concatenate (like a.a.a.b.b.(b|a)*:\n>>> ")
+    if not expression:
+        raise Exception("No expression was provided")
+    to_match = input("A string to match: \n>>> ")
+    if not to_match:
+        raise Exception("No string to match was provided")
     configuration_file_nd = "configuration.txt"
     configuration_file_d = "configuration_d.txt"
 
