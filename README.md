@@ -8,4 +8,12 @@ Just run main.py using
     On Unix
     $ python3.9 main.py
 
-# TODO
+# Task List
+
+-   [x] Construcción de Thompson
+-   [x] Construcción de Subconjuntos
+-   [x] Construcción de AFD dada una expresión Regular
+-   [x] Implementación de Simulación de un AFN
+-   [x] Implementación de Simulación de un AFN
+-   [ ] Directo (Lleno de bugs. No satisfactorio)
+-   [ ] Minimización (No satisfactorio).
