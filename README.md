@@ -1,4 +1,5 @@
-# How to Run
+# About this Project
+This project is based on the branch project-1. Nevertheless, it is now based on C++ for better control. 
 
 Just run main.py using
 
@@ -10,10 +11,11 @@ Just run main.py using
 
 # Task List
 
--   [x] Construcción de Thompson
--   [x] Construcción de Subconjuntos
--   [x] Construcción de AFD dada una expresión Regular
--   [x] Implementación de Simulación de un AFN
--   [x] Implementación de Simulación de un AFN
+-   [ ] Construcción de Thompson
+-   [ ] Construcción de Subconjuntos
+-   [ ] Construcción de AFD dada una expresión Regular
+-   [ ] Implementación de Simulación de un AFN
+-   [ ] Implementación de Simulación de un AFN
 -   [ ] Directo (Lleno de bugs. No satisfactorio)
 -   [ ] Minimización (No satisfactorio).
+- [ ] Construction of error handling
