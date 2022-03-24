@@ -44,6 +44,7 @@ public:
     char content;
     StateContent(int id);
     StateContent(int id, char content);
+    ~StateContent();
 };
 
 class GraphState : State
@@ -91,6 +92,7 @@ class GraphState : State
 class TreeState : StateContent
 {
 public:
+    TreeState();
     TreeState(int id, char content);
     TreeState(int id, char content, TreeState *left);
     TreeState(int id, char content, TreeState *left, TreeState *right);
@@ -112,5 +114,7 @@ public:
     TreeState *get_right();
     ~TreeState();
 };
+
+TreeState *generate_syntax_tree(TreeState *parent, std::string regex);
 
 #endif

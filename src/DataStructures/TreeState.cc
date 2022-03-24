@@ -55,3 +55,42 @@ TreeState *TreeState::get_right()
 {
     return this->right;
 }
+
+TreeState::TreeState() : StateContent(0) {}
+
+TreeState *generate_syntax_tree(TreeState *parent, std::string regex)
+{
+    // If the parent is null, create a root node with the first character
+    if (parent == NULL)
+    {
+        parent = new TreeState(0, regex[0]);
+    }
+    // If the regex is empty, return a null state
+    if (regex.length() == 0)
+    {
+        return NULL;
+    }
+
+    // For each character in the string
+    for (const char &current : regex)
+    {
+        // If the current character is an opening parenthesis
+        if (current == '(')
+        {
+        }
+        // If the current character is an operator and not an or
+        else if (current == '*' || current == '+' || current == '?')
+        {
+        }
+        // If the current operator is an or
+        else if (current == '|')
+        {
+        }
+        // If it is a character
+        else
+        {
+        }
+    }
+
+    return root;
+}

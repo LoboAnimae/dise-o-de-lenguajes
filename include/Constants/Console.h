@@ -17,4 +17,5 @@ typedef enum Colors
 
 void print_with_color(Colors color, std::string str);
 void print_with_color(Colors color, const char *str);
+std::string get_with_color(Colors color, std::string str);
 #endif

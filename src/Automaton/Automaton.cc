@@ -1,5 +1,6 @@
 #include "Automaton/Automaton.h"
 #include <string>
+
 Automaton::Automaton()
 {
     this->regex = "";
@@ -9,15 +10,40 @@ Automaton::Automaton(std::string with)
 {
     this->regex = with;
     this->has_regex = true;
-    // With the regex, generate the Syntax Tree, the AFN and the AFD
 }
 
 Automaton::~Automaton()
 {
+    for (State *state : this->states)
+    {
+        delete state;
+    }
 }
 
-void Automaton::refresh(std::string with)
+bool Automaton::test(std::string with)
 {
-    this->regex = with;
-    this->has_regex = true;
+    if (!this->has_regex)
+    {
+        return false;
+    }
+    return true;
+}
+
+DeterministicAutomaton::DeterministicAutomaton() : Automaton()
+{
+}
+
+DeterministicAutomaton::DeterministicAutomaton(std::string with) : Automaton(with)
+{
+}
+
+DeterministicAutomaton::~DeterministicAutomaton()
+{
+}
+
+StateContent::~StateContent() {}
+
+bool DeterministicAutomaton::test(std::string with)
+{
+    return false;
 }

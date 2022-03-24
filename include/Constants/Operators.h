@@ -1,6 +1,7 @@
 #ifndef OPERATORS_LANG_H
 #define OPERATORS_LANG_H
 #include <string>
+#include <algorithm>
 typedef enum OPERATORS
 {
 } OPERATORS;
@@ -23,6 +24,8 @@ public:
     ~Operator();
     int position;
     virtual bool validate();
+    std::string content;
+    std::string err;
 };
 
 /**
@@ -73,6 +76,15 @@ public:
     bool validate() override;
 };
 
+/**
+ * @brief
+ *
+ * @param regex
+ * @return true
+ * @return false
+ */
+bool grouping_validation(std::string *regex);
+bool validate(std::string regex);
 Operator *get_operator(char content, std::string *regex, int position);
 
 #endif

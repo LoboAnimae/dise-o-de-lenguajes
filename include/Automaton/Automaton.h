@@ -7,7 +7,7 @@
 
 class Automaton
 {
-private:
+protected:
     std::string regex;
     bool has_regex = false;
     std::vector<State *> states;
@@ -16,7 +16,16 @@ public:
     Automaton();
     Automaton(std::string with);
     ~Automaton();
-    void refresh(std::string with);
+    virtual bool test(std::string with);
+};
+
+class DeterministicAutomaton : public Automaton
+{
+public:
+    DeterministicAutomaton();
+    DeterministicAutomaton(std::string with);
+    bool test(std::string with) override;
+    ~DeterministicAutomaton();
 };
 
 #endif
