@@ -8,7 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "Constants/Operators.h"
-
+#include "FileSystem/Write.h"
 int execute();
 
 int main(int argc, char *argv[])
@@ -50,7 +50,31 @@ int execute()
             continue;
         }
     }
-    TreeState *syntax_tree = generate_syntax_tree(NULL, regex);
+    int id_counter = 0;
+    TreeState *syntax_tree = generate_syntax_tree(regex, &id_counter, NULL, NULL, NULL);
+    TreeState *last_node = syntax_tree;
+    while (last_node->get_left() != NULL)
+    {
+        last_node = last_node->get_left();
+    }
+    last_node->is_acceptance_state = true;
+    std::vector<std::string> printing_tree = {};
+    std::vector<JSON_TREE *> json_tree = {};
+    generate_binary_tree(syntax_tree, &json_tree);
+    // json_tree = "{" + json_tree.substr(0, json_tree.length() - 1) + "}";
+    std::string stringified = "[";
+    for (int i = 0; i < json_tree.size(); i++)
+    {
+        int id = json_tree[i]->id,
+            left = json_tree[i]->left,
+            right = json_tree[i]->right;
+        bool acceptance = json_tree[i]->acceptance;
+        char content = json_tree[i]->content;
+        stringified += "{\"value\":\"" + std::string(1, content) + "\",\"id\":" + std::to_string(id) + ",\"left\":" + std::to_string(left) + ", \"right\":" + std::to_string(right) + ",\"acceptance\":" + std::to_string(acceptance) + "},";
+    }
+    stringified = stringified.substr(0, stringified.length() - 1) + "]";
+    char out_file[] = "tree.json";
+    write_to_file(out_file, stringified.c_str());
     Automaton afn = Automaton(regex);
     DeterministicAutomaton afd = DeterministicAutomaton(regex);
     clear();

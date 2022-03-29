@@ -2,6 +2,7 @@
 #define STATE_LANG_H
 #include <vector>
 #include <string>
+#include "DataStructures/JSON.h"
 
 class Transition
 {
@@ -26,22 +27,26 @@ public:
      */
     int state_id;
     /**
-     * @brief Depicts if a state is an acceptance state or not.
+     * @brief Checks if the state is a final state.
+     *
      */
     bool is_acceptance_state;
     /**
-     * @brief A state can transition to several different states. This method is used in graphs.
+     * @brief Gets the id of the state.
      *
      */
+    int get_id();
+    bool is_acceptance();
 
     State(int id);
     ~State();
 };
 
-class StateContent : State
+class StateContent : public State
 {
 public:
     char content;
+    char get_value();
     StateContent(int id);
     StateContent(int id, char content);
     ~StateContent();
@@ -89,7 +94,7 @@ class GraphState : State
  * @brief Pretty much a binary tree that can hold states with a given content.
  *
  */
-class TreeState : StateContent
+class TreeState : public StateContent
 {
 public:
     TreeState();
@@ -115,6 +120,6 @@ public:
     ~TreeState();
 };
 
-TreeState *generate_syntax_tree(TreeState *parent, std::string regex);
-
+TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *parent, TreeState *grandparent, int *string_pointer);
+void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in);
 #endif

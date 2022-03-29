@@ -41,3 +41,13 @@ StateContent::StateContent(int id, char content) : State(id)
 {
     this->content = content;
 }
+
+int State::get_id()
+{
+    return this->state_id;
+}
+
+bool State::is_acceptance()
+{
+    return this->is_acceptance_state;
+}
