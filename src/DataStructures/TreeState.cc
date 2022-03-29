@@ -162,11 +162,6 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *p
         // If the current input is an operator
         else if (current == '*' || current == '+' || current == '?')
         {
-            if (parent == NULL)
-            {
-                parent = new TreeState(++*id_counter, current);
-            }
-
             TreeState *operator_node = new TreeState(++*id_counter, current);
             operator_node->set_left(parent);
             if (grandparent != NULL)
@@ -194,36 +189,12 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *p
                 parent->set_left(or_node);
             }
         }
-        // Assume that the current input is a character
+        // Concatenation
+        else if (current == '.')
+        {
+        }
         else
         {
-            bool parent_is_null = parent == NULL;
-            if (parent_is_null)
-            {
-                parent = new TreeState(++*id_counter, current);
-            }
-            // If the left node of the parent is not null, then it is concatenating to it
-            if (parent->get_left() != NULL)
-            {
-                // Create a concatenation node
-                TreeState *concatenation = new TreeState(++*id_counter, '.');
-
-                concatenation->set_left(parent);
-                concatenation->set_right(new TreeState(++*id_counter, current));
-                if (grandparent != NULL)
-                {
-                    grandparent->set_left(concatenation);
-                }
-                else
-                {
-                    parent = concatenation;
-                }
-            }
-            // Otherwise, make it the left node
-            else if (!parent_is_null)
-            {
-                parent->set_left(new TreeState(++*id_counter, current));
-            }
         }
         i++;
     }
@@ -242,8 +213,6 @@ void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in)
     json->id = root->get_id();
     json->content = root->content;
 
-    std::string id = std::to_string(root->get_id());
-    std::string msg = "\"id\":\"" + id;
     if (root->get_left() != NULL)
     {
         json->left = root->get_left()->get_id();
@@ -271,4 +240,40 @@ void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in)
 char StateContent::get_value()
 {
     return this->content;
+}
+
+std::string to_augmented_expression(std::string regex)
+{
+    if (regex.empty())
+    {
+        return "";
+    }
+    if (regex.length() == 1)
+    {
+        return regex + "#";
+    }
+    std::string augmented_regex = "";
+    for (int i = 0; i < regex.length(); ++i)
+    {
+        char current = regex[i];
+        char next = i + 1 < regex.length() ? regex[i + 1] : ' ';
+        bool current_is_operator = current == '(' || current == '|' || current == '*' || current == '+' || current == '?';
+        bool next_is_operator = next == '|' || next == '*' || next == '+' || next == '?';
+
+        if (current != '(' && current != '|')
+        {
+            if (next != '|' && next != '*' && next != '+' && next != '?' && next != ')')
+            {
+                augmented_regex += current;
+                if (i + 1 < regex.length())
+                {
+                    augmented_regex += '.';
+                }
+                continue;
+            }
+        }
+
+        augmented_regex += current;
+    }
+    return augmented_regex + ".#";
 }

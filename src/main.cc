@@ -19,46 +19,57 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void print_binary_tree(TreeState *root, int level)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    print_binary_tree(root->get_right(), level + 1);
+    for (int i = 0; i < level; i++)
+    {
+        std::cout << "    ";
+    }
+    std::cout << root->content << std::endl;
+    print_binary_tree(root->get_left(), level + 1);
+}
+
 int execute()
 {
     bool is_actively_testing = true;
     // Allocate the automaton in the stack
     int option;
-    std::string regex = "";
+    std::string regex = "abcde";
+    // std::string regex = "ba(a|b)*ab";
+    // std::string regex = "";
     clear();
-    std::cout << "To start, please input an initial regex:\n >>> ";
-    while (true)
-    {
-        try
-        {
-            std::getline(std::cin, regex);
-            bool is_valid = validate(regex),
-                 is_grouping = grouping_validation(&regex);
-            while (!(is_valid && is_grouping))
-            {
-                std::cout << "Please input a valid regex:\n >>> ";
-                std::getline(std::cin, regex);
-                is_valid = validate(regex);
-                is_grouping = grouping_validation(&regex);
-            }
-            break;
-        }
-        catch (std::exception &e)
-        {
-            std::cout << e.what() << std::endl;
-            std::cout << "Please input a valid regex:\n >>> ";
-            continue;
-        }
-    }
+    // std::cout << "To start, please input an initial regex:\n >>> ";
+    // while (true)
+    // {
+    //     try
+    //     {
+    //         std::getline(std::cin, regex);
+    //         bool is_valid = validate(regex),
+    //              is_grouping = grouping_validation(&regex);
+    //         while (!(is_valid && is_grouping))
+    //         {
+    //             std::cout << "Please input a valid regex:\n >>> ";
+    //             std::getline(std::cin, regex);
+    //             is_valid = validate(regex);
+    //             is_grouping = grouping_validation(&regex);
+    //         }
+    //         break;
+    //     }
+    //     catch (std::exception &e)
+    //     {
+    //         std::cout << e.what() << std::endl;
+    //         std::cout << "Please input a valid regex:\n >>> ";
+    //         continue;
+    //     }
+    // }
+    std::string augmented = to_augmented_expression(regex);
     int id_counter = 0;
-    TreeState *syntax_tree = generate_syntax_tree(regex, &id_counter, NULL, NULL, NULL);
-    TreeState *last_node = syntax_tree;
-    while (last_node->get_left() != NULL)
-    {
-        last_node = last_node->get_left();
-    }
-    last_node->is_acceptance_state = true;
-    std::vector<std::string> printing_tree = {};
+    TreeState *syntax_tree = generate_syntax_tree(augmented, &id_counter, NULL, NULL, NULL);
     std::vector<JSON_TREE *> json_tree = {};
     generate_binary_tree(syntax_tree, &json_tree);
     // json_tree = "{" + json_tree.substr(0, json_tree.length() - 1) + "}";
@@ -68,9 +79,8 @@ int execute()
         int id = json_tree[i]->id,
             left = json_tree[i]->left,
             right = json_tree[i]->right;
-        bool acceptance = json_tree[i]->acceptance;
         char content = json_tree[i]->content;
-        stringified += "{\"value\":\"" + std::string(1, content) + "\",\"id\":" + std::to_string(id) + ",\"left\":" + std::to_string(left) + ", \"right\":" + std::to_string(right) + ",\"acceptance\":" + std::to_string(acceptance) + "},";
+        stringified += "{\"value\":\"" + std::string(1, content) + "\",\"id\":" + std::to_string(id) + ",\"left\":" + std::to_string(left) + ", \"right\":" + std::to_string(right) + "},";
     }
     stringified = stringified.substr(0, stringified.length() - 1) + "]";
     char out_file[] = "tree.json";

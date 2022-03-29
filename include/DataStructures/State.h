@@ -122,4 +122,5 @@ public:
 
 TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *parent, TreeState *grandparent, int *string_pointer);
 void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in);
+std::string to_augmented_expression(std::string regex);
 #endif
