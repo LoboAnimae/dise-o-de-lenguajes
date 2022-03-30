@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "DataStructures/JSON.h"
+
 State::State(int id)
 {
     this->state_id = id;
@@ -12,18 +13,21 @@ TreeState::TreeState(int id, char content) : StateContent(id, content)
 {
     this->left = NULL;
     this->right = NULL;
+    this->content = content;
 }
 
 TreeState::TreeState(int id, char content, TreeState *left) : StateContent(id, content)
 {
     this->left = left;
     this->right = NULL;
+    this->content = content;
 }
 
 TreeState::TreeState(int id, char content, TreeState *left, TreeState *right) : StateContent(id, content)
 {
     this->left = left;
     this->right = right;
+    this->content = content;
 }
 
 TreeState::~TreeState()
@@ -67,35 +71,30 @@ TreeState::TreeState() : StateContent(0) {}
  * @brief Looks for the first parenthesis in the regex and returns whatever is contained in it.
  *
  * @param regex The regex to search
- * @return std::string The group found
+ * @return From where to where the parenthesis is, without the parenthesis.
  */
-std::string get_subgroup(std::string regex)
+parenthesis_pair *get_subgroup(std::string regex, int from)
 {
-    if (regex.find("(") == std::string::npos)
+    if (regex.find("(") == std::string::npos || regex.find(")") == std::string::npos)
     {
         return NULL;
     }
     std::string subgroup = "";
-
-    struct par_struct
-    {
-        int pos;
-    };
-    std::stack<par_struct *> parenthesis_stack = {};
+    std::stack<int> parenthesis_stack = {};
 
     for (int i = 0; i < regex.length(); ++i)
     {
         if (regex[i] == '(')
         {
-            parenthesis_stack.push(new par_struct{i});
+            parenthesis_stack.push(i);
         }
         else if (regex[i] == ')')
         {
-            int last_parenthesis = parenthesis_stack.top()->pos;
+            int last_parenthesis = parenthesis_stack.top();
             parenthesis_stack.pop();
             if (parenthesis_stack.empty())
             {
-                return regex.substr(last_parenthesis + 1, i - 1);
+                return new parenthesis_pair{last_parenthesis + from + 1, i + from - 1};
             }
         }
     }
@@ -103,30 +102,22 @@ std::string get_subgroup(std::string regex)
 }
 
 /**
- * @brief Recursively create a tree from a regex
+ * @brief Instead of absolute recursivity, try to have a parent function
  *
  * @param regex A regex describing the tree
  * @return TreeState* The root of the tree
  */
-TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *parent, TreeState *grandparent, int *string_pointer)
+TreeState *generate_syntax_tree(std::string regex, int *id_counter)
 {
-    if (string_pointer == NULL)
-    {
-        string_pointer = new int(0);
-        (*string_pointer)++;
-    }
-
+    TreeState *parent = NULL;
     // If the regex is empty, return NULL
     if (regex.empty())
     {
-        (*string_pointer)++;
         return NULL;
     }
-
     // If the regex is a single character, return a new TreeState with that character
     if (regex.length() == 1)
     {
-        (*string_pointer)++;
         return new TreeState(++*id_counter, regex[0]);
     }
     int i = 0;
@@ -134,17 +125,27 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *p
     while (i < regex.length())
     {
         char current = regex[i];
-
+        if (current == ')')
+        {
+            i++;
+            continue;
+        }
+        // The only case where recursion is used is when the current character is a parenthesis. This way, the function can be called on recursion.
         if (current == '(')
         {
-            std::string subgroup = get_subgroup(regex.substr(i));
+            parenthesis_pair *subgroup_positions = get_subgroup(regex.substr(i), i);
+            std::string subgroup = regex.substr(subgroup_positions->left_pos, subgroup_positions->right_pos - subgroup_positions->left_pos + 1);
             if (subgroup.empty())
             {
                 continue;
             }
             TreeState *grouper_node = new TreeState(++*id_counter, current);
-            generate_syntax_tree(subgroup, id_counter, grouper_node, parent, string_pointer);
-            i = *string_pointer - 1;
+            TreeState *subtree = generate_syntax_tree(subgroup, id_counter);
+            i += subgroup_positions->right_pos - subgroup_positions->left_pos + 1;
+            if (subtree != NULL)
+            {
+                grouper_node->set_left(subtree);
+            }
             if (parent == NULL)
             {
                 parent = grouper_node;
@@ -153,52 +154,80 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *p
             {
                 parent->set_left(grouper_node);
             }
+            else if (parent->get_right() == NULL)
+            {
+                parent->set_right(grouper_node);
+            }
             else
             {
-                parent->set_right(parent->get_left());
-                parent->set_left(grouper_node);
+                throw std::runtime_error("Error: Parenthesis are not balanced");
             }
         }
         // If the current input is an operator
         else if (current == '*' || current == '+' || current == '?')
         {
-            TreeState *operator_node = new TreeState(++*id_counter, current);
-            operator_node->set_left(parent);
-            if (grandparent != NULL)
-            {
-                grandparent->set_left(operator_node);
-            }
-            else
-            {
-                parent = operator_node;
-            }
-        }
-        // If the current input is an or operator
-        else if (current == '|')
-        {
-            TreeState *or_node = new TreeState(++*id_counter, current);
-            or_node->set_left(parent->get_left());
-            or_node->set_right(generate_syntax_tree(regex.substr(++i), id_counter, or_node, parent, string_pointer));
-            i = *string_pointer;
+            // The parent will never be null because these operators always require a target
             if (parent == NULL)
             {
-                parent = or_node;
+                throw std::runtime_error("BUG! The parent of an operator is null!");
+            }
+            // If the parent has a right child, it is the target
+            if (parent->get_right() != NULL)
+            {
+                TreeState *target = parent->get_right();
+                TreeState *operator_node = new TreeState(++*id_counter, current);
+                operator_node->set_left(target);
+                parent->set_right(operator_node);
+            }
+
+            else if (parent->get_left() != NULL)
+            {
+                TreeState *target = parent->get_left();
+                TreeState *operator_node = new TreeState(++*id_counter, current);
+                operator_node->set_left(target);
+                parent->set_left(operator_node);
             }
             else
             {
-                parent->set_left(or_node);
+                throw std::runtime_error("BUG! The parent of an operator has more than two children!");
             }
         }
         // Concatenation
-        else if (current == '.')
+        else if (current == '.' || current == '|')
         {
+            // The parent will never be null because these operators always require a target
+            if (parent == NULL)
+            {
+                throw std::runtime_error("BUG! The concatenator operator has no targets!");
+            }
+            // A concatenation grabs the left node of the current node
+            TreeState *concatenator = new TreeState(++*id_counter, current);
+            concatenator->set_left(parent);
+            parent = concatenator;
         }
+        // Assume that the current input is a character
         else
         {
+            // If the current node is null, create a new node
+            if (parent == NULL)
+            {
+                parent = new TreeState(++*id_counter, current);
+            }
+            else if (parent->get_left() == NULL)
+            {
+                parent->set_left(new TreeState(++*id_counter, current));
+            }
+            else if (parent->get_right() == NULL)
+            {
+                parent->set_right(new TreeState(++*id_counter, current));
+            }
+            else
+            {
+                throw std::runtime_error("Error: Could not figure out where to put this!.");
+            }
         }
         i++;
     }
-    *string_pointer += i;
     return parent;
 }
 

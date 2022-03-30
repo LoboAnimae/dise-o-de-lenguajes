@@ -97,6 +97,7 @@ class GraphState : State
 class TreeState : public StateContent
 {
 public:
+    char content;
     TreeState();
     TreeState(int id, char content);
     TreeState(int id, char content, TreeState *left);
@@ -120,7 +121,7 @@ public:
     ~TreeState();
 };
 
-TreeState *generate_syntax_tree(std::string regex, int *id_counter, TreeState *parent, TreeState *grandparent, int *string_pointer);
+TreeState *generate_syntax_tree(std::string regex, int *id_counter);
 void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in);
 std::string to_augmented_expression(std::string regex);
 #endif

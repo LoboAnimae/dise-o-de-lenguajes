@@ -39,8 +39,8 @@ int execute()
     bool is_actively_testing = true;
     // Allocate the automaton in the stack
     int option;
-    std::string regex = "abcde";
-    // std::string regex = "ba(a|b)*ab";
+    // std::string regex = "abcde";
+    std::string regex = "ba(a|b)*ab";
     // std::string regex = "";
     clear();
     // std::cout << "To start, please input an initial regex:\n >>> ";
@@ -69,7 +69,7 @@ int execute()
     // }
     std::string augmented = to_augmented_expression(regex);
     int id_counter = 0;
-    TreeState *syntax_tree = generate_syntax_tree(augmented, &id_counter, NULL, NULL, NULL);
+    TreeState *syntax_tree = generate_syntax_tree(augmented, &id_counter);
     std::vector<JSON_TREE *> json_tree = {};
     generate_binary_tree(syntax_tree, &json_tree);
     // json_tree = "{" + json_tree.substr(0, json_tree.length() - 1) + "}";
