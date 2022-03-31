@@ -52,8 +52,9 @@ public:
     ~StateContent();
 };
 
-class GraphState : State
+class GraphState : public State
 {
+public:
     /**
      * @brief Holds all the transitions a certain state will go to
      */
