@@ -15,10 +15,14 @@ Automaton_Section::~Automaton_Section()
     delete this->end;
 }
 
-Automaton_Section::concatenate_next(Automaton_Section *next)
+void Automaton_Section::concatenate_next(Automaton_Section *next)
 {
-    this->end->add_transition(next->get_beginning());
-    next->get_beginning()->set_left(this->end);
+    this->end->add_empty_transition(next->beginning);
+}
+
+void Automaton_Section::concatenate_previous(Automaton_Section *previous)
+{
+    previous->end->add_empty_transition(this->beginning);
 }
 #pragma endregion
 
