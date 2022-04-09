@@ -14,7 +14,7 @@ Automaton::Automaton(std::string with)
 
 Automaton::~Automaton()
 {
-    for (State *state : this->states)
+    for (State::Node *state : this->states)
     {
         delete state;
     }
@@ -40,8 +40,6 @@ DeterministicAutomaton::DeterministicAutomaton(std::string with) : Automaton(wit
 DeterministicAutomaton::~DeterministicAutomaton()
 {
 }
-
-StateContent::~StateContent() {}
 
 bool DeterministicAutomaton::test(std::string with)
 {

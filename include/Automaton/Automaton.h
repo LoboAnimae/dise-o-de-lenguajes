@@ -10,7 +10,7 @@ class Automaton
 protected:
     std::string regex;
     bool has_regex = false;
-    std::vector<State *> states;
+    std::vector<State::Node *> states;
 
 public:
     Automaton();

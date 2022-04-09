@@ -4,33 +4,31 @@
 #include <string>
 #include "DataStructures/JSON.h"
 
-State::State(int id)
-{
-    this->state_id = id;
-}
-
-TreeState::TreeState(int id, char content) : StateContent(id, content)
+State::Tree::Tree(int id, char content)
 {
     this->left = NULL;
     this->right = NULL;
     this->content = content;
+    this->state_id = id;
 }
 
-TreeState::TreeState(int id, char content, TreeState *left) : StateContent(id, content)
+State::Tree::Tree(int id, char content, State::Tree *left)
 {
     this->left = left;
     this->right = NULL;
     this->content = content;
+    this->state_id = id;
 }
 
-TreeState::TreeState(int id, char content, TreeState *left, TreeState *right) : StateContent(id, content)
+State::Tree::Tree(int id, char content, State::Tree *left, Tree *right)
 {
     this->left = left;
     this->right = right;
     this->content = content;
+    this->state_id = id;
 }
 
-TreeState::~TreeState()
+State::Tree::~Tree()
 {
     // Recursively delete the tree
     if (this->left != NULL)
@@ -43,29 +41,32 @@ TreeState::~TreeState()
     }
 }
 
-void TreeState::set_left(TreeState *left)
+void State::Tree::set_left(State::Tree *left)
 {
 
     this->left = left;
 }
 
-void TreeState::set_right(TreeState *right)
+void State::Tree::set_right(State::Tree *right)
 {
 
     this->right = right;
 }
 
-TreeState *TreeState::get_left()
+State::Tree *State::Tree::get_left()
 {
     return this->left;
 }
 
-TreeState *TreeState::get_right()
+State::Tree *State::Tree::get_right()
 {
     return this->right;
 }
 
-TreeState::TreeState() : StateContent(0) {}
+State::Tree::Tree()
+{
+    this->state_id = 0;
+}
 
 /**
  * @brief Looks for the first parenthesis in the regex and returns whatever is contained in it.
@@ -107,9 +108,9 @@ parenthesis_pair *get_subgroup(std::string regex, int from)
  * @param regex A regex describing the tree
  * @return TreeState* The root of the tree
  */
-TreeState *generate_syntax_tree(std::string regex, int *id_counter)
+State::Tree *State::generate_syntax_tree(std::string regex, int *id_counter)
 {
-    TreeState *parent = NULL;
+    State::Tree *parent = NULL;
     // If the regex is empty, return NULL
     if (regex.empty())
     {
@@ -118,7 +119,7 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
     // If the regex is a single character, return a new TreeState with that character
     if (regex.length() == 1)
     {
-        return new TreeState(++*id_counter, regex[0]);
+        return new State::Tree(++*id_counter, regex[0]);
     }
     int i = 0;
     // for (int i = *string_pointer; i < regex.length(); ++i)
@@ -139,8 +140,8 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
             {
                 continue;
             }
-            TreeState *grouper_node = new TreeState(++*id_counter, current);
-            TreeState *subtree = generate_syntax_tree(subgroup, id_counter);
+            State::Tree *grouper_node = new State::Tree(++*id_counter, current);
+            State::Tree *subtree = generate_syntax_tree(subgroup, id_counter);
             i += subgroup_positions->right_pos - subgroup_positions->left_pos + 1;
             if (subtree != NULL)
             {
@@ -174,16 +175,16 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
             // If the parent has a right child, it is the target
             if (parent->get_right() != NULL)
             {
-                TreeState *target = parent->get_right();
-                TreeState *operator_node = new TreeState(++*id_counter, current);
+                State::Tree *target = parent->get_right();
+                State::Tree *operator_node = new State::Tree(++*id_counter, current);
                 operator_node->set_left(target);
                 parent->set_right(operator_node);
             }
 
             else if (parent->get_left() != NULL)
             {
-                TreeState *target = parent->get_left();
-                TreeState *operator_node = new TreeState(++*id_counter, current);
+                State::Tree *target = parent->get_left();
+                State::Tree *operator_node = new State::Tree(++*id_counter, current);
                 operator_node->set_left(target);
                 parent->set_left(operator_node);
             }
@@ -201,7 +202,7 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
                 throw std::runtime_error("BUG! The concatenator operator has no targets!");
             }
             // A concatenation grabs the left node of the current node
-            TreeState *concatenator = new TreeState(++*id_counter, current);
+            State::Tree *concatenator = new State::Tree(++*id_counter, current);
             concatenator->set_left(parent);
             parent = concatenator;
         }
@@ -211,15 +212,15 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
             // If the current node is null, create a new node
             if (parent == NULL)
             {
-                parent = new TreeState(++*id_counter, current);
+                parent = new State::Tree(++*id_counter, current);
             }
             else if (parent->get_left() == NULL)
             {
-                parent->set_left(new TreeState(++*id_counter, current));
+                parent->set_left(new State::Tree(++*id_counter, current));
             }
             else if (parent->get_right() == NULL)
             {
-                parent->set_right(new TreeState(++*id_counter, current));
+                parent->set_right(new State::Tree(++*id_counter, current));
             }
             else
             {
@@ -231,47 +232,12 @@ TreeState *generate_syntax_tree(std::string regex, int *id_counter)
     return parent;
 }
 
-void generate_binary_tree(TreeState *root, std::vector<JSON_TREE *> *save_in)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    JSON_TREE *json = new JSON_TREE();
-
-    json->id = root->get_id();
-    json->content = root->content;
-
-    if (root->get_left() != NULL)
-    {
-        json->left = root->get_left()->get_id();
-    }
-    else
-    {
-        json->left = -1;
-    }
-
-    if (root->get_right() != NULL)
-    {
-        json->right = root->get_right()->get_id();
-    }
-    else
-    {
-        json->right = -1;
-    }
-    json->acceptance = root->is_acceptance();
-
-    save_in->push_back(json);
-    generate_binary_tree(root->get_left(), save_in);
-    generate_binary_tree(root->get_right(), save_in);
-}
-
-char StateContent::get_value()
+char State::Content::get_value()
 {
     return this->content;
 }
 
-std::string to_augmented_expression(std::string regex)
+std::string State::to_augmented_expression(std::string regex)
 {
     if (regex.empty())
     {

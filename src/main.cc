@@ -4,6 +4,7 @@
 #include "Screen/Menu.h"
 #include <string>
 #include "Automaton/Automaton.h"
+#include "DataStructures/JSON.h"
 #include "Constants/Console.h"
 #include <iostream>
 #include <stdexcept>
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void print_binary_tree(TreeState *root, int level)
+void print_binary_tree(State::Tree *root, int level)
 {
     if (root == NULL)
     {
@@ -67,22 +68,15 @@ int execute()
     //         continue;
     //     }
     // }
-    std::string augmented = to_augmented_expression(regex);
+    std::string augmented = State::to_augmented_expression(regex);
     int id_counter = 0;
-    TreeState *syntax_tree = generate_syntax_tree(augmented, &id_counter);
-    std::vector<JSON_TREE *> json_tree = {};
-    generate_binary_tree(syntax_tree, &json_tree);
+    State::Tree *syntax_tree = State::generate_syntax_tree(augmented, &id_counter);
+    // Now that the tree is done, generate the JSON data for a python program to read
+    JSON::JSON<JSON::binary_tree *> json_tree = JSON::JSON<JSON::binary_tree *>();
+
     // json_tree = "{" + json_tree.substr(0, json_tree.length() - 1) + "}";
-    std::string stringified = "[";
-    for (int i = 0; i < json_tree.size(); i++)
-    {
-        int id = json_tree[i]->id,
-            left = json_tree[i]->left,
-            right = json_tree[i]->right;
-        char content = json_tree[i]->content;
-        stringified += "{\"value\":\"" + std::string(1, content) + "\",\"id\":" + std::to_string(id) + ",\"left\":" + std::to_string(left) + ", \"right\":" + std::to_string(right) + "},";
-    }
-    stringified = stringified.substr(0, stringified.length() - 1) + "]";
+
+    std::string stringified = json_tree.to_string();
     char out_file[] = "tree.json";
     write_to_file(out_file, stringified.c_str());
     Automaton afn = Automaton(regex);

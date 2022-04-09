@@ -1,28 +1,33 @@
 #include "DataStructures/State.h"
 #include "Constants/NULLSTATE.h"
 #include <vector>
+using namespace State;
 
 #pragma region Constructor
-GraphState::GraphState(int id) : State(id)
+Graph::Graph(int id)
 {
+    this->state_id = id;
     // Add a transition to itself with empty
     // this->transitions_to = std::vector<Transition *>();
     this->add_empty_transition(this);
 }
 #pragma endregion
 
-void GraphState::add_transition(Transition *new_transition)
+Graph::~Graph()
+{
+}
+void Graph::add_transition(Transition *new_transition)
 {
     this->transitions_to.push_back(new_transition);
 }
 
-void GraphState::add_transition(GraphState *to_state, std::string with)
+void Graph::add_transition(Graph *to_state, std::string with)
 {
     Transition *new_transition = new Transition(with, (void *)to_state);
     this->add_transition(new_transition);
 }
 
-void GraphState::add_empty_transition(GraphState *to_state)
+void Graph::add_empty_transition(Graph *to_state)
 {
     Transition *new_transition = new Transition(NULL_STATE, (void *)to_state);
     this->add_transition(new_transition);
@@ -34,20 +39,12 @@ Transition::Transition(std::string with, void *goes_to)
     this->goes_to = goes_to;
 }
 
-State::~State() {}
-
-StateContent::StateContent(int id) : State(id) {}
-StateContent::StateContent(int id, char content) : State(id)
-{
-    this->content = content;
-}
-
-int State::get_id()
+int State::Node::get_id()
 {
     return this->state_id;
 }
 
-bool State::is_acceptance()
+bool State::Node::is_acceptance()
 {
     return this->is_acceptance_state;
 }

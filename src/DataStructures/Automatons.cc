@@ -1,26 +1,26 @@
 #include "DataStructures/Automatons.h"
 #include "DataStructures/State.h"
 #pragma region Automaton_Section
-Automaton_Section::Automaton_Section(char content)
+Automaton::Section::Section(char content)
 {
 
-    this->beginning = new GraphState(0);
-    this->end = new GraphState(1);
+    this->beginning = new State::Graph(0);
+    this->end = new State::Graph(1);
     this->content = content;
 }
 
-Automaton_Section::~Automaton_Section()
+Automaton::Section::~Section()
 {
     delete this->beginning;
     delete this->end;
 }
 
-void Automaton_Section::concatenate_next(Automaton_Section *next)
+void Automaton::Section::concatenate_next(Automaton::Section *next)
 {
     this->end->add_empty_transition(next->beginning);
 }
 
-void Automaton_Section::concatenate_previous(Automaton_Section *previous)
+void Automaton::Section::concatenate_previous(Automaton::Section *previous)
 {
     previous->end->add_empty_transition(this->beginning);
 }
