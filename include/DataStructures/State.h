@@ -5,21 +5,7 @@
 
 namespace State
 {
-    class Transition
-    {
-    public:
-        /**
-         * @brief With what character a transition is made
-         */
-        std::string with;
-        /**
-         * @brief Where does this transition point to
-         *
-         */
-        void *goes_to;
-        Transition(std::string with, void *goes_to);
-    };
-
+    typedef struct Transition Transition;
     class Node
     {
     public:
@@ -54,6 +40,7 @@ namespace State
          * @brief Holds all the transitions a certain state will go to
          */
         std::vector<Transition *> transitions_to;
+
         /**
          * @brief Adds a transition directly to the transition vector
          * @param new_transition The new transition
@@ -86,6 +73,16 @@ namespace State
         ~Graph();
     };
 
+    struct Transition
+    {
+        std::string with;
+        Graph *goes_to;
+    };
+    typedef struct Transition_Pointers
+    {
+        Graph *beginning;
+        Graph *end;
+    } Transition_Pointers;
     /**
      * @brief Pretty much a binary tree that can hold states with a given content.
      *
@@ -117,8 +114,11 @@ namespace State
         ~Tree();
     };
 
-    Tree *generate_syntax_tree(std::string regex, int *id_counter);
-    std::string to_augmented_expression(std::string regex);
+    namespace Syntax_Tree
+    {
+        Tree *from(std::string regex, int *id_counter);
+        std::string to_augmented_expression(std::string regex);
+    }
 }
 
 #endif

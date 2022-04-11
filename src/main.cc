@@ -10,6 +10,9 @@
 #include <stdexcept>
 #include "Constants/Operators.h"
 #include "FileSystem/Write.h"
+
+char SYNTAX_TREE_OUT_FILE[] = "syntax_tree.json";
+
 int execute();
 
 int main(int argc, char *argv[])
@@ -40,8 +43,8 @@ int execute()
     bool is_actively_testing = true;
     // Allocate the automaton in the stack
     int option;
-    // std::string regex = "abcde";
-    std::string regex = "ba(a|b)*ab";
+    std::string regex = "a";
+    // std::string regex = "ba(a|b)*ab";
     // std::string regex = "";
     clear();
     // std::cout << "To start, please input an initial regex:\n >>> ";
@@ -68,19 +71,20 @@ int execute()
     //         continue;
     //     }
     // }
-    std::string augmented = State::to_augmented_expression(regex);
+    std::string augmented = regex.length() == 1 ? regex + ".#" : State::Syntax_Tree::to_augmented_expression(regex);
     int id_counter = 0;
-    State::Tree *syntax_tree = State::generate_syntax_tree(augmented, &id_counter);
+    State::Tree *syntax_tree = State::Syntax_Tree::from(augmented, &id_counter);
     // Now that the tree is done, generate the JSON data for a python program to read
     JSON::JSON<JSON::binary_tree *> json_tree = JSON::JSON<JSON::binary_tree *>();
 
     // json_tree = "{" + json_tree.substr(0, json_tree.length() - 1) + "}";
-
+    json_tree.from(syntax_tree);
     std::string stringified = json_tree.to_string();
-    char out_file[] = "tree.json";
-    write_to_file(out_file, stringified.c_str());
-    Automaton afn = Automaton(regex);
-    DeterministicAutomaton afd = DeterministicAutomaton(regex);
+
+    write_to_file(SYNTAX_TREE_OUT_FILE, stringified.c_str());
+    State::Transition_Pointers *nfa = Automaton::NFA::from(syntax_tree, NULL, NULL);
+    // Automaton afn = Automaton(regex);
+    // DeterministicAutomaton afd = DeterministicAutomaton(regex);
     clear();
     try
     {

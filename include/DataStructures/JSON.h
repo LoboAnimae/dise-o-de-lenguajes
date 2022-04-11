@@ -28,7 +28,8 @@ namespace JSON
          */
         int push(T value)
         {
-            return 0;
+            this->data.push_back(value);
+            return this->data.size();
         }
 
         /**
@@ -59,7 +60,40 @@ namespace JSON
         }
         ~JSON() {}
 
-        void generate_binary_tree(State::Tree *root);
+        inline void from(State::Tree *root)
+        {
+            if (root == NULL)
+            {
+                return;
+            }
+            binary_tree *json = new binary_tree();
+
+            json->id = root->get_id();
+            json->content = root->content;
+
+            if (root->get_left() != NULL)
+            {
+                json->left = root->get_left()->get_id();
+            }
+            else
+            {
+                json->left = -1;
+            }
+
+            if (root->get_right() != NULL)
+            {
+                json->right = root->get_right()->get_id();
+            }
+            else
+            {
+                json->right = -1;
+            }
+            json->is_acceptance = root->is_acceptance();
+
+            this->push(json);
+            JSON::from(root->get_left());
+            JSON::from(root->get_right());
+        }
     };
 
 };

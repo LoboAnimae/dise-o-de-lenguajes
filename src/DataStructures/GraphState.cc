@@ -23,20 +23,14 @@ void Graph::add_transition(Transition *new_transition)
 
 void Graph::add_transition(Graph *to_state, std::string with)
 {
-    Transition *new_transition = new Transition(with, (void *)to_state);
+    Transition *new_transition = new Transition{with, to_state};
     this->add_transition(new_transition);
 }
 
 void Graph::add_empty_transition(Graph *to_state)
 {
-    Transition *new_transition = new Transition(NULL_STATE, (void *)to_state);
+    Transition *new_transition = new Transition{NULL_STATE, to_state};
     this->add_transition(new_transition);
-}
-
-Transition::Transition(std::string with, void *goes_to)
-{
-    this->with = with;
-    this->goes_to = goes_to;
 }
 
 int State::Node::get_id()

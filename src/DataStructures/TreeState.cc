@@ -108,7 +108,7 @@ parenthesis_pair *get_subgroup(std::string regex, int from)
  * @param regex A regex describing the tree
  * @return TreeState* The root of the tree
  */
-State::Tree *State::generate_syntax_tree(std::string regex, int *id_counter)
+State::Tree *State::Syntax_Tree::from(std::string regex, int *id_counter)
 {
     State::Tree *parent = NULL;
     // If the regex is empty, return NULL
@@ -141,7 +141,7 @@ State::Tree *State::generate_syntax_tree(std::string regex, int *id_counter)
                 continue;
             }
             State::Tree *grouper_node = new State::Tree(++*id_counter, current);
-            State::Tree *subtree = generate_syntax_tree(subgroup, id_counter);
+            State::Tree *subtree = from(subgroup, id_counter);
             i += subgroup_positions->right_pos - subgroup_positions->left_pos + 1;
             if (subtree != NULL)
             {
@@ -237,7 +237,7 @@ char State::Content::get_value()
     return this->content;
 }
 
-std::string State::to_augmented_expression(std::string regex)
+std::string State::Syntax_Tree::to_augmented_expression(std::string regex)
 {
     if (regex.empty())
     {
