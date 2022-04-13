@@ -43,7 +43,7 @@ int execute()
     bool is_actively_testing = true;
     // Allocate the automaton in the stack
     int option;
-    std::string regex = "a";
+    std::string regex = "a|b";
     // std::string regex = "ba(a|b)*ab";
     // std::string regex = "";
     clear();
@@ -82,7 +82,8 @@ int execute()
     std::string stringified = json_tree.to_string();
 
     write_to_file(SYNTAX_TREE_OUT_FILE, stringified.c_str());
-    State::Transition_Pointers *nfa = Automaton::NFA::from(syntax_tree, NULL, NULL);
+    State::Graph *graph_root;
+    State::Transition_Pointers *nfa = Automaton::NFA::from(syntax_tree, NULL, graph_root);
     // Automaton afn = Automaton(regex);
     // DeterministicAutomaton afd = DeterministicAutomaton(regex);
     clear();

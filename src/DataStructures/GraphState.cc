@@ -9,7 +9,7 @@ Graph::Graph(int id)
     this->state_id = id;
     // Add a transition to itself with empty
     // this->transitions_to = std::vector<Transition *>();
-    this->add_empty_transition(this);
+    // this->add_empty_transition(this);
 }
 #pragma endregion
 

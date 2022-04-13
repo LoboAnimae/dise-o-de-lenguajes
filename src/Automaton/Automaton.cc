@@ -1,5 +1,6 @@
 #include "Automaton/Automaton.h"
 #include <string>
+#include <stdexcept>
 using namespace Automaton;
 
 NFA::NFA::NFA()
@@ -71,7 +72,7 @@ bool NFA::is_operator(char c)
 //     }
 // }
 
-State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State::Graph *current)
+State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State::Graph *graph_root)
 {
     if (root == NULL)
     {
@@ -113,28 +114,124 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
          */
 
             // Get the left and right graphs
-            State::Transition_Pointers *left = from(root->get_left(), id_counter, current);
-            State::Transition_Pointers *right = from(root->get_right(), id_counter, current);
+            State::Transition_Pointers *left = from(root->get_left(), id_counter, graph_root);
+            State::Transition_Pointers *right = from(root->get_right(), id_counter, graph_root);
 
-            if (current != NULL)
-            {
-                current->add_empty_transition(left->beginning);
-            }
             left->end->add_empty_transition(right->beginning);
-            current = right->end;
+            graph_root = left->beginning;
             return new State::Transition_Pointers{left->beginning, right->end};
         }
         break;
         case '|':
+        {
+            /*
+            An or operator will always have left and right children to work on. Even if it is a null state.
+            Because of this, anything beforehand must ensure that the | operator has a left and right child.
 
-            // return Or(root, id_counter);
-            return NULL;
+            Given:
+                A | B where A is a graph for a and B is a graph for b
+
+            Then:
+                         A
+                         a
+                  e  o ----> o
+                   /          \ e  e
+            ----> o      |     o ---->
+                  \          / e
+                 e  o ----> o
+                        b
+                        B
+            */
+            State::Graph *beginning = new State::Graph((*id_counter)++);
+
+            State::Transition_Pointers *left = from(root->get_left(), id_counter, graph_root);
+
+            State::Transition_Pointers *right = from(root->get_right(), id_counter, graph_root);
+
+            State::Graph *end = new State::Graph((*id_counter)++);
+
+            beginning->add_empty_transition(left->beginning);
+            beginning->add_empty_transition(right->beginning);
+
+            left->end->add_empty_transition(end);
+            right->end->add_empty_transition(end);
+
+            graph_root = left->beginning;
+            return new State::Transition_Pointers{beginning, end};
+        }
         case '*':
-            // return Kleene(root, id_counter);
-            return NULL;
+        {
+            /*
+            A kleene operator will always have a left child to work on. It does not have a right child.
+
+            Given:
+                A* where A is a graph for a
+
+            Then:
+                             A
+                      e      a       e
+            ----> o ----> o ----> o ----> o ---->
+                  \                      /
+                   ----------------------
+                              e
+            */
+
+            if (root->get_left() == NULL || root->get_right() != NULL)
+            {
+                throw std::runtime_error("There seems to be a problem with the kleene operator.");
+            }
+            State::Graph *beginning = new State::Graph((*id_counter)++);
+            State::Transition_Pointers *middle = from(root->get_left(), id_counter, graph_root);
+            State::Graph *end = new State::Graph((*id_counter)++);
+
+            // From the beginning to the middle
+            beginning->add_empty_transition(middle->beginning);
+            // From the middle to the end
+            middle->end->add_empty_transition(end);
+
+            // From the beginning to the end
+            beginning->add_empty_transition(end);
+            // From the end to the beginning
+            end->add_empty_transition(beginning);
+            return new State::Transition_Pointers{beginning, end};
+        }
         case '+':
-            // return Positive(root, id_counter);
-            return NULL;
+        {
+            /*
+            A positive operator will always have a left child to work on. It does not have a right child.
+            It is like a kleene operator, but it needs to appear at least once, so it's like a concatenation and a kleene operator.
+
+            Given:
+                A* where A is a graph for a
+
+            Then:
+                             A
+                      e      a       e
+            ----> o ----> o ----> o ----> o ---->
+                  \                      /
+                   ----------------------
+                              e
+            */
+
+            if (root->get_left() == NULL || root->get_right() != NULL)
+            {
+                throw std::runtime_error("There seems to be a problem with the kleene operator.");
+            }
+            State::Graph *beginning = new State::Graph((*id_counter)++);
+            State::Transition_Pointers *middle = from(root->get_left(), id_counter, graph_root);
+            State::Graph *end = new State::Graph((*id_counter)++);
+
+            // From the beginning to the middle
+            beginning->add_empty_transition(middle->beginning);
+            // From the middle to the end
+            middle->end->add_empty_transition(end);
+
+            // From the beginning to the end
+            beginning->add_empty_transition(end);
+            // From the end to the beginning
+            end->add_empty_transition(beginning);
+            return new State::Transition_Pointers{beginning, end};
+        }
         case '?':
             // return Question(root, id_counter);
             return NULL;
