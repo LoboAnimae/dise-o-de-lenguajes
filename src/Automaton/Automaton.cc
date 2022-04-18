@@ -27,50 +27,10 @@ bool NFA::is_operator(char c)
     return c == '|' || c == '.' || c == '*' || c == '+' || c == '?';
 }
 
-// State::Transition_Pointers *NFA::Or(State::Tree *root, State::Graph *into)
-// {
-//     State::Graph *a = NULL;
-//     State::Graph *b = NULL;
-//     State::Graph *c = NULL;
-//     State::Graph *d = NULL;
-
-//     State::Graph *previous = GenericState(into);
-
-//     State::Tree *left = root->get_left();
-//     State::Tree *right = root->get_right();
-
-//     State::Transition_Pointers *transitions;
-//     if (Automaton)
-//     {
-//         transitions = is_operator(left->content) ? parse(left, into) : Ambiguous(left)
-//     }
-//     else
-//     {
-//     }
-// }
-// State::Transition_Pointers *NFA::Kleene(State::Tree *root, State::Graph *into) {}
-// State::Transition_Pointers *NFA::Positive(State::Tree *root, State::Graph *into) {}
-// State::Transition_Pointers *NFA::Question(State::Tree *root, State::Graph *into) {}
-// State::Transition_Pointers *NFA::Concatenation(State::Tree *root, State::Graph *into) {}
-// State::Graph *NFA::GenericState(State::Graph *root) {}
-// State::Transition_Pointers *NFA::parse(State::Tree *root, State::Graph *into)
-// {
-//     switch (root->get_value())
-//     {
-//     case '.':
-//         return Concatenation(root, into);
-//     case '|':
-//         return Or(root, into);
-//     case '*':
-//         return Kleene(root, into);
-//     case '+':
-//         return Positive(root, into);
-//     case '?':
-//         return Question(root, into);
-//     default:
-//         return Ambiguous(root);
-//     }
-// }
+bool DFA::is_operator(char c)
+{
+    return c == '|' || c == '.' || c == '*' || c == '+' || c == '?';
+}
 
 State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State::Graph *graph_root)
 {
@@ -294,11 +254,35 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
     }
 }
 
-bool NFA::NFA::test(std::string with)
+bool DFA::DFA::test(std::string with)
 {
     if (!this->has_regex)
     {
         return false;
     }
     return true;
+}
+
+DFA::DFA::DFA()
+{
+    this->has_regex = false;
+    this->regex = "";
+}
+
+State::Transition_Pointers *DFA::from(State::Tree *root, int *id_counter, State::Graph *current)
+{
+    // if (root == NULL)
+    // {
+    //     return NULL;
+    // }
+
+    // if (id_counter == NULL)
+    // {
+    //     id_counter = new int(0);
+    // }
+
+    // char value = root->content;
+
+    // if (is_operator)
+    return NULL;
 }

@@ -48,12 +48,12 @@ namespace Automaton
             NFA(std::string with);
             NFA(State::Tree *syntax_tree);
             ~NFA();
-            bool test(std::string with);
         };
     }
 
     namespace DFA
     {
+        bool is_operator(char c);
 
         /**
          * @brief Recursively creates a new DFA from an NFA
@@ -63,8 +63,17 @@ namespace Automaton
          * @param current The current state that the NFA is being built from
          * @return State::Transition_Pointers*
          */
-        State::Transition_Pointers *from(State::Graph *beginning, int *id_counter, State::Graph *current);
+        State::Transition_Pointers *from(State::Graph *nfa_current_root, int *id_counter, State::Graph *current);
 
+        /**
+         * @brief Creates a DFA from a Syntax Tree (Direct Method)
+         *
+         * @param root The root of the syntax tree to be worked on
+         * @param id_counter A counter that can be used to instantiate new states
+         * @param current The current state that the DFA is being built from
+         * @return State::Transition_Pointers*
+         */
+        State::Transition_Pointers *from(State::Tree *root, int *id_counter, State::Graph *current);
         /**
          * @brief Deterministic Finite Automaton
          *
@@ -79,14 +88,14 @@ namespace Automaton
         public:
             DFA();
             DFA(NFA::NFA *from);
-            DFA(std::string with);
-            DFA(State::Tree *from);
+            // TODO: Implement this later
+            // DFA(std::string with);
+
+            // TODO: Implement this later
+            // DFA(State::Tree *from);
             ~DFA();
             bool test(std::string with);
         };
-
-        DFA *from(std::string regex);
-        DFA *from(State::Tree *syntax_tree);
     }
 }
 

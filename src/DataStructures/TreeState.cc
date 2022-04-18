@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "DataStructures/JSON.h"
+#include "Constants/NULLSTATE.h"
 
 State::Tree::Tree(int id, char content)
 {
@@ -68,6 +69,72 @@ State::Tree::Tree()
     this->state_id = 0;
 }
 
+void State::Tree::set_tree_node_id(int new_id)
+{
+    this->tree_builder_id = new_id;
+}
+
+void State::Syntax_Tree::assign_ids(Tree *root, int *id_counter, bool nullable)
+{
+    if (id_counter == NULL)
+    {
+        id_counter = new int(0);
+    }
+    if (root == NULL)
+    {
+        return;
+    }
+    assign_ids(root->get_left(), id_counter, nullable);
+    assign_ids(root->get_right(), id_counter, nullable);
+    char value = root->content;
+    if (value == NULL_STATE.at(0) || value == '*' || nullable)
+    {
+        root->set_nullable(true);
+    }
+    else if (value == '|')
+    {
+        bool left = root->get_left()->is_nullable,
+             right = root->get_right()->is_nullable;
+        root->set_nullable(left || right);
+    }
+    else if (value == '.')
+    {
+        bool left = root->get_left()->is_nullable,
+             right = root->get_right()->is_nullable;
+        root->set_nullable(left && right);
+    }
+    root->set_tree_node_id((*id_counter)++);
+}
+
+void State::Syntax_Tree::clean(Tree *root, Tree *parent, char side)
+{
+    if (root == NULL)
+        return;
+    clean(root->get_left(), root, 'l');
+    clean(root->get_right(), root, 'r');
+
+    if (root->content == '(')
+    {
+        if (side == 'l')
+        {
+            parent->set_left(root->get_left());
+        }
+        else if (side == 'r')
+        {
+            parent->set_right(root->get_left());
+        }
+        else
+        {
+            throw std::runtime_error("Error: Can't figure out where to put new clean tree");
+        }
+    }
+}
+
+void State::Tree::set_nullable(bool new_state)
+{
+    this->is_nullable = new_state;
+}
+
 /**
  * @brief Looks for the first parenthesis in the regex and returns whatever is contained in it.
  *
@@ -110,6 +177,10 @@ parenthesis_pair *get_subgroup(std::string regex, int from)
  */
 State::Tree *State::Syntax_Tree::from(std::string regex, int *id_counter)
 {
+    if (id_counter == NULL)
+    {
+        id_counter = new int(0);
+    }
     State::Tree *parent = NULL;
     // If the regex is empty, return NULL
     if (regex.empty())

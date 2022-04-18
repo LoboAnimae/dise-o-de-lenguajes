@@ -13,6 +13,7 @@ namespace State
          * @brief A unique number ID to identify the state.
          */
         int state_id;
+
         /**
          * @brief Checks if the state is a final state.
          *
@@ -91,6 +92,9 @@ namespace State
     {
     public:
         char content;
+        int tree_builder_id = -1;
+        bool is_nullable = false;
+
         Tree();
         Tree(int id, char content);
         Tree(int id, char content, Tree *left);
@@ -108,7 +112,8 @@ namespace State
 
         void set_left(Tree *left);
         void set_right(Tree *right);
-
+        void set_tree_node_id(int new_id);
+        void set_nullable(bool new_bool);
         Tree *get_left();
         Tree *get_right();
         ~Tree();
@@ -118,6 +123,8 @@ namespace State
     {
         Tree *from(std::string regex, int *id_counter);
         std::string to_augmented_expression(std::string regex);
+        void assign_ids(Tree *root, int *id_counter, bool nullable);
+        void clean(Tree *root, Tree *parent, char side);
     }
 }
 

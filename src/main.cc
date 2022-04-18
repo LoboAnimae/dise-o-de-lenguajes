@@ -43,7 +43,7 @@ int execute()
     bool is_actively_testing = true;
     // Allocate the automaton in the stack
     int option;
-    std::string regex = "a*";
+    std::string regex = "(a|b)*abb";
     // std::string regex = "ba(a|b)*ab";
     // std::string regex = "";
     clear();
@@ -72,8 +72,9 @@ int execute()
     //     }
     // }
     std::string augmented = regex.length() == 1 ? regex + ".#" : State::Syntax_Tree::to_augmented_expression(regex);
-    int id_counter = 0;
-    State::Tree *syntax_tree = State::Syntax_Tree::from(augmented, &id_counter);
+    State::Tree *syntax_tree = State::Syntax_Tree::from(augmented, NULL);
+    State::Syntax_Tree::clean(syntax_tree, NULL, 'l');
+    State::Syntax_Tree::assign_ids(syntax_tree, NULL, false);
     // Now that the tree is done, generate the JSON data for a python program to read
     JSON::JSON<JSON::binary_tree *> json_tree = JSON::JSON<JSON::binary_tree *>();
 
