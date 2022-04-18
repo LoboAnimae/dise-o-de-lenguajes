@@ -54,6 +54,17 @@ namespace Automaton
 
     namespace DFA
     {
+
+        /**
+         * @brief Recursively creates a new DFA from an NFA
+         *
+         * @param root The beginning of a graph of NFA.
+         * @param id_counter An id counter that can be used to instantiate new states
+         * @param current The current state that the NFA is being built from
+         * @return State::Transition_Pointers*
+         */
+        State::Transition_Pointers *from(State::Graph *beginning, int *id_counter, State::Graph *current);
+
         /**
          * @brief Deterministic Finite Automaton
          *

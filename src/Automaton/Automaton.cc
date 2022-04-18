@@ -156,7 +156,7 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
             left->end->add_empty_transition(end);
             right->end->add_empty_transition(end);
 
-            graph_root = left->beginning;
+            graph_root = beginning;
             return new State::Transition_Pointers{beginning, end};
         }
         case '*':
@@ -167,13 +167,13 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
             Given:
                 A* where A is a graph for a
 
-            Then:
-                             A
-                      e      a       e
+            Then:            <-e
+                    ---------------------
+                   /  e      a       e    \
             ----> o ----> o ----> o ----> o ---->
                   \                      /
                    ----------------------
-                              e
+                              e->
             */
 
             if (root->get_left() == NULL || root->get_right() != NULL)
@@ -193,6 +193,7 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
             beginning->add_empty_transition(end);
             // From the end to the beginning
             end->add_empty_transition(beginning);
+            graph_root = beginning;
             return new State::Transition_Pointers{beginning, end};
         }
         case '+':
@@ -204,19 +205,57 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
             Given:
                 A* where A is a graph for a
 
-            Then:
-                             A
-                      e      a       e
-            ----> o ----> o ----> o ----> o ---->
-                  \                      /
-                   ----------------------
-                              e
+            Then:                                    <-e
+                                            ---------------------
+                     e       a       e    /  e      a       e    \
+            ----> o ----> o ----> o ----> o ----> o ----> o ----> o ---->
+                                           \                      /
+                                            ----------------------
+                                                    e->
             */
 
             if (root->get_left() == NULL || root->get_right() != NULL)
             {
-                throw std::runtime_error("There seems to be a problem with the kleene operator.");
+                throw std::runtime_error("There seems to be a problem with the positive operator.");
             }
+
+            State::Graph *beginning = new State::Graph((*id_counter)++);
+            State::Tree *forced = new State::Tree((*id_counter)++, '.');
+            // This is forced, because nothing has been applied yet
+            State::Transition_Pointers *middle_forced = from(root->get_left(), id_counter, graph_root);
+            // This is also forced, so it will have to be concatenated with a null state
+            State::Transition_Pointers *middle_optional = from(root->get_left(), id_counter, graph_root);
+            State::Graph *end = new State::Graph((*id_counter)++);
+
+            // From the beginning to the middle
+            beginning->add_empty_transition(middle_forced->beginning);
+            // From the middle to the end
+            middle_forced->end->add_empty_transition(middle_optional->beginning);
+            // From the middle_optional to the end
+            middle_optional->end->add_empty_transition(end);
+            // From the end to the beginning
+            end->add_empty_transition(middle_forced->end);
+            middle_forced->end->add_empty_transition(end);
+            graph_root = beginning;
+            return new State::Transition_Pointers{beginning, end};
+        }
+        case '?':
+        {
+            /*
+             Like the kleene operator, but it does not repeat "as many times as possible". Rather, it is like a "can come or not"
+
+             Given:
+                 A* where A is a graph for a
+
+             Then:
+                              A
+                       e      a       e
+             ----> o ----> o ----> o ----> o ---->
+                   \                      /
+                    ----------------------
+                               e->
+         */
+
             State::Graph *beginning = new State::Graph((*id_counter)++);
             State::Transition_Pointers *middle = from(root->get_left(), id_counter, graph_root);
             State::Graph *end = new State::Graph((*id_counter)++);
@@ -225,19 +264,13 @@ State::Transition_Pointers *NFA::from(State::Tree *root, int *id_counter, State:
             beginning->add_empty_transition(middle->beginning);
             // From the middle to the end
             middle->end->add_empty_transition(end);
-
-            // From the beginning to the end
-            beginning->add_empty_transition(end);
             // From the end to the beginning
-            end->add_empty_transition(beginning);
+            beginning->add_empty_transition(end);
+            graph_root = beginning;
             return new State::Transition_Pointers{beginning, end};
         }
-        case '?':
-            // return Question(root, id_counter);
-            return NULL;
         default:
-            // return Ambiguous(root, id_counter);
-            return NULL;
+            throw std::runtime_error("Unimplemented operator.");
         }
     }
     // If not, then it will be a content that can be simplified into a single state and returned

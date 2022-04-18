@@ -94,6 +94,15 @@ namespace JSON
             JSON::from(root->get_left());
             JSON::from(root->get_right());
         }
+
+        inline void from(State::Transition_Pointers *pointers)
+        {
+            if (pointers == NULL)
+            {
+                return;
+            }
+            return;
+        }
     };
 
 };

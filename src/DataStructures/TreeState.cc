@@ -190,7 +190,9 @@ State::Tree *State::Syntax_Tree::from(std::string regex, int *id_counter)
             }
             else
             {
-                throw std::runtime_error("BUG! The parent of an operator has more than two children!");
+                State::Tree *temp = parent;
+                parent = new State::Tree(++*id_counter, current);
+                parent->set_left(temp);
             }
         }
         // Concatenation
