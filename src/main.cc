@@ -74,7 +74,7 @@ int execute()
     std::string augmented = regex.length() == 1 ? regex + ".#" : State::Syntax_Tree::to_augmented_expression(regex);
     State::Tree *syntax_tree = State::Syntax_Tree::from(augmented, NULL);
     State::Syntax_Tree::clean(syntax_tree, NULL, 'l');
-    State::Syntax_Tree::assign_ids(syntax_tree, NULL, false);
+    State::Syntax_Tree::calculate_dfa_inputs(syntax_tree, NULL, false);
     // Now that the tree is done, generate the JSON data for a python program to read
     JSON::JSON<JSON::binary_tree *> json_tree = JSON::JSON<JSON::binary_tree *>();
 

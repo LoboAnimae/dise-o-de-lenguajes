@@ -95,6 +95,9 @@ namespace State
         int tree_builder_id = -1;
         bool is_nullable = false;
 
+        std::vector<int> first_position = {};
+        std::vector<int> last_position = {};
+
         Tree();
         Tree(int id, char content);
         Tree(int id, char content, Tree *left);
@@ -123,7 +126,7 @@ namespace State
     {
         Tree *from(std::string regex, int *id_counter);
         std::string to_augmented_expression(std::string regex);
-        void assign_ids(Tree *root, int *id_counter, bool nullable);
+        void calculate_dfa_inputs(Tree *root, int *id_counter, bool nullable);
         void clean(Tree *root, Tree *parent, char side);
     }
 }

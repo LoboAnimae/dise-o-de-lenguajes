@@ -4,6 +4,7 @@
 #include <string>
 #include "DataStructures/JSON.h"
 #include "Constants/NULLSTATE.h"
+#include "algorithm"
 
 State::Tree::Tree(int id, char content)
 {
@@ -74,36 +75,183 @@ void State::Tree::set_tree_node_id(int new_id)
     this->tree_builder_id = new_id;
 }
 
-void State::Syntax_Tree::assign_ids(Tree *root, int *id_counter, bool nullable)
+bool exists_in_vector(std::vector<int> source, int to_find)
 {
+    for (int value : source)
+    {
+        if (value == to_find)
+            return true;
+    }
+    return false;
+}
+
+void State::Syntax_Tree::calculate_dfa_inputs(Tree *root, int *id_counter, bool nullable)
+{
+    bool already_incremented = false;
+    bool is_operator = true;
     if (id_counter == NULL)
     {
-        id_counter = new int(0);
+        id_counter = new int(1);
     }
     if (root == NULL)
     {
         return;
     }
-    assign_ids(root->get_left(), id_counter, nullable);
-    assign_ids(root->get_right(), id_counter, nullable);
-    char value = root->content;
-    if (value == NULL_STATE.at(0) || value == '*' || nullable)
+    calculate_dfa_inputs(root->get_left(), id_counter, nullable);
+    calculate_dfa_inputs(root->get_right(), id_counter, nullable);
+    char current_char = root->content;
+
+    /**
+     * Type         |   Nullable                                |   firstPos                                                    |   lastPos
+     * ____________________________________________________________________________________________________________________________________________________________________________________
+     * NULL_STATE   |   true                                    |   {}                                                          |   {}
+     * ____________________________________________________________________________________________________________________________________________________________________________________
+     *    i         |   false                                   |   {i}                                                         |   {i}
+     * ____________________________________________________________________________________________________________________________________________________________________________________
+     *   c1|c2      |   Nullable(c1) || Nullable(c2)            |   firstPost(c1) U firstPos(c2)                                |   lastPos(c1) U lastPos(c2)
+     * ____________________________________________________________________________________________________________________________________________________________________________________
+     *   c1.c2      |   Nullable(c1) && Nullable(c2)            |   Nullable(c1) ? firstPos(c1) U firstPos(c2) : firstPos(c1)   |   Nullable(c2) ? lastPos(c1) U lastPos(c2) : lastPos(c2)
+     * ____________________________________________________________________________________________________________________________________________________________________________________
+     *    c1*       |   true                                    |   firstPos(c1)                                                |   lastPos(c1)
+     *
+     */
+
+#pragma region NULL_STATE
+    if (current_char == NULL_STATE.at(0))
     {
         root->set_nullable(true);
+        is_operator = false;
     }
-    else if (value == '|')
+#pragma endregion
+#pragma region c1 | c2
+    else if (current_char == '|')
     {
+#pragma region Nullable
         bool left = root->get_left()->is_nullable,
              right = root->get_right()->is_nullable;
+
         root->set_nullable(left || right);
+#pragma endregion
+
+#pragma region firstPos
+        for (int value : root->get_left()->first_position)
+        {
+            root->first_position.push_back(value);
+        }
+
+        for (int value : root->get_right()->first_position)
+        {
+            if (exists_in_vector(root->first_position, value))
+                continue;
+            root->first_position.push_back(value);
+        }
+#pragma endregion
+
+#pragma region lastPos
+        for (int value : root->get_left()->last_position)
+        {
+            root->last_position.push_back(value);
+        }
+
+        for (int value : root->get_right()->last_position)
+        {
+            if (exists_in_vector(root->last_position, value))
+                continue;
+            root->last_position.push_back(value);
+        }
+#pragma endregion
     }
-    else if (value == '.')
+#pragma endregion
+#pragma region c1.c2
+    else if (current_char == '.')
     {
+#pragma region Nullable
         bool left = root->get_left()->is_nullable,
              right = root->get_right()->is_nullable;
+
         root->set_nullable(left && right);
+#pragma endregion
+#pragma region firstPos
+        if (root->get_left()->is_nullable)
+        {
+            for (int value : root->get_left()->first_position)
+            {
+                root->first_position.push_back(value);
+            }
+
+            for (int value : root->get_right()->first_position)
+            {
+                if (exists_in_vector(root->first_position, value))
+                    continue;
+                root->first_position.push_back(value);
+            }
+        }
+        else
+        {
+            for (int value : root->get_left()->first_position)
+            {
+                root->first_position.push_back(value);
+            }
+        }
+#pragma endregion
+#pragma region lastPos
+        if (root->get_right()->is_nullable)
+        {
+            for (int value : root->get_left()->last_position)
+            {
+                root->last_position.push_back(value);
+            }
+
+            for (int value : root->get_right()->last_position)
+            {
+                if (exists_in_vector(root->last_position, value))
+                    continue;
+                root->last_position.push_back(value);
+            }
+        }
+        else
+        {
+            for (int value : root->get_right()->last_position)
+            {
+                root->last_position.push_back(value);
+            }
+        }
+#pragma endregion
     }
-    root->set_tree_node_id((*id_counter)++);
+#pragma endregion
+#pragma region c1 *
+    else if (current_char == '*')
+    {
+#pragma region Nullable
+        root->set_nullable(true);
+#pragma endregion
+#pragma region firstPos
+        root->first_position = root->get_left()->first_position;
+#pragma endregion
+#pragma region lastPos
+        root->last_position = root->get_left()->last_position;
+#pragma endregion
+    }
+#pragma endregion
+#pragma region i
+    else
+    {
+#pragma region Nullable
+// Defaults are already set as false
+#pragma endregion
+#pragma region firstPos
+        root->set_tree_node_id((*id_counter)++);
+        already_incremented = true;
+        root->first_position.push_back((root->tree_builder_id));
+#pragma endregion
+#pragma region lastPos
+        root->last_position.push_back(root->tree_builder_id);
+#pragma endregion
+        is_operator = false;
+    }
+#pragma endregion
+    if (!(already_incremented || is_operator))
+        root->set_tree_node_id((*id_counter)++);
 }
 
 void State::Syntax_Tree::clean(Tree *root, Tree *parent, char side)
