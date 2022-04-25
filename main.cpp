@@ -28,34 +28,35 @@ int execute() {
     // Allocate the automaton in the stack
     std::string tempOption;
     int option;
-//    std::string regex = "(a|b)*abb";
+    std::string regex = "(a|b)*abb";
     // std::string regex = "ba(a|b)*ab";
-     std::string regex = "";
+//     std::string regex = "ab";
+//     std::string regex = "";
     Console::Screen::clear();
-     std::cout << "To start, please input an initial m_regex:\n >>> ";
-     while (true)
-     {
-         try
-         {
-             std::getline(std::cin, regex);
-             bool is_valid = Operator::Operator::validate(regex),
-                  is_grouping = Operator::Operator::groupingValidation(regex);
-             while (!(is_valid && is_grouping))
-             {
-                 std::cout << "Please input a valid regex:\n >>> ";
-                 std::getline(std::cin, regex);
-                 is_valid = Operator::Operator::validate(regex);
-                 is_grouping = Operator::Operator::groupingValidation(regex);
-             }
-             break;
-         }
-         catch (std::exception &e)
-         {
-             std::cout << e.what() << std::endl;
-             std::cout << "Please input a valid m_regex:\n >>> ";
-             continue;
-         }
-     }
+//     std::cout << "To start, please input an initial m_regex:\n >>> ";
+//     while (true)
+//     {
+//         try
+//         {
+//             std::getline(std::cin, regex);
+//             bool is_valid = Operator::Operator::validate(regex),
+//                  is_grouping = Operator::Operator::groupingValidation(regex);
+//             while (!(is_valid && is_grouping))
+//             {
+//                 std::cout << "Please input a valid regex:\n >>> ";
+//                 std::getline(std::cin, regex);
+//                 is_valid = Operator::Operator::validate(regex);
+//                 is_grouping = Operator::Operator::groupingValidation(regex);
+//             }
+//             break;
+//         }
+//         catch (std::exception &e)
+//         {
+//             std::cout << e.what() << std::endl;
+//             std::cout << "Please input a valid m_regex:\n >>> ";
+//             continue;
+//         }
+//     }
     auto augmented = regex.length() == 1 ? regex + ".#" : Regex::Manipulators::augment(regex);
     auto *syntax_tree = State::TreeNode::from(augmented, nullptr);
 //    State::Syntax_Tree::clean(syntax_tree, NULL, 'l');
@@ -74,7 +75,7 @@ int execute() {
 //    auto json_nfa = Structures::JSON::from(nfa);
     // json_nfa.from(nfa->m_beginning);
 
-    // State::TransitionPointers *dfa = Automaton::DFA::from(nfa);
+//     State::TransitionPointers *dfa = Automaton::DFA::from(nfa);
 
     // Automaton afn = Automaton(m_regex);
     // DeterministicAutomaton afd = DeterministicAutomaton(m_regex);

@@ -3,6 +3,7 @@
 //
 
 #include "NFA.hpp"
+#include "File.hpp"
 
 namespace Automaton
 {
@@ -38,20 +39,29 @@ namespace Automaton
            A.B where A is a graph for a and B is a graph for b
 
           Then:
-                     e       a      e
-           ----> o ----> o ----> o ----> o ---->
-                         A                                  e        a       e      e       e       b        e
-                         .                       = ----> o ----> o ----> o ----> o ----> o ----> o ----> o ----> o ---->
+                         a
+			         o ----> o
+                         A                         a        b
+                         .             =        o ----> o ----> o
                          B
-                     e       b      e
-           ----> o ----> o ----> o ----> o ---->
+                         b
+           		      o ---->
          */
 
 				// Get the left and right graphs
 				State::TransitionPointers* left = from(t_root->getLeft(), t_idCounter);
 				State::TransitionPointers* right = from(t_root->getRight(), t_idCounter);
 
-				left->end->addEmptyTransition(right->beginning);
+				// Expect the end of left to have no outgoing transitions.
+				for (auto transition : right->beginning->m_transitionsTo)
+				{
+					left->end->addTransition(transition);
+				}
+
+				delete right->beginning;
+				// Make the beginning of the right, the end of the left
+				right->beginning = left->end;
+
 				return new State::TransitionPointers{ left->beginning, right->end };
 			}
 				break;
@@ -99,32 +109,29 @@ namespace Automaton
 				Given:
 					A* where A is a graph for a
 
-				Then:            <-e
-						---------------------
-					   /  e      a       e    \
+				Then:           <-e
+						        -----
+				          e    /  a  \    e
 				----> o ----> o ----> o ----> o ---->
-					  \                      /
+				      \                      /
 					   ----------------------
-								  e->
+						         e->
 				*/
 
 				if (t_root->getLeft() == nullptr || t_root->getRight() != nullptr)
 				{
 					throw std::runtime_error("There seems to be a problem with the kleene operator.");
 				}
+
 				auto* beginning = new State::GraphNode(t_idCounter);
+
+
 				State::TransitionPointers* middle = from(t_root->getLeft(), t_idCounter);
 				auto* end = new State::GraphNode(t_idCounter);
-
-				// From the beginning to the middle
-				beginning->addEmptyTransition(middle->beginning);
-				// From the middle to the end
-				middle->end->addEmptyTransition(end);
-
-				// From the beginning to the end
 				beginning->addEmptyTransition(end);
-				// From the end to the beginning
-				end->addEmptyTransition(beginning);
+				beginning->addEmptyTransition(middle->beginning);
+				middle->end->addEmptyTransition(end);
+				middle->end->addEmptyTransition(middle->beginning);
 				return new State::TransitionPointers{ beginning, end };
 			}
 			case '+':
@@ -136,13 +143,13 @@ namespace Automaton
 				Given:
 					A* where A is a graph for a
 
-				Then:                                    <-e
-												---------------------
-						 e       a       e    /  e      a       e    \
-				----> o ----> o ----> o ----> o ----> o ----> o ----> o ---->
-											   \                      /
-												----------------------
-														e->
+				Then:              <-e
+				                  -----
+                    a            /  a  \
+				o ----> o ----> o ----> o ----> o ---->
+						 \                      /
+						  ----------------------
+									e->
 				*/
 
 				if (t_root->getLeft() == nullptr || t_root->getRight() != nullptr)
@@ -150,23 +157,19 @@ namespace Automaton
 					throw std::runtime_error("There seems to be a problem with the positive operator.");
 				}
 
-				auto* beginning = new State::GraphNode(t_idCounter);
 				// This is forced, because nothing has been applied yet
-				State::TransitionPointers* middle_forced = from(t_root->getLeft(), t_idCounter);
+				State::TransitionPointers* middleForced = from(t_root->getLeft(), t_idCounter);
+				// The kleene start is middleForced->end
 				// This is also forced, so it will have to be concatenated with a null state
-				State::TransitionPointers* middle_optional = from(t_root->getLeft(), t_idCounter);
-				auto* end = new State::GraphNode(t_idCounter);
+				State::TransitionPointers* middleOptional = from(t_root->getLeft(), t_idCounter);
+				auto *kleeneEnd = new State::GraphNode(t_idCounter);
 
-				// From the beginning to the middle
-				beginning->addEmptyTransition(middle_forced->beginning);
-				// From the middle to the end
-				middle_forced->end->addEmptyTransition(middle_optional->beginning);
-				// From the middle_optional to the end
-				middle_optional->end->addEmptyTransition(end);
-				// From the end to the beginning
-				end->addEmptyTransition(middle_forced->end);
-				middle_forced->end->addEmptyTransition(end);
-				return new State::TransitionPointers{ beginning, end };
+				middleForced->end->addEmptyTransition(middleOptional->beginning);
+				middleOptional->end->addEmptyTransition(middleOptional->beginning);
+				middleOptional->end->addEmptyTransition(kleeneEnd);
+				middleForced->end->addEmptyTransition(kleeneEnd);
+
+				return new State::TransitionPointers{ middleForced->beginning, kleeneEnd };
 			}
 			case '?':
 			{
@@ -177,25 +180,19 @@ namespace Automaton
 					 A* where A is a graph for a
 
 				 Then:
-								  A
-						   e      a       e
-				 ----> o ----> o ----> o ----> o ---->
-					   \                      /
-						----------------------
-								   e->
+
+						   a
+				 ----> o ----> o ---->
+					   \       /
+						-------
+						   e->
+
+
 			 */
 
-				auto* beginning = new State::GraphNode(t_idCounter);
 				State::TransitionPointers* middle = from(t_root->getLeft(), t_idCounter);
-				auto* end = new State::GraphNode(t_idCounter);
-
-				// From the beginning to the middle
-				beginning->addEmptyTransition(middle->beginning);
-				// From the middle to the end
-				middle->end->addEmptyTransition(end);
-				// From the end to the beginning
-				beginning->addEmptyTransition(end);
-				return new State::TransitionPointers{ beginning, end };
+				middle->beginning->addEmptyTransition(middle->end);
+				return new State::TransitionPointers{ middle->beginning, middle->end };
 			}
 			default:
 				throw std::runtime_error("Unimplemented operator.");
@@ -206,27 +203,23 @@ namespace Automaton
 		{
 			/*
 
-					  e       a       e
-			----> o ----> o ----> o ----> o ---->
+					          a
+			  	    	  o ----> o
 
 			*/
 			auto* beginning = new State::GraphNode(t_idCounter);
-			auto* first = new State::GraphNode(t_idCounter);
-			auto* second = new State::GraphNode(t_idCounter);
 			auto* end = new State::GraphNode(t_idCounter);
 
-			beginning->addEmptyTransition(first);
-			first->addTransition(second, value);
-			if (value != '#') {
-			second->addEmptyTransition(end);
-			} else {
-				delete end;
-				second->setAcceptanceState(true);
-				return new State::TransitionPointers {beginning, second};
+			beginning->addTransition(end, value);
+			if (value == '#')
+			{
+				end->setAcceptanceState(true);
 			}
+
 			return new State::TransitionPointers{ beginning, end };
 		}
 	}
+
 	bool isOperator(char t_character)
 	{
 		return t_character == '|'
