@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="disenolenguajes" targetName="disenolenguajes" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Changed to node because of sorting implementations">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DFA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Testing/1_testing.atg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/default.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/production.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Automaton.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CConfiguration.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CFileSystem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CLogger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Console.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Constants.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/GraphNode.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Node.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Screen.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Structures.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Tree.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IConfiguration.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IFileSystem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/ILogger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/syntaxTree.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="28HH3Ef6IYmJy1fdUljKdMDvg5Q" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "cmake.loaded.for.project": "true",
+    "last_opened_file_path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "structure.view.defaults.are.configured": "true",
+    "ts.external.directory.path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/cpp" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="disenolenguajes" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="disenolenguajes" TARGET_NAME="disenolenguajes" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="disenolenguajes" RUN_TARGET_NAME="disenolenguajes">
+      <envs>
+        <env name="TERM" value="xterm-256color" />
+      </envs>
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="" />
+      <created>1650866389893</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1650866389893</updated>
+      <workItem from="1650866392442" duration="309000" />
+      <workItem from="1650897041912" duration="22354000" />
+      <workItem from="1650981339070" duration="25782000" />
+      <workItem from="1651021191254" duration="452000" />
+      <workItem from="1651066645463" duration="32000" />
+      <workItem from="1651087369726" duration="86000" />
+      <workItem from="1651087457850" duration="174000" />
+    </task>
+    <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
+      <created>1650866541666</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1650866541666</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Changed overall structure to follow better practices">
+      <created>1650866653046</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1650866653046</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixed NFA having to many Epsilon locks">
+      <created>1650922365742</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1650922365742</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Changed to node because of sorting implementations">
+      <created>1651087508790</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1651087508790</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Changed overall structure to follow better practices" />
+    <MESSAGE value="Fixed NFA having to many Epsilon locks" />
+    <MESSAGE value="Changed to node because of sorting implementations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed to node because of sorting implementations" />
+  </component>
+</project>
