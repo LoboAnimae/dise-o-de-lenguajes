@@ -11,7 +11,8 @@ import {
 } from './Constants';
 import {TreeNode} from './Tree';
 import {GraphNode} from './GraphNode';
-import {ParenthesisPair} from './Structures';
+import {BinaryTree, JSONProj, ParenthesisPair} from './Structures';
+import fs from 'fs';
 
 
 export class Operator {
@@ -115,14 +116,13 @@ export class Language {
 
 
     static getLanguage(regex: string): string[] {
-        const foundLanguage: string[] = [];
-
-        for (const char of regex) {
-            if (!(foundLanguage.includes(char) || Language.isOperator(char) || PARENTHESIS_ARRAY.includes(char))) {
-                foundLanguage.push(char);
-            }
-        }
-        return foundLanguage;
+        return [...new Set<string>(regex.split(''))].filter((character) => !(Language.isOperator(character) || PARENTHESIS_ARRAY.includes(character)))
+        // for (const char of regex) {
+        //     if (!(foundLanguage.includes(char) || Language.isOperator(char) || PARENTHESIS_ARRAY.includes(char))) {
+        //         foundLanguage.push(char);
+        //     }
+        // }
+        // return foundLanguage;
     }
 
     static validateRegex(regex: string): boolean {
@@ -270,10 +270,10 @@ export class Language {
             finalRegex = finalRegex.substring(0, leftPosition);
 
             if (currentChar === POSITIVE) {
-                finalRegex += regex.substring(leftPosition, rightPosition) || regex.charAt(leftPosition);
-                finalRegex += (regex.substring(leftPosition, rightPosition) || regex.charAt(leftPosition)) + '*';
+                finalRegex += regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition);
+                finalRegex += (regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)) + '*';
             } else if (currentChar === QUESTION) {
-                finalRegex += `(${NULL_STATE}|${regex.substring(leftPosition, rightPosition) || regex.charAt(leftPosition)})`;
+                finalRegex += `(${NULL_STATE}|${regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)})`;
             }
         }
         return finalRegex;
@@ -485,19 +485,18 @@ export interface TransitionTableRow {
 
 export class DFA {
 
-    private regex: string;
-    private readonly states: Node[];
+    private readonly dfa: GraphNode[];
+    public readonly regex: string;
 
-
-    static match(dfa: GraphNode[], toMatch: string) {
-        let current = dfa[0]; // Grab the initial state
+    match(toMatch: string) {
+        let current = this.dfa[0]; // Grab the initial state
 
         for (const letter of toMatch) {
-            const found = current.getTransitions().find((transition) => transition.using === letter);
-            if (!found) {
+            const found = current.getTransitions().filter((transition) => transition.using === letter);
+            if (!found.length) {
                 return false;
             }
-            current = found.to;
+            current = found[0].to;
         }
 
         return current.isAcceptance();
@@ -513,10 +512,13 @@ export class DFA {
         // Create as many nodes as there are transitions and hold them inside a vector
 
         const acceptanceStates = DFA.getAcceptanceStates(followPosTable).map(row => row.state);
-        const dfaStates: GraphNode[] = transitionTable.map(row => new GraphNode({
-            id: parseInt(row.state.split('')[1]!),
-            acceptance: JSON.parse(row.positions).some((element: number) => acceptanceStates.includes(element)),
-        }));
+        const dfaStates: GraphNode[] = transitionTable.map(row => {
+            const id = row.state.substring(1);
+            return new GraphNode({
+                id: parseInt(id),
+                acceptance: JSON.parse(row.positions).some((element: number) => acceptanceStates.includes(element)),
+            });
+        });
 
         // For each node
         for (const node of dfaStates) {
@@ -525,7 +527,7 @@ export class DFA {
             // For each transition in the equivalent
             for (const transition of equivalent.transitions) {
                 const {goesTo, using} = transition;
-                const [_, nodeId] = goesTo.split('');
+                const nodeId = goesTo.substring(1);
 
                 // Find the equivalent
                 const transitionEquivalentNode = dfaStates.find(node => node.getId() === parseInt(nodeId))!;
@@ -586,12 +588,12 @@ export class DFA {
                 const merged = [...new Set<number>(foundRows.flatMap(row => [...row.positions]))];
                 merged.sort((a, b) => a - b);
                 const toCompare = JSON.stringify(merged);
-                const existing = transitionsTable.filter(row => row.positions === toCompare);
+                const existing = transitionsTable.find(row => row.positions === toCompare);
 
                 // If it exists, add the transition to the row
-                if (existing.length) {
+                if (existing) {
                     row.transitions.push({
-                        goesTo: existing[0].state,
+                        goesTo: existing.state,
                         using: alphabetMember,
                     });
                 } else {
@@ -604,6 +606,7 @@ export class DFA {
                             transitions: [],
                         },
                     );
+
                     const table = transitionsTable.at(newLength - 1)!;
 
                     row.transitions.push({
@@ -667,22 +670,33 @@ export class DFA {
         return nextPositionsTables;
     }
 
-    constructor() {
-        this.regex = '';
-        this.states = [];
+    static generate(regex: string) {
+        const alphabet: string[] = Language.getLanguage(regex);
+        const augmented: string = regex.length === 1 ? `${regex}.#` : Language.augment(regex);
+        const syntaxTree: TreeNode = TreeNode.from(augmented)!;
+
+        const saveIn: BinaryTree[] = [];
+        JSONProj.from(syntaxTree, saveIn);
+        fs.writeFile(regex + '_syntaxTree.json', JSON.stringify(saveIn), () => {
+        });
+
+        // const nfa = NFA.from(syntaxTree);
+        const next = DFA.generateNextPositionTable(syntaxTree)!;
+        next.sort((a, b) => a.state - b.state);
+        next.push({positions: new Set<number>(), state: next[next.length - 1].state + 1, content: ''});
+        DFA.fillNextPositionContent(syntaxTree, next);
+        next.sort((a, b) => a.state - b.state);
+        const transitionsTable = DFA.from(next, syntaxTree.getFirstPosition(), alphabet);
+        fs.writeFile(regex + '_DFA.json', JSON.stringify(transitionsTable), () => {
+        });
+        return new DFA(DFA.directly(transitionsTable, next), regex);
     }
 
-    setRegex = (regex: string) => {
+    constructor(dfa: GraphNode[], regex: string) {
+        this.dfa = dfa;
         this.regex = regex;
-    };
+    }
 
-    getRegex = () => this.regex;
-
-    getStates = () => this.states;
-
-    addState = (node: Node) => {
-        this.states.push(node);
-    };
 }
 
 export default {Language, Operator, NFA, DFA};
