@@ -11,7 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="">
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Just a backup...">
       <change afterPath="$PROJECT_DIR$/COMPILER_DFA.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/COMPILER_syntaxTree.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/END_DFA.json" afterDir="false" />
@@ -20,12 +20,10 @@
       <change afterPath="$PROJECT_DIR$/KEYWORDS_syntaxTree.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/TOKENS_DFA.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/TOKENS_syntaxTree.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DFA.json" beforeDir="false" afterPath="$PROJECT_DIR$/CHARACTERS_DFA.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Testing/1_testing.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/1_testing.atg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/Automaton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Automaton.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/syntaxTree.json" beforeDir="false" afterPath="$PROJECT_DIR$/CHARACTERS_syntaxTree.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +32,13 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -118,7 +123,7 @@
       <workItem from="1651066645463" duration="32000" />
       <workItem from="1651087369726" duration="86000" />
       <workItem from="1651087457850" duration="18222000" />
-      <workItem from="1651155878433" duration="4750000" />
+      <workItem from="1651155878433" duration="21823000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -155,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651087637079</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Just a backup...">
+      <created>1651174565886</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1651174565886</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,19 +189,20 @@
     <MESSAGE value="Changed overall structure to follow better practices" />
     <MESSAGE value="Fixed NFA having to many Epsilon locks" />
     <MESSAGE value="Changed to node because of sorting implementations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed to node because of sorting implementations" />
+    <MESSAGE value="Just a backup..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Just a backup..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>180</line>
+          <line>120</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>150</line>
+          <line>90</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -200,17 +213,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>136</line>
+          <line>76</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="83" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Server.ts</url>
+          <line>55</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="js.build_tools.npm">
-        <watch expression="current.getId()" language="TypeScript" />
-        <watch expression="found.to.getId()" language="TypeScript" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

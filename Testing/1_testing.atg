@@ -7,7 +7,7 @@ digito = "01".
 
 KEYWORDS
 
-if = "if".
+if                =             "if".
 
 TOKENS
 

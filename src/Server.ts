@@ -8,76 +8,15 @@ import fs from 'fs';
 import path from 'path';
 import {error} from 'winston';
 import {GraphNode} from './Controllers/GraphNode';
+import {CHARACTERS, COMPILER, CompilerHelper, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
 
 const NAME_FILE_TESTING = '../Testing/1_testing.atg';
 const DELIMITER = '.';
-
-const COMPILER = 'COMPILER';
-const CHARACTERS = 'CHARACTERS';
-const KEYWORDS = 'KEYWORDS';
-const TOKENS = 'TOKENS';
-const END = 'END';
-
-interface ICompilerHelperConstructorParams {
-    COMPILER?: string;
-    CHARACTERS?: string;
-    KEYWORDS?: string;
-    TOKENS?: string;
-    END?: string;
-}
-
-class CompilerHelper {
-    private readonly COMPILER: DFA;
-    private readonly CHARACTERS: DFA;
-    private readonly KEYWORDS: DFA;
-    private readonly TOKENS: DFA;
-    private readonly END: DFA;
-
-    constructor(params?: ICompilerHelperConstructorParams) {
-        this.COMPILER = DFA.generate(params?.COMPILER || COMPILER);
-        this.CHARACTERS = DFA.generate(params?.CHARACTERS || CHARACTERS);
-        this.KEYWORDS = DFA.generate(params?.KEYWORDS || KEYWORDS);
-        this.TOKENS = DFA.generate(params?.TOKENS || TOKENS);
-        this.END = DFA.generate(params?.END || END);
-    }
-
-    getCompiler = () => this.COMPILER;
-    getCharacters = () => this.CHARACTERS;
-    getKeywords = () => this.KEYWORDS;
-    getTokens = () => this.TOKENS;
-    getEnd = () => this.END;
-    getAll = () => {
-        return [this.COMPILER, this.CHARACTERS, this.KEYWORDS, this.TOKENS, this.END];
-    };
-
-
-}
-
-const COMPILER_KEYWORDS = [COMPILER, CHARACTERS, KEYWORDS, TOKENS, END];
 
 
 async function main() {
     while (await execute()) {
     }
-}
-
-
-function sanitize(str: string): string {
-    if (!str.includes('=')) {
-        return str;
-    }
-    const strArr: string[] = [];
-
-    const words = str.split('');
-    let sanitized = '';
-    for (const letter of words) {
-        if (letter === ' ') {
-        } else {
-            strArr.push(letter);
-        }
-    }
-    return strArr.join('');
-
 }
 
 async function execute(): Promise<boolean> {
@@ -87,12 +26,14 @@ async function execute(): Promise<boolean> {
     // Remove all the line breaks
     const cleaned = input.split('\n')
         .filter((val) => !!val)
-        .map(sanitize);
+        .map(CompilerHelper.sanitize);
 
     // endregion
 
     // Check that all the necessary keywords are in there
     const expectedDFAs = new CompilerHelper({COMPILER, CHARACTERS, END, KEYWORDS, TOKENS});
+
+
     // const expectedDFAs = COMPILER_KEYWORDS.map((compiler) => DFA.generate(compiler));
     for (const dfa of expectedDFAs.getAll()) {
         let found = false;
@@ -108,13 +49,11 @@ async function execute(): Promise<boolean> {
         if (!found) throw new Error(`Could not find the tag ${dfa.regex}`);
     }
 
+    const tagContent = expectedDFAs.getAllTagContent(cleaned);
+
 
     // Per-keyword
     let compiler = '';
-
-    const languages = [];
-    const keywords = [];
-    const tokens = [];
 
     let insideCompiler = '';
 
@@ -126,9 +65,10 @@ async function execute(): Promise<boolean> {
             if (readNext) {
                 compilerName = DFA.generate(word);
                 readNext = false;
-            } if (checkNext) {
+            }
+            if (checkNext) {
                 if (!compilerName) {
-                    throw new Error('Missing tags for compiler')
+                    throw new Error('Missing tags for compiler');
                 }
                 if (!compilerName.match(word)) {
 
