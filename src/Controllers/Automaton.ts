@@ -116,7 +116,7 @@ export class Language {
 
 
     static getLanguage(regex: string): string[] {
-        return [...new Set<string>(regex.split(''))].filter((character) => !(Language.isOperator(character) || PARENTHESIS_ARRAY.includes(character)))
+        return [...new Set<string>(regex.split(''))].filter((character) => !(Language.isOperator(character) || PARENTHESIS_ARRAY.includes(character)));
         // for (const char of regex) {
         //     if (!(foundLanguage.includes(char) || Language.isOperator(char) || PARENTHESIS_ARRAY.includes(char))) {
         //         foundLanguage.push(char);
@@ -282,7 +282,16 @@ export class Language {
     static augment(regex: string): string {
         const specialExpanded = Language.replaceSpecial(regex);
         const final = Language.augmentSpecial(specialExpanded);
-        return final;
+        // Clean extra dots
+        let lastWasConcatenation = false;
+        const finalArr: string[] = [];
+        for (const letter of final.split('')) {
+            if (letter === '.') {
+                if (lastWasConcatenation) continue;
+            }
+            finalArr.push(letter);
+        }
+        return finalArr.join('');
     }
 }
 
@@ -485,7 +494,7 @@ export interface TransitionTableRow {
 
 export class DFA {
 
-    private readonly dfa: GraphNode[];
+    public dfa: GraphNode[];
     public readonly regex: string;
 
     match(toMatch: string) {
@@ -670,15 +679,15 @@ export class DFA {
         return nextPositionsTables;
     }
 
-    static generate(regex: string) {
+    static generate(regex: string, ignoreAugment?: boolean) {
         const alphabet: string[] = Language.getLanguage(regex);
-        const augmented: string = regex.length === 1 ? `${regex}.#` : Language.augment(regex);
+        const augmented: string = ignoreAugment ? regex : regex.length === 1 ? `${regex}.#` : Language.augment(regex);
         const syntaxTree: TreeNode = TreeNode.from(augmented)!;
 
         const saveIn: BinaryTree[] = [];
         JSONProj.from(syntaxTree, saveIn);
-        fs.writeFile(regex + '_syntaxTree.json', JSON.stringify(saveIn), () => {
-        });
+        // fs.writeFile(regex + '_syntaxTree.json', JSON.stringify(saveIn), () => {
+        // });
 
         // const nfa = NFA.from(syntaxTree);
         const next = DFA.generateNextPositionTable(syntaxTree)!;
@@ -687,8 +696,8 @@ export class DFA {
         DFA.fillNextPositionContent(syntaxTree, next);
         next.sort((a, b) => a.state - b.state);
         const transitionsTable = DFA.from(next, syntaxTree.getFirstPosition(), alphabet);
-        fs.writeFile(regex + '_DFA.json', JSON.stringify(transitionsTable), () => {
-        });
+        // fs.writeFile(regex + '_DFA.json', JSON.stringify(transitionsTable), () => {
+        // });
         return new DFA(DFA.directly(transitionsTable, next), regex);
     }
 

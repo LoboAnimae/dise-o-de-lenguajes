@@ -36,11 +36,12 @@ export class GraphNode extends Node {
 
     constructor(params?: IGraphNodeConstructorParams) {
         if (params?.counter?.counter) {
-            params.id = params.counter.counter++
+            params.id = params.counter.counter++;
         }
         super(params);
         this.transitionsTo = [];
     }
 
     getTransitions = () => this.transitionsTo;
+
 }
