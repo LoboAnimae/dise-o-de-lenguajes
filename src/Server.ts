@@ -10,8 +10,9 @@ import {error} from 'winston';
 import {GraphNode} from './Controllers/GraphNode';
 import {CHARACTERS, COMPILER, CompilerHelper, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
 
-const NAME_FILE_TESTING = '../Testing/ArchivoPrueba3.atg';
-const watchInput = '"hola mundo" 350.3 350 cadena " cadena "';
+const fileName = 'ArchivoPrueba1';
+const NAME_FILE_TESTING = `../Testing/${fileName}.atg`;
+const watchInput = '0 1 abc ihgfe d1 110 if fi 01';
 
 
 async function main() {
@@ -40,8 +41,9 @@ async function execute(): Promise<boolean> {
 
     // Per-keyword
 
-    const types: string[] = watchInput.split(' ').map((word) => deterministicAutomatons.recognize(word));
-    console.log(types.join(' '));
+    const types: string = watchInput.split(' ').map((word) => deterministicAutomatons.recognize(word)).join('\n');
+    console.log(`Writing ${fileName}_output.txt to ${path.join(__dirname, '..', `${fileName}_output.txt`)}`);
+    fs.writeFileSync(path.join(__dirname, '..', `${fileName}_output.txt`), types, {encoding: 'utf-8'});
 
     // let isActivelyTesting = true;
     // // let regex = '(0|(1(01*(00)*0)*1)*)*';

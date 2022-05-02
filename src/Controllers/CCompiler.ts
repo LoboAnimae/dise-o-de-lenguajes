@@ -177,7 +177,7 @@ export class CompilerHelper {
         for (const token of returnObj[tokensRegex]) {
             let tokenContent = token.content;
 
-            returnObj[charactersRegex].matcher.sort((a: any, b: any) => a.identifier.length - b.identifier.length);
+            returnObj[charactersRegex].matcher.sort((a: any, b: any) => b.identifier.length - a.identifier.length);
             for (const char of returnObj[charactersRegex].matcher) {
                 tokenContent = tokenContent.replaceAll(char.identifier, `(${CompilerHelper.getAllProbabilities(char.values.join(''))})`);
             }
@@ -404,7 +404,7 @@ export class CompilerHelper {
 
         for (const token of TOKENS) {
             if (token.matcher.match(word)) {
-                return token.tag;
+                return `<${word}-${token.tag}>`;
             }
         }
 

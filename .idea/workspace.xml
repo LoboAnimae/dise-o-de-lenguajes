@@ -11,24 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Following syntax workflow">
-      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba2.atg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" afterDir="false" />
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Finished implementing with errors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHARACTERS_DFA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHARACTERS_syntaxTree.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/COMPILER_DFA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/COMPILER_syntaxTree.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/END_DFA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/END_syntaxTree.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KEYWORDS_DFA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KEYWORDS_syntaxTree.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TOKENS_DFA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TOKENS_syntaxTree.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/1_testing.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba1.atg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/Automaton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Automaton.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/GraphNode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/GraphNode.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -182,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651423536332</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Finished implementing with errors">
+      <created>1651467606306</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651467606306</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,7 +199,8 @@
     <MESSAGE value="Changed to node because of sorting implementations" />
     <MESSAGE value="Just a backup..." />
     <MESSAGE value="Following syntax workflow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Following syntax workflow" />
+    <MESSAGE value="Finished implementing with errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished implementing with errors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -214,7 +208,7 @@
         <line-breakpoint enabled="true" type="javascript">
           <condition expression="nodeId === '11'" language="TypeScript" />
           <url>file://$PROJECT_DIR$/src/Controllers/Automaton.ts</url>
-          <line>529</line>
+          <line>538</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
