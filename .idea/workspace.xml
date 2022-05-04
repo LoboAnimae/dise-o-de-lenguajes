@@ -11,7 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Finished implementing with errors">
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Fixed the mistakes with the previous version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
@@ -118,6 +118,9 @@
       <workItem from="1651087457850" duration="18222000" />
       <workItem from="1651155878433" duration="45425000" />
       <workItem from="1651459749009" duration="17000" />
+      <workItem from="1651469821955" duration="2086000" />
+      <workItem from="1651533797290" duration="5000" />
+      <workItem from="1651603155249" duration="6581000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -175,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651467606306</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Printed scanner. Made it easier to understand the output :)">
+      <created>1651468570275</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1651468570275</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +210,9 @@
     <MESSAGE value="Just a backup..." />
     <MESSAGE value="Following syntax workflow" />
     <MESSAGE value="Finished implementing with errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished implementing with errors" />
+    <MESSAGE value="Printed scanner. Made it easier to understand the output :)" />
+    <MESSAGE value="Fixed the mistakes with the previous version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the mistakes with the previous version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -216,7 +228,18 @@
           <line>97</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Server.ts</url>
+          <line>126</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="179" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="js.build_tools.npm">
+        <watch expression="allTogether" language="TypeScript" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

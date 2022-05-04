@@ -10,14 +10,41 @@ import {error} from 'winston';
 import {GraphNode} from './Controllers/GraphNode';
 import {CHARACTERS, COMPILER, CompilerHelper, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
 
-const fileName = 'ArchivoPrueba1';
+const fileName = 'ArchivoPrueba3';
 const NAME_FILE_TESTING = `../Testing/${fileName}.atg`;
-const watchInput = '0 1 abc ihgfe d1 110 if fi 01';
+const watchInput = '"hola mundo"   350.3   350   cadena   " cadena "';
 
 
 async function main() {
     while (await execute()) {
     }
+}
+
+
+function split(from: string): string[] {
+    const spliced: string[] = [];
+    let forceNext = false;
+    for (let i = 0; i < from.length; ++i) {
+        const currentCharacter = from[i];
+        if (currentCharacter === ' ' && !forceNext) {
+            forceNext = true;
+            spliced.push('');
+        } else {
+            forceNext = false;
+            if (spliced.length) spliced[spliced.length - 1] += currentCharacter;
+            else spliced.push(currentCharacter);
+        }
+    }
+    return spliced;
+}
+
+function countIteration(word: string, find: string): number {
+    if (find.length !== 1) throw new Error('Count iteration can only find characters as of now');
+    let count = 0;
+    for (let i = 0; i < word.length; ++i) {
+        if (word[i] === find) count++;
+    }
+    return count;
 }
 
 async function execute(): Promise<boolean> {
@@ -41,7 +68,62 @@ async function execute(): Promise<boolean> {
 
     // Per-keyword
 
-    const types: string = watchInput.split(' ').map((word) => deterministicAutomatons.recognize(word)).join('\n');
+    // @ts-ignore
+    // let leftOverString = watchInput.replaceAll('.', '\b');
+    // let currentString = '';
+    // // Join the types
+    //
+    // let isInsideString = false;
+    // let cache = '';
+    // const types = [];
+    // for (let i = 0; i < leftOverString.length; ++i) {
+    //     const currentChar = leftOverString[i];
+    //     const previousChar = i > 0 ? leftOverString[i - 1] : '';
+    //
+    //     // If it is a double quote
+    //     if (currentChar === '"') {
+    //         cache += currentChar;
+    //         while (leftOverString[++i] !== '"') {
+    //             cache += leftOverString[i];
+    //         }
+    //         cache += leftOverString[i];
+    //         types.push(cache);
+    //         cache = '';
+    //     }
+    //     // If it is a whitespace
+    //     else if (currentChar === ' ' && previousChar == ' ') {
+    //         types.push(' ');
+    //         cache = '';
+    //     } else {
+    //         if (cache) types.push(cache || currentChar);
+    //         cache += curren;
+    //     }
+    // }
+    const cleanedInputRaw = split(watchInput.replaceAll('.', '\b'));
+    // Assume that there won't be any word that's one after the other
+    let cleanedInput: string[] = [];
+    let absorb: boolean = false;
+    while (cleanedInputRaw.length) {
+        // Go from left to right
+        const current = cleanedInputRaw.shift()!;
+        const quoteCount = countIteration(cleanedInput[cleanedInput.length - 1] || current, '"');
+        if (![0, 2].includes(quoteCount)) {
+            absorb = true;
+        } else {
+            absorb = false;
+            cleanedInput.push(current);
+        }
+        if (absorb) {
+            if (!cleanedInput.length) cleanedInput.push(current);
+            else cleanedInput[cleanedInput.length - 1] += ' ' + current;
+        }
+
+
+    }
+
+    cleanedInput = cleanedInput.map((val) => val === ' ' ? val : val.trim());
+    // @ts-ignore
+    const types: string = cleanedInput.map((word) => deterministicAutomatons.recognize(word)).join('\n');
     console.log(`Writing ${fileName}_output.txt to ${path.join(__dirname, '..', `${fileName}_output.txt`)}`);
     fs.writeFileSync(path.join(__dirname, '..', `${fileName}_output.txt`), types, {encoding: 'utf-8'});
 

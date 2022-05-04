@@ -8,6 +8,7 @@ export const KEYWORDS = 'KEYWORDS';
 export const TOKENS = 'TOKENS';
 export const END = 'END';
 
+export const DOT_REPLACEMENT = '\b';
 
 // Types
 
@@ -164,6 +165,7 @@ export class CompilerHelper {
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('{', OPENING_PARENTHESIS);
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('}', CLOSING_PARENTHESIS + '*');
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('"', '');
+            returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('.', DOT_REPLACEMENT);
 
         });
 
@@ -175,12 +177,16 @@ export class CompilerHelper {
         }));
 
         for (const token of returnObj[tokensRegex]) {
+            // Make it so that all the space between contents
             let tokenContent = token.content;
-
+            tokenContent = tokenContent.replaceAll(' ', '\u8888');
             returnObj[charactersRegex].matcher.sort((a: any, b: any) => b.identifier.length - a.identifier.length);
             for (const char of returnObj[charactersRegex].matcher) {
                 tokenContent = tokenContent.replaceAll(char.identifier, `(${CompilerHelper.getAllProbabilities(char.values.join(''))})`);
             }
+
+            tokenContent = tokenContent.replaceAll('\u8888', '');
+
 
             token.matcher = DFA.generate(tokenContent);
             // token.matcher = DFA.generate(output.map((outputMapper) => {
@@ -397,14 +403,18 @@ export class CompilerHelper {
     };
 
     #isToken = (word: string): string => {
-        const {TOKENS} = this.getAllTagContent() as {
-            TOKENS?: { tag: string, content: string, exceptions: string[], matcher: DFA }[], CHARACTERS?: { matcher: { identifier: string; identifierDFA: DFA, values: string[], dfa: DFA }[] }
-        };
-        if (!TOKENS?.length) return '<Error-Type>';
+        const allContent = this.getAllTagContent();
+        if (!allContent.TOKENS?.length) return '<Error-Type>';
 
-        for (const token of TOKENS) {
+        for (const token of allContent.TOKENS) {
             if (token.matcher.match(word)) {
-                return `<${word}-${token.tag}>`;
+                let consider = true;
+                for (const exception of token.exceptions) {
+                    consider = !allContent[exception].find((subException: any) => subException.matcher.match(word))
+                }
+                if (consider)
+                    // @ts-ignore
+                    return `<${word.replaceAll('\b', '.')}-${token.tag}>`;
             }
         }
 
