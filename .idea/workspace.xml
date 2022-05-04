@@ -11,7 +11,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Fixed the mistakes with the previous version">
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Fixed error on space-like characters">
+      <change afterPath="$PROJECT_DIR$/ArchivoPrueba1_output.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/template.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
@@ -28,6 +30,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -72,8 +75,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Testing" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/Testing" />
       <recent name="$PROJECT_DIR$/cpp" />
     </key>
   </component>
@@ -119,7 +123,7 @@
       <workItem from="1651459749009" duration="17000" />
       <workItem from="1651469821955" duration="2086000" />
       <workItem from="1651533797290" duration="5000" />
-      <workItem from="1651603155249" duration="7129000" />
+      <workItem from="1651603155249" duration="21354000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -191,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651622662072</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fixed error on space-like characters">
+      <created>1651623597252</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1651623597252</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,7 +229,8 @@
     <MESSAGE value="Finished implementing with errors" />
     <MESSAGE value="Printed scanner. Made it easier to understand the output :)" />
     <MESSAGE value="Fixed the mistakes with the previous version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed the mistakes with the previous version" />
+    <MESSAGE value="Fixed error on space-like characters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed error on space-like characters" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -235,16 +247,16 @@
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>132</line>
+          <url>file://$PROJECT_DIR$/src/Controllers/CCompiler.ts</url>
+          <line>402</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="179" />
+          <option name="timeStamp" value="187" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="js.build_tools.npm">
-        <watch expression="allTogether" language="TypeScript" />
+        <watch expression="this.tagContents" language="TypeScript" />
       </configuration>
     </watches-manager>
   </component>

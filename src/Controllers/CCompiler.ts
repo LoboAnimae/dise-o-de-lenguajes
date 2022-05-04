@@ -199,7 +199,6 @@ export class CompilerHelper {
 
         this.tagContents = returnObj;
         return this.tagContents;
-
     };
 
 
@@ -271,6 +270,70 @@ export class CompilerHelper {
 
     isTag = (word: string): boolean => {
         return this.getAll().some((dfa) => dfa.match(word));
+    };
+
+
+    toString = () => {
+        console.log(this);
+
+        const charactersRegex = this.getCharacters().regex;
+        const keywordsRegex = this.getKeywords().regex;
+        const tokensRegex = this.getTokens().regex;
+
+        const CHARACTERS: any = [];
+        const KEYWORDS: any = [];
+        const TOKENS: any = [];
+
+        for (const character of this.tagContents[charactersRegex].matcher) {
+            const {identifier, dfa, exceptions} = character;
+            const dfaObject = dfa.dfa.map((currentDFA: GraphNode) => ({
+                isAcceptance: currentDFA.isAcceptance(),
+                id: currentDFA.getId(),
+                transitions: currentDFA.getTransitions().map(transition => ({
+                    using: transition.using,
+                    to: transition.to.getId(),
+                })),
+            }));
+            CHARACTERS.push({identifier, dfa: dfaObject, exceptions: exceptions ?? []});
+        }
+
+        for (const keyword of this.tagContents[keywordsRegex]) {
+            if (!keyword.matcher) {
+                // this.tagContents[keywordsRegex].find([keyword] = DFA.generate(keyword.tag);
+                keyword.matcher = DFA.generate(keyword.tag);
+            }
+            const {tag: identifier, matcher, exceptions} = keyword;
+            const dfaObject = matcher.dfa.map((currentDFA: GraphNode) => ({
+                isAcceptance: currentDFA.isAcceptance(),
+                id: currentDFA.getId(),
+                transitions: currentDFA.getTransitions().map(transition => ({
+                    using: transition.using,
+                    to: transition.to.getId(),
+                })),
+            }));
+            KEYWORDS.push({identifier, dfa: dfaObject, exceptions: exceptions ?? []});
+        }
+
+        for (const token of this.tagContents[tokensRegex]) {
+            if (!token.matcher) {
+                // this.tagContents[keywordsRegex].find([token] = DFA.generate(token.tag);
+                token.matcher = DFA.generate(token.tag);
+            }
+            const {tag: identifier, matcher, exceptions} = token;
+            const dfaObject = matcher.dfa.map((currentDFA: GraphNode) => ({
+                isAcceptance: currentDFA.isAcceptance(),
+                id: currentDFA.getId(),
+                transitions: currentDFA.getTransitions().map(transition => ({
+                    using: transition.using,
+                    to: transition.to.getId(),
+                })),
+            }));
+            TOKENS.push({identifier, dfa: dfaObject, exceptions: exceptions ?? []});
+        }
+
+        return JSON.stringify({CHARACTERS, KEYWORDS, TOKENS})
+
+
     };
 
     constructor(params?: ICompilerHelperConstructorParams) {
