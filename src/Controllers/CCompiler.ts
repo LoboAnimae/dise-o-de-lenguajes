@@ -8,7 +8,8 @@ export const KEYWORDS = 'KEYWORDS';
 export const TOKENS = 'TOKENS';
 export const END = 'END';
 
-export const DOT_REPLACEMENT = '\b';
+export const DOT_REPLACEMENT = '\u8889';
+export const SPACE_REPLACEMENT = '\u8888';
 
 // Types
 
@@ -179,13 +180,13 @@ export class CompilerHelper {
         for (const token of returnObj[tokensRegex]) {
             // Make it so that all the space between contents
             let tokenContent = token.content;
-            tokenContent = tokenContent.replaceAll(' ', '\u8888');
+            tokenContent = tokenContent.replaceAll(' ', SPACE_REPLACEMENT);
             returnObj[charactersRegex].matcher.sort((a: any, b: any) => b.identifier.length - a.identifier.length);
             for (const char of returnObj[charactersRegex].matcher) {
                 tokenContent = tokenContent.replaceAll(char.identifier, `(${CompilerHelper.getAllProbabilities(char.values.join(''))})`);
             }
 
-            tokenContent = tokenContent.replaceAll('\u8888', '');
+            tokenContent = tokenContent.replaceAll(SPACE_REPLACEMENT, '');
 
 
             token.matcher = DFA.generate(tokenContent);
@@ -410,11 +411,11 @@ export class CompilerHelper {
             if (token.matcher.match(word)) {
                 let consider = true;
                 for (const exception of token.exceptions) {
-                    consider = !allContent[exception].find((subException: any) => subException.matcher.match(word))
+                    consider = !allContent[exception].find((subException: any) => subException.matcher.match(word));
                 }
                 if (consider)
                     // @ts-ignore
-                    return `<${word.replaceAll('\b', '.')}-${token.tag}>`;
+                    return `<${word.replaceAll(DOT_REPLACEMENT, '.')}-${token.tag}>`;
             }
         }
 

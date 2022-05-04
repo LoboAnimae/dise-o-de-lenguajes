@@ -13,7 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Fixed the mistakes with the previous version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
     </list>
@@ -120,7 +119,7 @@
       <workItem from="1651459749009" duration="17000" />
       <workItem from="1651469821955" duration="2086000" />
       <workItem from="1651533797290" duration="5000" />
-      <workItem from="1651603155249" duration="6581000" />
+      <workItem from="1651603155249" duration="7129000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -185,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651468570275</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Fixed the mistakes with the previous version">
+      <created>1651622662072</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1651622662072</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,7 +236,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>126</line>
+          <line>132</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="179" />
         </line-breakpoint>

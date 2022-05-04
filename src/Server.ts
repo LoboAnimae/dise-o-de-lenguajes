@@ -8,11 +8,17 @@ import fs from 'fs';
 import path from 'path';
 import {error} from 'winston';
 import {GraphNode} from './Controllers/GraphNode';
-import {CHARACTERS, COMPILER, CompilerHelper, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
+import {CHARACTERS, COMPILER, CompilerHelper, DOT_REPLACEMENT, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
 
-const fileName = 'ArchivoPrueba3';
+const testing = 2;
+const inputs = [
+    "0 1 abc ihgfe d1 110 if fi 01",
+    "dif \t \t IF formato variable1 455 if if12 IFif 9 12DH HD12",
+    '"hola mundo"   350.3   350   cadena   " cadena "',
+];
+const fileName = `ArchivoPrueba${testing}`;
 const NAME_FILE_TESTING = `../Testing/${fileName}.atg`;
-const watchInput = '"hola mundo"   350.3   350   cadena   " cadena "';
+const watchInput = inputs[testing - 1];
 
 
 async function main() {
@@ -99,7 +105,7 @@ async function execute(): Promise<boolean> {
     //         cache += curren;
     //     }
     // }
-    const cleanedInputRaw = split(watchInput.replaceAll('.', '\b'));
+    const cleanedInputRaw = split(watchInput.replaceAll('.', DOT_REPLACEMENT));
     // Assume that there won't be any word that's one after the other
     let cleanedInput: string[] = [];
     let absorb: boolean = false;
@@ -121,7 +127,7 @@ async function execute(): Promise<boolean> {
 
     }
 
-    cleanedInput = cleanedInput.map((val) => val === ' ' ? val : val.trim());
+    cleanedInput = cleanedInput.map((val) => (val === ' ' || val === '\t') ? val : val.trim());
     // @ts-ignore
     const types: string = cleanedInput.map((word) => deterministicAutomatons.recognize(word)).join('\n');
     console.log(`Writing ${fileName}_output.txt to ${path.join(__dirname, '..', `${fileName}_output.txt`)}`);
