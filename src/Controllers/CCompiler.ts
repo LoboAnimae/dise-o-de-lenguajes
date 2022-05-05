@@ -102,6 +102,8 @@ export const REPLACEMENTS: { [key: string]: string } = {
     '.': '\u8889',
     ' ': '\u8888',
     '\n': '\u8890',
+    '+': '\u8891',
+    '-': '\u8892',
 };
 
 /**
@@ -617,7 +619,6 @@ export class CompilerHelper {
                 const localContentWithColor = `${tag} = ${before}${middle}${after}`;
                 const equalIndex = localContent.lastIndexOf('=');
                 let errorMessage = `Assignation before previous assignation was finished (you might have missed a '.'): \n`;
-                const lengthMessageError = errorMessage.length;
                 errorMessage += '\t' + localContentWithColor;
                 errorMessage += '\n';
                 errorMessage += '\t' + ' '.repeat(equalIndex) + Console.getWithColor(Colors.RED, '^');
@@ -651,6 +652,7 @@ export class CompilerHelper {
             currentTag.content = currentTag.content.replaceAll(']', CLOSING_PARENTHESIS);
             currentTag.content = currentTag.content.replaceAll('"', '');
             currentTag.content = currentTag.content.replaceAll('.', DOT_REPLACEMENT);
+            currentTag.content = currentTag.content.replaceAll(' ', '');
         });
 
         returnObj[tokensRegex] = Object.keys(returnObj[tokensRegex]).map((tag) => ({

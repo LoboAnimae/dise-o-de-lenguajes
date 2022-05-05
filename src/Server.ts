@@ -67,10 +67,7 @@ async function execute(): Promise<boolean> {
         PRODUCTIONS,
         content: cleaned,
     });
-    const toRecognize = 'ifdL1abc'
 
-    const out = deterministicAutomatons.recognize('while');
-    console.log(out)
     // ['i', '1', '01', 'abc', 'if'].forEach((el) => {
     //     console.log(deterministicAutomatons.recognize(el));
     // });
@@ -93,7 +90,7 @@ async function execute(): Promise<boolean> {
     * the previous process.
     */
     //region Scanner
-    console.log(`Writing ${fileName}_output.txt to ${path.join(outputDir, `${fileName}_output.txt`)}`);
+    console.log(`Writing lexer.js to ${path.join(outputDir, `lexer.js`)}`);
 
     const template: string = await new Promise((resolve, reject) => fs.readFile(path.join(__dirname, 'template.js'), {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const reactTemplate: string = await new Promise((resolve, reject) => fs.readFile(path.join(__dirname, 'templateReact.js'), {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));

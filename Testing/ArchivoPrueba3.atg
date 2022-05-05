@@ -28,7 +28,7 @@ numeroDecimal =
 numeroHex =
 digitoHex{digitoHex}"H".
 espacioEnBlanco =                       enBlanco{enBlanco}.
-cadena =                                        comillas{cualquiera}comillas.
+cadena =                                        comillas {cualquiera} comillas.
 
 PRODUCTIONS
 

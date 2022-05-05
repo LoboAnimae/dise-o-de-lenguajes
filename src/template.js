@@ -5,6 +5,8 @@ const REPLACEMENTS = {
     '.': '\u8889',
     ' ': '\u8888',
     '\n': '\u8890',
+    '+': '\u8891',
+    '-': '\u8892',
 };
 
 const BACK_REPLACEMENTS = {};
