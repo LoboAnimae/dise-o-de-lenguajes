@@ -707,7 +707,7 @@ export class CompilerHelper {
         }
 
         if (!found) {
-            throw new Error(`Could not find an ending tag for compiler ${Console.getWithColor(Colors.RED, compilerName)}`)
+            throw new Error(`Could not find an ending tag for compiler ${Console.getWithColor(Colors.RED, compilerName)}`);
         }
 
         let resulting = content.substring(expectedTag.length, end).trim();
@@ -813,7 +813,7 @@ export class CompilerHelper {
         for (const keyword of this.tagContents[keywordsRegex]) {
             if (!keyword.matcher) {
 // this.tagContents[keywordsRegex].find([keyword] = DFA.generate(keyword.tag)
-                keyword.matcher = DFA.generate(keyword.tag);
+                keyword.matcher = DFA.generate(keyword.content);
             }
             const {tag: identifier, matcher, exceptions} = keyword;
             const dfaObject = matcher.dfa.map((currentDFA: GraphNode) => ({
@@ -947,7 +947,7 @@ export class CompilerHelper {
 
         for (const keyword of KEYWORDS) {
             if (!keyword.matcher) keyword.matcher = DFA.generate(keyword.content);
-            if (keyword.matcher.match(word)) return `<${word}-keyword>`;
+            if (keyword.matcher.match(word)) return `<${word}-${keyword.tag}-keyword>`;
         }
         return '';
     };
@@ -985,9 +985,8 @@ export class CompilerHelper {
     recognize(word: string): string {
         const replaced = word.split('').map(CompilerHelper.safeReplacement).join('');
         // First, check if it is a keyword (which might go outside the language)
-        if (this.#isKeyword(replaced)) return `<${replaced.split('').map(CompilerHelper.replaceBack).join('')}-Token>`;
         // Second, assume that it is some identifier that is inside the language
-        return this.#isToken(replaced);
+        return this.#isKeyword(replaced) || this.#isToken(replaced);
     }
 }
 

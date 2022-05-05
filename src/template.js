@@ -114,7 +114,7 @@ class DFA {
 class Matcher {
     #isToken = (word) => {
         const allContent = this.tagContents;
-        if (!allContent.TOKENS?.length) return `<error-type className='error'>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
+        if (!allContent.TOKENS?.length) return `<error-type>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
 
         for (const token of allContent.TOKENS) {
             if (token.dfa.match(word)) {
@@ -125,12 +125,12 @@ class Matcher {
                 }
                 if (consider)
                     // @ts-ignore
-                    return `<token className='token' style='color: ${token.color}'>${word.split('').map(Cleaner.replaceBack).join('')} / ${token.identifier}</token>`;
+                    return `<${word.split('').map(Cleaner.replaceBack).join('')}-${token.identifier}>`;
             }
         }
 
 
-        return `<error-type className='error'>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
+        return `<error-type>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
 
     };
     #isKeyword = (word) => {
@@ -138,7 +138,7 @@ class Matcher {
         if (!KEYWORDS) return '';
 
         for (const keyword of KEYWORDS) {
-            if (keyword.dfa.match(word)) return `<keyword className="keyword" style="color: #FFBA01">${word.split('').map(Cleaner.replaceBack).join('')}</keyword>`;
+            if (keyword.dfa.match(word)) return `<${word}-${keyword.identifier}-keyword>`;
         }
         return '';
     };
@@ -182,7 +182,7 @@ class Matcher {
 async function match() {
     const toRead = path.join(__dirname, `${argv[2]}`);
     const input = await new Promise((resolve, reject) => fs.readFile(toRead, {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
-    const METADATA = await new Promise((resolve, reject) => fs.readFile('dfa_output.json', {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
+    const METADATA = await new Promise((resolve, reject) => fs.readFile(path.join(__dirname, 'dfa_output.json'), {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const toUse = new Matcher(METADATA);
     console.log('Attempting to recognize:', input);
     console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)));

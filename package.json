@@ -8,7 +8,8 @@
     "debug": "nodemon src/index.ts",
     "build": "npm run webpack",
     "webpack": "webpack --config webpack.config.ts",
-    "models": "ts-node update-models.ts"
+    "models": "ts-node update-models.ts",
+    "runScanner": "node react/src/output/lexer.js input1.txt"
   },
   "nodemonConfig": {
     "ignore": ["*.json"]

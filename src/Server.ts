@@ -69,7 +69,8 @@ async function execute(): Promise<boolean> {
     });
     const toRecognize = 'ifdL1abc'
 
-    deterministicAutomatons.recognize('if');
+    const out = deterministicAutomatons.recognize('while');
+    console.log(out)
     // ['i', '1', '01', 'abc', 'if'].forEach((el) => {
     //     console.log(deterministicAutomatons.recognize(el));
     // });

@@ -11,7 +11,7 @@ tab = CHR(9).
 KEYWORDS
 
 si = "if".
-SI = si.
+SI = "IF".
 para = "for".
 
 TOKENS
@@ -20,5 +20,8 @@ identificador = letra{letra|digito} EXCEPT KEYWORDS.
 numero = digito{digito}.
 numeroHex = digitoHex{digitoHex}"H".
 tabulador = tab.
+
+
+PRODUCTIONS
 
 END ArchivoPrueba2
