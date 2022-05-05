@@ -10,6 +10,7 @@ export const END = 'END';
 
 export const DOT_REPLACEMENT = '\u8889';
 export const SPACE_REPLACEMENT = '\u8888';
+export const BREAK_REPLACEMENT = '\u8890';
 
 // Types
 
@@ -167,7 +168,6 @@ export class CompilerHelper {
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('}', CLOSING_PARENTHESIS + '*');
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('"', '');
             returnObj[tokensRegex][tag].content = returnObj[tokensRegex][tag].content.replaceAll('.', DOT_REPLACEMENT);
-
         });
 
         returnObj[tokensRegex] = Object.keys(returnObj[tokensRegex]).map((tag) => ({
@@ -274,8 +274,6 @@ export class CompilerHelper {
 
 
     toString = () => {
-        console.log(this);
-
         const charactersRegex = this.getCharacters().regex;
         const keywordsRegex = this.getKeywords().regex;
         const tokensRegex = this.getTokens().regex;
@@ -331,7 +329,7 @@ export class CompilerHelper {
             TOKENS.push({identifier, dfa: dfaObject, exceptions: exceptions ?? []});
         }
 
-        return JSON.stringify({CHARACTERS, KEYWORDS, TOKENS})
+        return JSON.stringify({CHARACTERS, KEYWORDS, TOKENS});
 
 
     };

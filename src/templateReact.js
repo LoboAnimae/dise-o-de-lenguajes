@@ -1,10 +1,13 @@
-const {argv} = require('node:process');
-const path = require('path')
-const fs = require('fs')
 const DOT_REPLACEMENT = '\u8889';
 
+let c = ''
+
 class Cleaner {
-    static getRandomColor = () => Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+
+    static getRandomColor = () => {
+        if (!c) c = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+        return c;
+    }
 
     static split(from) {
         const spliced = [];
@@ -59,7 +62,6 @@ class Cleaner {
 
         return cleanedInput.map((val) => (val === ' ' || val === '\t' || val === '\n') ? val : val.trim());
 
-
     }
 }
 
@@ -106,7 +108,11 @@ class DFA {
 class Matcher {
     #isToken = (word) => {
         const allContent = this.tagContents;
-        if (!allContent.TOKENS?.length) return `<error-type className='error'>${word}</error-type>`;
+        if (!allContent.TOKENS?.length) return {
+            className: 'token',
+            color: `#F00`,
+            content: `(${word} | Err)`
+        };
 
         for (const token of allContent.TOKENS) {
             if (token.dfa.match(word)) {
@@ -117,12 +123,21 @@ class Matcher {
                 }
                 if (consider)
                     // @ts-ignore
-                    return `<token className='token' style='color: ${token.color}'>${word.replaceAll(DOT_REPLACEMENT, '.')} / ${token.identifier}</token>`;
+                    return {
+                        className: 'token',
+                        color: token.color,
+                        content: `(${word.replaceAll(DOT_REPLACEMENT, '.')} | ${token.identifier})`
+                    };
             }
         }
 
 
-        return `<error-type className='error'>${word}</error-type>`;
+        return {
+            className: 'token',
+            color: `#F00`,
+            content: `(${word} | Err)`
+        }
+
 
     };
     #isKeyword = (word) => {
@@ -130,18 +145,22 @@ class Matcher {
         if (!KEYWORDS) return '';
 
         for (const keyword of KEYWORDS) {
-            if (keyword.dfa.match(word)) return `<keyword className="keyword" style="color: #FFBA01">${word}</keyword>`;
+            if (keyword.dfa.match(word))
+                return {
+                    className: 'keyword',
+                    color: `#FFBA01`,
+                    content: `(${word} | Keyword)`
+                }
         }
         return '';
     };
 
     recognize = (word) => {
         return this.#isKeyword(word) || this.#isToken(word);
-
     };
 
     constructor(compilerOutput) {
-        this.tagContents = JSON.parse(compilerOutput);
+        this.tagContents = compilerOutput;
 
         const transformed = {
             CHARACTERS: [],
@@ -171,15 +190,11 @@ class Matcher {
     }
 }
 
-async function match() {
-    const toRead = path.join(__dirname, `${argv[2]}`);
-    const input = await new Promise((resolve, reject) => fs.readFile(toRead, {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
-    const METADATA = await new Promise((resolve, reject) => fs.readFile('dfa_output.json', {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
+export async function match(input) {
+    const METADATA = require('./dfa_output.json')
     const toUse = new Matcher(METADATA);
-    console.log(input);
-    console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)))
+
+    return Cleaner.clean(input).map((word) => toUse.recognize(word))
 
 
 }
-
-match();

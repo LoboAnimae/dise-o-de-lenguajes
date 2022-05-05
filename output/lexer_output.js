@@ -176,8 +176,9 @@ async function match() {
     const input = await new Promise((resolve, reject) => fs.readFile(toRead, {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const METADATA = await new Promise((resolve, reject) => fs.readFile('dfa_output.json', {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const toUse = new Matcher(METADATA);
-    console.log(input);
-    console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)))
+    const cleanedInput = Cleaner.clean(input)
+    console.log(cleanedInput)
+    console.log(cleanedInput.map((word) => toUse.recognize(word)))
 
 
 }

@@ -11,12 +11,63 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Fixed error on space-like characters">
-      <change afterPath="$PROJECT_DIR$/ArchivoPrueba1_output.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/template.js" afterDir="false" />
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Scanner finished">
+      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba4.atg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dfa_output.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/dfa_output.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/lexer_output.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/react_lexer_output.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/react/src/output/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/templateReact.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArchivoPrueba1_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/lexer_output.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba1.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba2.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba3.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/default.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/production.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/dfa_output.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/lexer_output.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/dfa_output.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/lexer_output.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/react_lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/react_lexer_output.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Automaton.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CCompiler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CConfiguration.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CFileSystem.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CLogger.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Console.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Constants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/GraphNode.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Node.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Screen.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Structures.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Tree.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/IConfiguration.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/IFileSystem.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/ILogger.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/template.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/templateReact.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/webpack.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/react-frontend/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/output/dfa_output.json" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/dfa_output.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/output/lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/lexer_output.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/template.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/template.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,28 +104,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cmake.loaded.for.project&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "cmake.loaded.for.project": "true",
+    "last_opened_file_path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/react/src",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "structure.view.defaults.are.configured": "true",
+    "ts.external.directory.path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/react/src" />
+      <recent name="$PROJECT_DIR$/output" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/Testing" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/react/src" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/Testing" />
@@ -123,7 +180,10 @@
       <workItem from="1651459749009" duration="17000" />
       <workItem from="1651469821955" duration="2086000" />
       <workItem from="1651533797290" duration="5000" />
-      <workItem from="1651603155249" duration="21354000" />
+      <workItem from="1651603155249" duration="23438000" />
+      <workItem from="1651683568579" duration="2186000" />
+      <workItem from="1651714935768" duration="794000" />
+      <workItem from="1651716035525" duration="3977000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -202,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651623597252</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Scanner finished">
+      <created>1651639533234</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1651639533234</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,7 +297,8 @@
     <MESSAGE value="Printed scanner. Made it easier to understand the output :)" />
     <MESSAGE value="Fixed the mistakes with the previous version" />
     <MESSAGE value="Fixed error on space-like characters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed error on space-like characters" />
+    <MESSAGE value="Scanner finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scanner finished" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -248,9 +316,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/Controllers/CCompiler.ts</url>
-          <line>402</line>
+          <line>495</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="187" />
+          <option name="timeStamp" value="196" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

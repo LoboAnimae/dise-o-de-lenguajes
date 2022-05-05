@@ -1,0 +1,22 @@
+COMPILER ArchivoPrueba4
+
+CHARACTERS
+
+letra = "ABCDEFGHIJKLMNOPQRSTUVDXYZabcdefghijklmnopqrstuvwxyz".
+digito = "0123456789".
+tab = CHR(9).
+eol = CHR(10).
+
+KEYWORDS
+
+if = "if".
+
+TOKENS
+
+id = letra{letra|digito} EXCEPT KEYWORDS.
+numero = digito{digito}.
+tab = tab.
+eol = eol.
+
+
+END ArchivoPrueba4

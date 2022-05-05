@@ -1,11 +1,13 @@
-const METADATA = '{"CHARACTERS":[{"identifier":"digito","dfa":[{"isAcceptance":false,"id":0,"transitions":[{"using":"1","to":1},{"using":"0","to":1}]},{"isAcceptance":true,"id":1,"transitions":[{"using":"1","to":1},{"using":"0","to":1}]}],"exceptions":[]},{"identifier":"letra","dfa":[{"isAcceptance":false,"id":0,"transitions":[{"using":"i","to":1},{"using":"h","to":1},{"using":"g","to":1},{"using":"f","to":1},{"using":"e","to":1},{"using":"d","to":1},{"using":"c","to":1},{"using":"b","to":1},{"using":"a","to":1}]},{"isAcceptance":true,"id":1,"transitions":[{"using":"i","to":1},{"using":"h","to":1},{"using":"g","to":1},{"using":"f","to":1},{"using":"e","to":1},{"using":"d","to":1},{"using":"c","to":1},{"using":"b","to":1},{"using":"a","to":1}]}],"exceptions":[]}],"KEYWORDS":[{"identifier":"if","dfa":[{"isAcceptance":false,"id":0,"transitions":[{"using":"i","to":1},{"using":"f","to":2}]},{"isAcceptance":false,"id":1,"transitions":[{"using":"i","to":2},{"using":"f","to":3}]},{"isAcceptance":false,"id":2,"transitions":[{"using":"i","to":2},{"using":"f","to":2}]},{"isAcceptance":true,"id":3,"transitions":[{"using":"i","to":2},{"using":"f","to":2}]}],"exceptions":[]}],"TOKENS":[{"identifier":"id","dfa":[{"isAcceptance":false,"id":0,"transitions":[{"using":"i","to":1},{"using":"h","to":1},{"using":"g","to":1},{"using":"f","to":1},{"using":"e","to":1},{"using":"d","to":1},{"using":"c","to":1},{"using":"b","to":1},{"using":"a","to":1},{"using":"1","to":2},{"using":"0","to":2}]},{"isAcceptance":true,"id":1,"transitions":[{"using":"i","to":1},{"using":"h","to":1},{"using":"g","to":1},{"using":"f","to":1},{"using":"e","to":1},{"using":"d","to":1},{"using":"c","to":1},{"using":"b","to":1},{"using":"a","to":1},{"using":"1","to":1},{"using":"0","to":1}]},{"isAcceptance":false,"id":2,"transitions":[{"using":"i","to":2},{"using":"h","to":2},{"using":"g","to":2},{"using":"f","to":2},{"using":"e","to":2},{"using":"d","to":2},{"using":"c","to":2},{"using":"b","to":2},{"using":"a","to":2},{"using":"1","to":2},{"using":"0","to":2}]}],"exceptions":["KEYWORDS"]},{"identifier":"numero","dfa":[{"isAcceptance":false,"id":0,"transitions":[{"using":"1","to":1},{"using":"0","to":1}]},{"isAcceptance":true,"id":1,"transitions":[{"using":"1","to":1},{"using":"0","to":1}]}],"exceptions":[]}]}';
-const {argv} = require('node:process');
-const path = require('path')
-const fs = require('fs')
 const DOT_REPLACEMENT = '\u8889';
 
+let c = ''
+
 class Cleaner {
-    static getRandomColor = () => Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+
+    static getRandomColor = () => {
+        if (!c) c = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+        return c;
+    }
 
     static split(from) {
         const spliced = [];
@@ -58,7 +60,7 @@ class Cleaner {
 
         }
 
-        return cleanedInput.map((val) => (val === ' ' || val === '\t') ? val : val.trim());
+        return cleanedInput.map((val) => (val === ' ' || val === '\t' || val === '\n') ? val : val.trim());
 
     }
 }
@@ -106,7 +108,11 @@ class DFA {
 class Matcher {
     #isToken = (word) => {
         const allContent = this.tagContents;
-        if (!allContent.TOKENS?.length) return `<error-type className='error'>${word}</error-type>`;
+        if (!allContent.TOKENS?.length) return {
+            className: 'token',
+            color: `#F00`,
+            content: `(${word} | Err)`
+        };
 
         for (const token of allContent.TOKENS) {
             if (token.dfa.match(word)) {
@@ -117,12 +123,21 @@ class Matcher {
                 }
                 if (consider)
                     // @ts-ignore
-                    return `<token className='token' style='color: ${token.color}'>${word.replaceAll(DOT_REPLACEMENT, '.')} / ${token.identifier}</token>`;
+                    return {
+                        className: 'token',
+                        color: token.color,
+                        content: `(${word.replaceAll(DOT_REPLACEMENT, '.')} | ${token.identifier})`
+                    };
             }
         }
 
 
-        return `<error-type className='error'>${word}</error-type>`;
+        return {
+            className: 'token',
+            color: `#F00`,
+            content: `(${word} | Err)`
+        }
+
 
     };
     #isKeyword = (word) => {
@@ -130,18 +145,22 @@ class Matcher {
         if (!KEYWORDS) return '';
 
         for (const keyword of KEYWORDS) {
-            if (keyword.dfa.match(word)) return `<keyword className="keyword" style="color: #FFBA01">${word}</keyword>`;
+            if (keyword.dfa.match(word))
+                return {
+                    className: 'keyword',
+                    color: `#FFBA01`,
+                    content: `(${word} | Keyword)`
+                }
         }
         return '';
     };
 
     recognize = (word) => {
         return this.#isKeyword(word) || this.#isToken(word);
-
     };
 
     constructor(compilerOutput) {
-        this.tagContents = JSON.parse(compilerOutput);
+        this.tagContents = compilerOutput;
 
         const transformed = {
             CHARACTERS: [],
@@ -171,14 +190,11 @@ class Matcher {
     }
 }
 
-export async function match() {
-    const toRead = path.join(__dirname, `${argv[2]}`);
-    const input = await new Promise((resolve, reject) => fs.readFile(toRead, {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
+export async function match(input) {
+    const METADATA = require('./dfa_output.json')
     const toUse = new Matcher(METADATA);
-    console.log(input);
-    console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)))
+
+    return Cleaner.clean(input).map((word) => toUse.recognize(word))
 
 
 }
-
-match();
