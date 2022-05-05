@@ -11,63 +11,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Scanner finished">
-      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba4.atg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dfa_output.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/dfa_output.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/lexer_output.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/react_lexer_output.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/react/src/output/input.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/templateReact.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Raw files with javascript delete the \n">
+      <change afterPath="$PROJECT_DIR$/config/vault/default/some_file.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/vault/development/some_file.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/vault/production/some_file.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/Server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/Server.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/index.js.LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/index.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/input1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/input2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/input3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/input4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/react/src/output/input1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/react/src/output/input2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/react/src/output/input3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/react/src/output/input4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArchivoPrueba1_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/lexer_output.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba1.atg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba2.atg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/Testing/ArchivoPrueba3.atg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/default.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/config/production.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/dfa_output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/lexer_output.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/dfa_output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/lexer_output.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/output/react_lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/react_lexer_output.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Automaton.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CCompiler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CConfiguration.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CFileSystem.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/CLogger.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Console.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/GraphNode.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Node.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Screen.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Structures.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Controllers/Tree.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/IConfiguration.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/IFileSystem.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Interfaces/ILogger.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/Server.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/template.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/src/templateReact.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/webpack.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/react-frontend/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react" beforeDir="false" afterPath="$PROJECT_DIR$/react" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/react/src/output/dfa_output.json" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/dfa_output.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/src/output/lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/lexer_output.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/template.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/template.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/output/input.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/output/lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/lexer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react/src/output/react_lexer_output.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/react_lexer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,9 +85,9 @@
     "cmake.loaded.for.project": "true",
     "last_opened_file_path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/react/src",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "preferences.sourceCode.JavaScript",
     "structure.view.defaults.are.configured": "true",
-    "ts.external.directory.path": "/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/node_modules/typescript/lib",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -183,7 +151,9 @@
       <workItem from="1651603155249" duration="23438000" />
       <workItem from="1651683568579" duration="2186000" />
       <workItem from="1651714935768" duration="794000" />
-      <workItem from="1651716035525" duration="3977000" />
+      <workItem from="1651716035525" duration="4240000" />
+      <workItem from="1651879528183" duration="9217000" />
+      <workItem from="1651935267859" duration="30453000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -269,7 +239,21 @@
       <option name="project" value="LOCAL" />
       <updated>1651639533234</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Raw files with javascript delete the \n">
+      <created>1651721399203</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1651721399203</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Raw files with javascript delete the \n">
+      <created>1651721410499</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1651721410499</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,7 +282,8 @@
     <MESSAGE value="Fixed the mistakes with the previous version" />
     <MESSAGE value="Fixed error on space-like characters" />
     <MESSAGE value="Scanner finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scanner finished" />
+    <MESSAGE value="Raw files with javascript delete the \n" />
+    <option name="LAST_COMMIT_MESSAGE" value="Raw files with javascript delete the \n" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -310,21 +295,16 @@
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/Controllers/Tree.ts</url>
-          <line>97</line>
-          <option name="timeStamp" value="142" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/Controllers/CCompiler.ts</url>
-          <line>495</line>
+          <url>file://$PROJECT_DIR$/src/Server.ts</url>
+          <line>53</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="196" />
+          <option name="timeStamp" value="324" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="js.build_tools.npm">
-        <watch expression="this.tagContents" language="TypeScript" />
+        <watch expression="returnObj[keywordsRegex]" language="TypeScript" />
       </configuration>
     </watches-manager>
   </component>
