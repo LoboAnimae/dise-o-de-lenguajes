@@ -1,9 +1,21 @@
-COMPILER ArchivoPrueba4
+// This is a comment
+/*
+This is a multiline comment
+*/
+
+COMPILER ArchivoPrueba4 // Ignore this
 
 CHARACTERS
 
-letra = "ABCDEFGHIJKLMNOPQRSTUVDXYZabcdefghijklmnopqrstuvwxyz".
+letra = "a..zA..Z". /*
+also ignore this
+*/
 digito = "0123456789".
+any = "01" + letra + digito.
+notany
+
+
+= any - any.
 tab = CHR(9).
 eol = CHR(10).
 
@@ -13,8 +25,10 @@ if = "if".
 
 TOKENS
 
+underhundred = digito[digito].
 id = letra{letra|digito} EXCEPT KEYWORDS.
 numero = digito{digito}.
+notAny = notany.
 tab = tab.
 eol = eol.
 

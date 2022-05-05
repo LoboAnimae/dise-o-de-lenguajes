@@ -1,13 +1,19 @@
-const DOT_REPLACEMENT = '\u8889';
+const REPLACEMENTS = {
+    '.': '\u8889',
+    ' ': '\u8888',
+    '\n': '\u8890',
+};
+const BACK_REPLACEMENTS = {};
+Object.keys(REPLACEMENTS).forEach((key) => BACK_REPLACEMENTS[REPLACEMENTS[key]] = key);
 
-let c = ''
+let c = '';
 
 class Cleaner {
 
     static getRandomColor = () => {
         if (!c) c = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
         return c;
-    }
+    };
 
     static split(from) {
         const spliced = [];
@@ -28,17 +34,27 @@ class Cleaner {
 
 
     static countIteration(word, find) {
-        if (find.length !== 1) throw new Error('Count iteration can only find characters as of now');
+        if (find.length !== 1)
+            throw new Error('Count iteration can only find characters as of now');
         let count = 0;
         for (let i = 0; i < word.length; ++i) {
-            if (word[i] === find) count++;
+            if (word[i] === find)
+                count++;
         }
         return count;
     }
 
+    static safeReplacement(toReplace) {
+        return REPLACEMENTS[toReplace] ?? toReplace;
+    }
+
+    static replaceBack(toReplace) {
+        return BACK_REPLACEMENTS[toReplace] ?? toReplace;
+    }
+
     static clean(content) {
-        // @ts-ignore
-        const cleanedInputRaw = Cleaner.split(content.replaceAll('.', DOT_REPLACEMENT));
+        const preClean = Cleaner.safeReplacement(content.split('')).join('');
+        const cleanedInputRaw = Cleaner.split(preClean);
         // Assume that there won't be any word that's one after the other
         let cleanedInput = [];
         let absorb = false;
@@ -56,31 +72,22 @@ class Cleaner {
                 if (!cleanedInput.length) cleanedInput.push(current);
                 else cleanedInput[cleanedInput.length - 1] += ' ' + current;
             }
-
-
         }
-
         return cleanedInput.map((val) => (val === ' ' || val === '\t' || val === '\n') ? val : val.trim());
-
     }
 }
 
 class DFA {
     match(toMatch) {
         let current = this.states[0]; // Grab the initial state
-
         for (const letter of toMatch) {
-            // @ts-ignore
             const found = current.transitions.filter((transition) => transition.using === letter);
             if (!found.length) {
                 return false;
             }
             current = found[0].to;
         }
-
         return current.isAcceptance;
-
-
     }
 
     constructor(identifier, nodes) {
@@ -111,7 +118,7 @@ class Matcher {
         if (!allContent.TOKENS?.length) return {
             className: 'token',
             color: `#F00`,
-            content: `(${word} | Err)`
+            content: `(${word.split('').map(Cleaner.replaceBack).join('')} | Err)`,
         };
 
         for (const token of allContent.TOKENS) {
@@ -126,7 +133,7 @@ class Matcher {
                     return {
                         className: 'token',
                         color: token.color,
-                        content: `(${word.replaceAll(DOT_REPLACEMENT, '.')} | ${token.identifier})`
+                        content: `(${word.split('').map(Cleaner.replaceBack).join('')} | ${token.identifier})`,
                     };
             }
         }
@@ -135,8 +142,8 @@ class Matcher {
         return {
             className: 'token',
             color: `#F00`,
-            content: `(${word} | Err)`
-        }
+            content: `(${word.split('').map(Cleaner.replaceBack).join('')} | Err)`,
+        };
 
 
     };
@@ -149,8 +156,8 @@ class Matcher {
                 return {
                     className: 'keyword',
                     color: `#FFBA01`,
-                    content: `(${word} | Keyword)`
-                }
+                    content: `(${word.split('').map(Cleaner.replaceBack).join('')} | Keyword)`,
+                };
         }
         return '';
     };
@@ -191,10 +198,10 @@ class Matcher {
 }
 
 export async function match(input) {
-    const METADATA = require('./dfa_output.json')
+    const METADATA = require('./dfa_output.json');
     const toUse = new Matcher(METADATA);
 
-    return Cleaner.clean(input).map((word) => toUse.recognize(word))
+    return Cleaner.clean(input).map((word) => toUse.recognize(word));
 
 
 }

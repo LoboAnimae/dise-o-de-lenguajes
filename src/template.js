@@ -1,10 +1,26 @@
 const {argv} = require('node:process');
-const path = require('path')
-const fs = require('fs')
-const DOT_REPLACEMENT = '\u8889';
+const path = require('path');
+const fs = require('fs');
+const REPLACEMENTS = {
+    '.': '\u8889',
+    ' ': '\u8888',
+    '\n': '\u8890',
+};
+
+const BACK_REPLACEMENTS = {};
+Object.keys(REPLACEMENTS).forEach((key) => BACK_REPLACEMENTS[REPLACEMENTS[key]] = key);
+
 
 class Cleaner {
     static getRandomColor = () => Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+
+    static safeReplacement(toReplace) {
+        return REPLACEMENTS[toReplace] ?? toReplace;
+    }
+
+    static replaceBack(toReplace) {
+        return BACK_REPLACEMENTS[toReplace] ?? toReplace;
+    }
 
     static split(from) {
         const spliced = [];
@@ -25,17 +41,19 @@ class Cleaner {
 
 
     static countIteration(word, find) {
-        if (find.length !== 1) throw new Error('Count iteration can only find characters as of now');
+        if (find.length !== 1)
+            throw new Error('Count iteration can only find characters as of now');
         let count = 0;
         for (let i = 0; i < word.length; ++i) {
-            if (word[i] === find) count++;
+            if (word[i] === find)
+                count++;
         }
         return count;
     }
 
     static clean(content) {
-        // @ts-ignore
-        const cleanedInputRaw = Cleaner.split(content.replaceAll('.', DOT_REPLACEMENT));
+        const preClean = Cleaner.safeReplacement(content.split('')).join('');
+        const cleanedInputRaw = Cleaner.split(preClean);
         // Assume that there won't be any word that's one after the other
         let cleanedInput = [];
         let absorb = false;
@@ -53,32 +71,22 @@ class Cleaner {
                 if (!cleanedInput.length) cleanedInput.push(current);
                 else cleanedInput[cleanedInput.length - 1] += ' ' + current;
             }
-
-
         }
-
         return cleanedInput.map((val) => (val === ' ' || val === '\t' || val === '\n') ? val : val.trim());
-
-
     }
 }
 
 class DFA {
     match(toMatch) {
         let current = this.states[0]; // Grab the initial state
-
         for (const letter of toMatch) {
-            // @ts-ignore
             const found = current.transitions.filter((transition) => transition.using === letter);
             if (!found.length) {
                 return false;
             }
             current = found[0].to;
         }
-
         return current.isAcceptance;
-
-
     }
 
     constructor(identifier, nodes) {
@@ -106,7 +114,7 @@ class DFA {
 class Matcher {
     #isToken = (word) => {
         const allContent = this.tagContents;
-        if (!allContent.TOKENS?.length) return `<error-type className='error'>${word}</error-type>`;
+        if (!allContent.TOKENS?.length) return `<error-type className='error'>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
 
         for (const token of allContent.TOKENS) {
             if (token.dfa.match(word)) {
@@ -117,12 +125,12 @@ class Matcher {
                 }
                 if (consider)
                     // @ts-ignore
-                    return `<token className='token' style='color: ${token.color}'>${word.replaceAll(DOT_REPLACEMENT, '.')} / ${token.identifier}</token>`;
+                    return `<token className='token' style='color: ${token.color}'>${word.split('').map(Cleaner.replaceBack).join('')} / ${token.identifier}</token>`;
             }
         }
 
 
-        return `<error-type className='error'>${word}</error-type>`;
+        return `<error-type className='error'>${word.split('').map(Cleaner.replaceBack).join('')}</error-type>`;
 
     };
     #isKeyword = (word) => {
@@ -130,14 +138,14 @@ class Matcher {
         if (!KEYWORDS) return '';
 
         for (const keyword of KEYWORDS) {
-            if (keyword.dfa.match(word)) return `<keyword className="keyword" style="color: #FFBA01">${word}</keyword>`;
+            if (keyword.dfa.match(word)) return `<keyword className="keyword" style="color: #FFBA01">${word.split('').map(Cleaner.replaceBack).join('')}</keyword>`;
         }
         return '';
     };
 
     recognize = (word) => {
-        return this.#isKeyword(word) || this.#isToken(word);
-
+        const replaced = word.split('').map(Cleaner.safeReplacement).join('');
+        return this.#isKeyword(replaced) || this.#isToken(replaced);
     };
 
     constructor(compilerOutput) {
@@ -176,10 +184,8 @@ async function match() {
     const input = await new Promise((resolve, reject) => fs.readFile(toRead, {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const METADATA = await new Promise((resolve, reject) => fs.readFile('dfa_output.json', {encoding: 'utf-8'}, (err, result) => err ? reject(err) : resolve(result)));
     const toUse = new Matcher(METADATA);
-    console.log(input);
-    console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)))
-
-
+    console.log('Attempting to recognize:', input);
+    console.log(Cleaner.clean(input).map((word) => toUse.recognize(word)));
 }
 
 match();

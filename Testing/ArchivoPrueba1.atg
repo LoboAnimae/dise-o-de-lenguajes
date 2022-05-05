@@ -2,28 +2,12 @@ COMPILER ArchivoPrueba1
 
 CHARACTERS
 
-letra =
-
-
-
-
-
-
-"abcdefghi".
-digito =
-
-
-"01".
+letra = "abcdefghi".
+digito = "01".
 
 KEYWORDS
 
-if                =
-
-
-
-
-
-"if".
+if = "if".
 
 TOKENS
 

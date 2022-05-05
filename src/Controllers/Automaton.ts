@@ -692,7 +692,7 @@ export class DFA {
         // const nfa = NFA.from(syntaxTree);
         const next = DFA.generateNextPositionTable(syntaxTree)!;
         next.sort((a, b) => a.state - b.state);
-        next.push({positions: new Set<number>(), state: next[next.length - 1].state + 1, content: ''});
+        next.push({positions: new Set<number>(), state: next[next.length - 1]?.state + 1 ?? [], content: ''});
         DFA.fillNextPositionContent(syntaxTree, next);
         next.sort((a, b) => a.state - b.state);
         const transitionsTable = DFA.from(next, syntaxTree.getFirstPosition(), alphabet);
