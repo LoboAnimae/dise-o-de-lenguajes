@@ -12,19 +12,28 @@ cualquiera = letra + digito + enBlanco.
 
 KEYWORDS
 
+TOKENS
+
+
 si = "if".
 para = "for".
 mientras = "while".
 MIENTRAS = "WHILE".
 Mientras = "While".
+identificador =                     letra{letra|digito} EXCEPT KEYWORDS.
+numero =
 
-TOKENS
 
-identificador = letra{letra|digito} EXCEPT KEYWORDS.
-numero = digito{digito}.
-numeroDecimal = digito{digito}"."digito{digito}.
-numeroHex = digitoHex{digitoHex}"H".
-espacioEnBlanco = enBlanco{enBlanco}.
-cadena = comillas{cualquiera}comillas.
 
+digito{digito}.
+numeroDecimal =
+    digito{digito}"."digito{digito}"DIF".
+numeroHex =
+digitoHex{digitoHex}"H".
+espacioEnBlanco =                       enBlanco{enBlanco}.
+cadena =                                        comillas{cualquiera}comillas.
+
+PRODUCTIONS
+
+END ArchivoPrueba
 END ArchivoPrueba3

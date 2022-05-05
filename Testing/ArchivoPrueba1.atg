@@ -14,4 +14,7 @@ TOKENS
 id = letra{letra|digito} EXCEPT KEYWORDS.
 numero = digito{digito}.
 
+PRODUCTIONS
+
+some = "production".
 END ArchivoPrueba1

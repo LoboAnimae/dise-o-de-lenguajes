@@ -69,6 +69,13 @@ export const TOKENS = 'TOKENS';
  */
 export const END = 'END';
 
+
+/**
+ * A production is, in a literal sense, something that can be achieved
+ * through tokens or characters
+ */
+export const PRODUCTIONS = 'PRODUCTIONS';
+
 /**
  * Because of how spaces are managed, they need to
  * be replaced and cleaned up beforehand.
@@ -112,6 +119,7 @@ export interface ICompilerHelperConstructorParams {
     KEYWORDS?: string;
     TOKENS?: string;
     END?: string;
+    PRODUCTIONS?: string;
     content?: string[];
 }
 
@@ -120,6 +128,7 @@ export class CompilerHelper {
     private CHARACTERS?: DFA = undefined;
     private KEYWORDS?: DFA = undefined;
     private TOKENS?: DFA = undefined;
+    private PRODUCTIONS?: DFA = undefined;
     private END?: DFA = undefined;
     private readonly KEYWORDS_ARRAY: string[];
 
@@ -391,6 +400,7 @@ export class CompilerHelper {
         const charactersRegex = this.getCharacters().regex;
         const keywordsRegex = this.getKeywords().regex;
         const tokensRegex = this.getTokens().regex;
+        const productionsRegex = this.getProductions().regex;
 
 
 // Gets everything from the compiler
@@ -398,6 +408,7 @@ export class CompilerHelper {
 // @ts-ignore
         returnObj[charactersRegex] = {tags: this.getContent(returnObj[this.getCompiler().regex], this.getCharacters())};
         returnObj[keywordsRegex] = this.getContent(content.join('\n'), this.getKeywords());
+        returnObj[productionsRegex] = this.getContent(content.join('\n'), this.getProductions());
 
 
         for (const keyword of Object.keys(returnObj[keywordsRegex])) {
@@ -461,6 +472,31 @@ export class CompilerHelper {
 
         Object.keys(returnObj[charactersRegex].tags).forEach((tag) => {
             let currentTag = returnObj[charactersRegex].tags[tag];
+
+            if (currentTag.includes('=')) {
+                const localContent = `${tag} = ${currentTag}`;
+                const before = currentTag.substring(0, currentTag.indexOf('='));
+                const middle = Console.getWithColor(Colors.RED, '=');
+                const after = currentTag.substring(currentTag.indexOf('=') + 1);
+                const localContentWithColor = `${tag} = ${before}${middle}${after}`;
+                const equalIndex = localContent.lastIndexOf('=');
+                let errorMessage = `Assignation before previous assignation was finished (you might have missed a '.'): \n`;
+                const lengthMessageError = errorMessage.length;
+                errorMessage += '\t' + localContentWithColor;
+                errorMessage += '\n';
+                errorMessage += '\t' + ' '.repeat(equalIndex) + Console.getWithColor(Colors.RED, '^');
+
+
+                let helper = `This might help fix it: \n`;
+
+                const where = currentTag.indexOf(' ');
+                let expectedWithColor = `${tag} = ${currentTag.substring(0, where)}${Console.getWithColor(Colors.GREEN, '.')}${currentTag.substring(where)}`;
+                const pointerIndex = tag.length + ' = '.length + where;
+                errorMessage += '\n\n';
+                errorMessage += helper + '\t' + expectedWithColor + '\n' + '\t' + ' '.repeat(pointerIndex) + Console.getWithColor(Colors.GREEN, '^');
+                throw new Error('\n' + errorMessage);
+
+            }
             let cleanedInput = [];
             let absorb = false;
             const cleanedInputRaw = CompilerHelper.split(currentTag);
@@ -527,7 +563,7 @@ export class CompilerHelper {
                             if (Number.isNaN(charCode)) throw new Error(`Char code ${charCodeString} is not valid (${el})`);
                             matcher.values = [String.fromCharCode(charCode)];
                         } else
-                            throw new Error(`Identifier ${tag} requires of ${el} but it could not be found already exist!`);
+                            throw new Error(`Identifier ${Console.getWithColor(Colors.RED, tag)} requires of ${Console.getWithColor(Colors.RED, el)} but it could not be found already exist!`);
                     }
                     const toUse = matcher.values.join('');
                     if (sum) {
@@ -573,6 +609,30 @@ export class CompilerHelper {
 
         Object.keys(returnObj[tokensRegex]).forEach((tag) => {
             const currentTag = returnObj[tokensRegex][tag];
+            if (currentTag.content.includes('=')) {
+                const localContent = `${tag} = ${currentTag.content}`;
+                const before = currentTag.content.substring(0, currentTag.content.indexOf('='));
+                const middle = Console.getWithColor(Colors.RED, '=');
+                const after = currentTag.content.substring(currentTag.content.indexOf('=') + 1);
+                const localContentWithColor = `${tag} = ${before}${middle}${after}`;
+                const equalIndex = localContent.lastIndexOf('=');
+                let errorMessage = `Assignation before previous assignation was finished (you might have missed a '.'): \n`;
+                const lengthMessageError = errorMessage.length;
+                errorMessage += '\t' + localContentWithColor;
+                errorMessage += '\n';
+                errorMessage += '\t' + ' '.repeat(equalIndex) + Console.getWithColor(Colors.RED, '^');
+
+
+                let helper = `This might help fix it: \n`;
+
+                const where = currentTag.content.indexOf(' ');
+                let expectedWithColor = `${tag} = ${currentTag.content.substring(0, where)}${Console.getWithColor(Colors.GREEN, '.')}${currentTag.content.substring(where)}`;
+                const pointerIndex = tag.length + ' = '.length + where;
+                errorMessage += '\n\n';
+                errorMessage += helper + '\t' + expectedWithColor + '\n' + '\t' + ' '.repeat(pointerIndex) + Console.getWithColor(Colors.GREEN, '^');
+                throw new Error('\n' + errorMessage);
+
+            }
             if (currentTag.content.includes('EXCEPT')) {
                 const exceptLength = 'EXCEPT'.length;
                 const exceptPosition = currentTag.content.indexOf('EXCEPT');
@@ -601,7 +661,6 @@ export class CompilerHelper {
         }));
 
 
-
         for (const token of returnObj[tokensRegex]) {
             let tokenContent = token.content;
             tokenContent = tokenContent.split('').map(CompilerHelper.safeReplacement).join('');
@@ -610,7 +669,7 @@ export class CompilerHelper {
                 tokenContent = tokenContent.replaceAll(char.identifier, `(${CompilerHelper.getAllProbabilities(char.values.join('')) || NULL_STATE})`);
             }
 
-            tokenContent =  tokenContent.split('').map(CompilerHelper.safeReplacement).join('');
+            tokenContent = tokenContent.split('').map(CompilerHelper.safeReplacement).join('');
 
 
             token.matcher = DFA.generate(tokenContent);
@@ -632,7 +691,24 @@ export class CompilerHelper {
 // The word directly next to the compiler is the compiler name
         const compilerName = content.substring(compilerTag).split(' ')[1].split('\n')[0];
         const expectedTag = `${this.getCompiler().regex} ${compilerName}`;
-        const end = content.lastIndexOf(`${this.getEnd().regex} ${compilerName}`);
+        const end = content.lastIndexOf(`${this.getEnd().regex}`);
+        let found = false;
+        let cache = content;
+        while (cache) {
+            const endIndex = cache.indexOf(this.getEnd().regex);
+            if (endIndex === -1) break;
+            // Whatever comes after end is the name of the ending compiler
+            const foundName = cache.substring(endIndex + this.getEnd().regex.length).split('\n')[0].trim();
+            if (compilerName === foundName) {
+                found = true;
+                break;
+            }
+            cache = cache.substring(endIndex + this.getEnd().regex.length);
+        }
+
+        if (!found) {
+            throw new Error(`Could not find an ending tag for compiler ${Console.getWithColor(Colors.RED, compilerName)}`)
+        }
 
         let resulting = content.substring(expectedTag.length, end).trim();
 
@@ -679,6 +755,11 @@ export class CompilerHelper {
 
                 while (true) {
                     const currentWord = words[++i];
+                    if (currentWord === undefined) {
+                        const error = `Directive '${Console.getWithColor(Colors.RED, words.join(' '))}' is missing an operand. Please check there is period at the end.`;
+
+                        throw new Error(error);
+                    }
                     if (currentWord === '.') break;
                     else if (currentWord.includes('.')) {
                         const until = currentWord.lastIndexOf('.');
@@ -774,6 +855,7 @@ export class CompilerHelper {
             params?.CHARACTERS ?? CHARACTERS,
             params?.KEYWORDS ?? KEYWORDS,
             params?.TOKENS ?? TOKENS,
+            params?.PRODUCTIONS ?? PRODUCTIONS,
             params?.END ?? END,
         ];
 
@@ -790,7 +872,7 @@ export class CompilerHelper {
                     }
                     if (found) break;
                 }
-                if (!found) throw new Error(`Could not find the tag ${dfa.regex}`);
+                if (!found) throw new Error(`Could not find the tag ${dfa.regex} (found EOF before finding tag)`);
             }
             this.getAllTagContent(params.content);
 
@@ -833,12 +915,17 @@ export class CompilerHelper {
         return this.TOKENS;
     };
 
+    getProductions = () => {
+        if (this.PRODUCTIONS) return this.PRODUCTIONS;
+        this.PRODUCTIONS = DFA.generate(this.KEYWORDS_ARRAY[4] || PRODUCTIONS);
+        return this.PRODUCTIONS;
+    };
     /**
      * Gets the content for the End tag
      */
     getEnd = () => {
         if (this.END) return this.END;
-        this.END = DFA.generate(this.KEYWORDS_ARRAY[4] || END);
+        this.END = DFA.generate(this.KEYWORDS_ARRAY[5] || END);
         return this.END;
     };
 
@@ -846,7 +933,7 @@ export class CompilerHelper {
      * Gets the content for all the tags
      */
     getAll = () => {
-        return [this.getCompiler(), this.getCharacters(), this.getKeywords(), this.getTokens(), this.getEnd()];
+        return [this.getCompiler(), this.getCharacters(), this.getKeywords(), this.getTokens(), this.getProductions(), this.getEnd()];
     };
 
     /**

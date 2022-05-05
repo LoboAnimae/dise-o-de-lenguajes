@@ -1,9 +1,17 @@
 import fs from 'fs';
 import path from 'path';
-import {CHARACTERS, COMPILER, CompilerHelper, DOT_REPLACEMENT, END, KEYWORDS, TOKENS} from './Controllers/CCompiler';
+import {
+    CHARACTERS,
+    COMPILER,
+    CompilerHelper,
+    END,
+    KEYWORDS,
+    PRODUCTIONS,
+    TOKENS,
+} from './Controllers/CCompiler';
 import {argv} from 'node:process';
 // if (!argv[2]) throw new Error('compiler name not provided');
-const fileName = 'ArchivoPrueba4';
+const fileName = 'ArchivoPrueba3';
 // const fileName = argv[2];
 const NAME_FILE_TESTING = `../Testing/${fileName}.atg`;
 
@@ -50,7 +58,17 @@ async function execute(): Promise<boolean> {
     * the necessary DFAs
     */
     //region Syntax-Lex
-    const deterministicAutomatons = new CompilerHelper({COMPILER, CHARACTERS, END, KEYWORDS, TOKENS, content: cleaned});
+    const deterministicAutomatons = new CompilerHelper({
+        COMPILER,
+        CHARACTERS,
+        END,
+        KEYWORDS,
+        TOKENS,
+        PRODUCTIONS,
+        content: cleaned,
+    });
+    const toRecognize = 'ifdL1abc'
+
     deterministicAutomatons.recognize('if');
     // ['i', '1', '01', 'abc', 'if'].forEach((el) => {
     //     console.log(deterministicAutomatons.recognize(el));
