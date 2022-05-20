@@ -1,5 +1,8 @@
 COMPILER ArchivoPrueba3
+/*
+Hello
 
+*/
 CHARACTERS 
 
 letra = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".
@@ -26,9 +29,9 @@ digito{digito}.
 numeroDecimal =
     digito{digito}"."digito{digito}.
 numeroHex =
-digitoHex{digitoHex}"H".
+digitoHex{digitoHex}["H"].
 espacioEnBlanco =                       enBlanco{enBlanco}.
-cadena =                                        comillas {cualquiera} comillas.
+cadena =                                        comillas cualquiera comillas.
 
 PRODUCTIONS
 

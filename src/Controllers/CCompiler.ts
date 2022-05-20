@@ -43,7 +43,9 @@ export const KEYWORDS = 'KEYWORDS';
  * A token, according to the Coco/R documentation,
  * is a terminal symbol that can be divided into
  * literals and classes. It defines how a terminal
- * symbol must look.
+ * symbol must look. Overall, a token can be thought of
+ * as a group of characters having collective meaning.
+ * They can be recognized by a lexical analyzer.
  * They can include literals and classes
  * @example
  * ['Literals']
@@ -134,6 +136,11 @@ export class CompilerHelper {
     private END?: DFA = undefined;
     private readonly KEYWORDS_ARRAY: string[];
 
+    /**
+     * The tag contents hold all the compiler information inside of it.
+     * The tags that it uses depends on the tags specified previously.
+     * @private
+     */
     private tagContents: any = {};
 
     /**
@@ -300,6 +307,26 @@ export class CompilerHelper {
         return spliced;
     }
 
+    /**
+     * Expands a string from an ASCII value, to another ASCII value.
+     * Do notice that said string can't start or end with a CHR(int)
+     * or with a period.
+     * @param str The string to expand
+     * @throws Error if the string starts or ends with a CHR(int) or a period.
+     *
+     * @example
+     * ['Given']
+     *  A..Z
+     *
+     * ['Output']
+     * ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     *
+     * ['Given']
+     *  A.. OR ..Z OR .. OR CHR(num)..Z etc.
+     *
+     * ['Output']
+     *  throw new Error('Impossible Operation')
+     */
     static expander(str: string): string {
         let output: string[] = [];
         let cache = str.split('');
@@ -483,7 +510,6 @@ export class CompilerHelper {
                 const localContentWithColor = `${tag} = ${before}${middle}${after}`;
                 const equalIndex = localContent.lastIndexOf('=');
                 let errorMessage = `Assignation before previous assignation was finished (you might have missed a '.'): \n`;
-                const lengthMessageError = errorMessage.length;
                 errorMessage += '\t' + localContentWithColor;
                 errorMessage += '\n';
                 errorMessage += '\t' + ' '.repeat(equalIndex) + Console.getWithColor(Colors.RED, '^');
