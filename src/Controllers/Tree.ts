@@ -8,6 +8,7 @@ import {
     SINGULAR_OPERATORS,
 } from './Constants';
 import {JSONProj, ParenthesisPair} from './Structures';
+import CError from './CError';
 
 interface ITreeNodeConstructorParams extends IContentNodeConstructorParams {
     left?: TreeNode;
@@ -22,7 +23,6 @@ export class TreeNode extends ContentNode {
     private firstPosition: number[];
     private lastPosition: number[];
     private isNullable: boolean;
-
 
 
     static generate(regex: string, counter: { counter: number } = {counter: 1}): TreeNode | null {
@@ -46,12 +46,18 @@ export class TreeNode extends ContentNode {
                 const subgroupPositions: ParenthesisPair | null = JSONProj.getSubgroup(regex.substring(i), i);
 
                 if (!subgroupPositions) {
-                    throw new Error('[BUG] Unbalanced parenthesis');
+                    CError.generateErrorLexer({
+                        message: 'Unbalanced parenthesis',
+                        from: 0,
+                        fatal: true,
+                        title: `BUG`,
+                        lineContent: ``,
+                    });
                 }
 
-                const {leftPosition, rightPosition} = subgroupPositions;
+                const {leftPosition, rightPosition} = subgroupPositions!;
 
-                const contentInsideParenthesis = regex.substring(leftPosition, rightPosition + 1);
+                const contentInsideParenthesis = regex.substring(leftPosition, rightPosition);
 
                 if (!contentInsideParenthesis.length) {
                     continue;
@@ -73,7 +79,13 @@ export class TreeNode extends ContentNode {
                 } else if (!parent.getRight()) {
                     parent.setRight(grouperNode);
                 } else {
-                    throw new Error('[BUG] Unbalanced parenthesis spawned more than two children for a node');
+                    CError.generateErrorLexer({
+                        message: 'Unbalanced parenthesis spawned more than two children for a node',
+                        from: 0,
+                        fatal: true,
+                        title: `BUG`,
+                        lineContent: ``,
+                    });
                 }
             } else if (SINGULAR_OPERATORS.includes(currentChar)) {
                 if (!parent) {
@@ -237,7 +249,7 @@ export class TreeNode extends ContentNode {
     setTreeNodeId = (newId: number) => {
         this.treeBuilderId = newId;
     };
-    getTreeBuilderId = () => this.treeBuilderId
+    getTreeBuilderId = () => this.treeBuilderId;
 
 
 }

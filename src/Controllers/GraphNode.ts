@@ -1,5 +1,6 @@
 import {INodeConstructorParams, Node} from './Node';
 import {NULL_STATE} from './Constants';
+import CError from './CError';
 
 interface Transition {
     using: string;
@@ -8,7 +9,7 @@ interface Transition {
 
 interface ITransitionConstructorParams {
     using?: string;
-    to?: GraphNode;
+    to?: number;
     transition?: Transition;
 }
 
@@ -24,7 +25,13 @@ export class GraphNode extends Node {
     addTransition = (newTransition: ITransitionConstructorParams) => {
         const {transition, to, using} = newTransition;
         if (!(transition || (to && using))) {
-            throw new Error('Transition parameters incomplete');
+            CError.generateErrorLexer({
+                message: 'There are incomplete transition parameters.',
+                from: 0,
+                fatal: true,
+                title: `BUG`,
+                lineContent: ``,
+            });
         }
         // @ts-ignore
         this.transitionsTo.push(newTransition.transition ?? {using, to});

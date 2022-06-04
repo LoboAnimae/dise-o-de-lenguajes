@@ -5,12 +5,14 @@ Hello
 */
 CHARACTERS 
 
-letra = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".
-digito = "01234567890".
-digitoHex = digito + "ABCDEF".
-enBlanco = CHR(9) + CHR(32).
+letra = "a..zA..Z".
+digito = "0..9". // Hello jello
+digitoHex = digito + "A..F". /*
+How are you
+*/
 comillas = CHR(34).
-cualquiera = letra + digito + enBlanco.
+espacioEnBlanco = CHR(32).
+cualquiera = letra + digito + espacioEnBlanco.
 
 
 KEYWORDS
@@ -23,15 +25,11 @@ Mientras = "While".
 
 TOKENS
 
-identificador =                     letra{letra|digito} EXCEPT KEYWORDS.
-numero =
-digito{digito}.
-numeroDecimal =
-    digito{digito}"."digito{digito}.
-numeroHex =
-digitoHex{digitoHex}["H"].
-espacioEnBlanco =                       enBlanco{enBlanco}.
-cadena =                                        comillas cualquiera comillas.
+identificador = letra{letra|digito} EXCEPT KEYWORDS.
+numero = digito{digito}.
+numeroDecimal = digito{digito}"."digito{digito}.
+numeroHex = digitoHex{digitoHex}["H"].
+cadena = comillas {cualquiera} comillas.
 
 PRODUCTIONS
 

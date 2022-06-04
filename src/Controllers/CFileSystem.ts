@@ -1,11 +1,14 @@
 import IFileSystem from '../Interfaces/IFileSystem';
 import fs from 'fs';
 import path from 'path';
+
 type FileSystemImplementedTypes = IFileSystem;
+
 class CFileSystem implements IFileSystem {
     getVaultPath(): string {
         return path.join(process.env.NODE_CONFIG_DIR!, 'vault');
     }
+
     readFile(pathToFile: string): Promise<string> {
         const actualPath = path.isAbsolute(pathToFile)
             ? pathToFile
@@ -19,7 +22,7 @@ class CFileSystem implements IFileSystem {
     }
 
     readFileSync(pathToFile: string): string {
-        return fs.readFileSync(pathToFile, { encoding: 'utf8' });
+        return fs.readFileSync(pathToFile, {encoding: 'utf8'});
     }
 
     readFileArray(pathsToFiles: string[]): Promise<string>[] {
@@ -62,6 +65,21 @@ class CFileSystem implements IFileSystem {
         if (!vaultPath) throw new Error('Vault path not found');
         fs.writeFileSync(path.join(vaultPath, pathToFile), newContent);
         return true;
+    }
+
+    mkdir(toPath: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            fs.mkdir(toPath, (err) => err ? reject(err) : resolve(true));
+        });
+    }
+
+    mkdirSync(toPath: string): boolean {
+        try {
+            fs.mkdirSync(toPath);
+            return true;
+        } catch {
+            return false;
+        }
     }
 }
 

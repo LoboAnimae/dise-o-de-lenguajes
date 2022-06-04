@@ -1,0 +1,46 @@
+COMPILER ArchivoPrueba0
+
+CHARACTERS
+
+digito = "0123456789".
+D = "D".
+
+TOKENS
+
+numeroToken = digito{digito}.
+IGNORE = CHR(9) + CHR(10) + CHR(13) + CHR(20) // tabulador, salto de línea, retorno de carro y espacio en blanco
+
+PRODUCTIONS
+
+EstadoInicial = {Instruccion ";"}.
+
+Instruccion =									(. let resultado; .)
+	Expresion <ref resultado>					(. console.log("Resultado: " + resultado); .)
+	.
+
+Expresion <ref let resultado> =					(. let resultado1, resultado2; .)
+	Termino <ref resultado1>
+	{		"+" Termino <ref resultado2>		(. resultado1 += resultado2;
+												   console.log("Término: " + resultado1); .)
+	}											(. resultado = resultado1;
+												   console.log("Término: " + resultado); .)
+	.
+
+Termino <ref resultado> =					(. let resultado1, resultado2; .)
+	Factor <ref resultado1>
+	{		"*" Factor <ref resultado2>			(. resultado1 *= resultado2; 
+												   console.log("Factor: " + resultado1); .)
+	}											(. resultado = resultado1;
+												   console.log("Factor: " + resultado); .)
+	.
+
+Factor <ref resultado> =					    (. let resultado1; .)
+	Numero <ref resultado1>						(. resultado = resultado1;
+												   console.log("Número: " + resultado); .)
+	.
+
+Numero <ref resultado> = numeroToken		    (. resultado = ultimoToken.obtenerValor();
+												   console.log("Token: " + resultado); .)
+.
+
+END ArchivoPrueba0

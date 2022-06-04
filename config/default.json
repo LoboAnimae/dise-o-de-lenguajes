@@ -1,3 +1,10 @@
 {
-    "example": "./vault/default/some_file.txt"
+  "sourceFile": [
+    "./default/ArchivoPrueba0.atg",
+    "./default/ArchivoPrueba1.atg"
+  ],
+  "input": [
+    "./default/ArchivoPrueba0Entrada.txt",
+    "./default/input.txt"
+  ]
 }

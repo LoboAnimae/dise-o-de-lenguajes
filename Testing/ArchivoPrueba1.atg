@@ -1,20 +1,102 @@
 COMPILER ArchivoPrueba1
 
 CHARACTERS
-
-letra = "abcdefghi".
-digito = "01".
-
-KEYWORDS
-
-if = "if".
+/*
+letra = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+*/
+digito = "0123456789".
 
 TOKENS
 
-id = letra{letra|digito} EXCEPT KEYWORDS.
 numero = digito{digito}.
+IGNORE = CHR(9) + CHR(10) + CHR(13) + CHR(20). // tabulador, salto de línea, retorno de carro y espacio en blanco
 
 PRODUCTIONS
 
-some = "production".
+EstadoInicial = {Instruccion ";"}.
+
+/*----------------------------------------------------------------------------------*/
+
+// + 5 - 2
+
+
+Instruccion =									(. let resultado = {res: 0}; .)
+	Expresion <ref resultado>					(. console.log(resultado); .)
+    .
+
+/*----------------------------------------------------------------------------------*/
+// Attributes are the function parameters
+Expresion <ref resultado> =					(. let resultado1, resultado2; .)
+	Termino <ref resultado1>
+	{		"+" Termino <ref resultado2>		(. resultado1 += resultado2; .)
+		  | "-" Termino <ref resultado2>		(. resultado1 -= resultado2; .)
+	}											(. resultado.res = resultado1; .)
+	.
+
+/*----------------------------------------------------------------------------------*/
+
+
+Termino <ref resultado> =					(. let resultado1, resultado2; .)
+	Factor <ref resultado1>
+	{		"*" Factor <ref resultado2>			(. resultado1 *= resultado2; .)
+		  | "/" Factor <ref resultado2>			(. resultado1 /= resultado2; .)
+	}											(. resultado.res = resultado1; .)
+	.
+
+/*----------------------------------------------------------------------------------*/
+
+/*
+
+
+    function Number(resultado) {
+        resultado.res = ultimoToken.obtenerValor()
+    }
+
+    function Factor(resultado) {
+        let signo = 1;
+        signo = -1;
+
+        Number(resultado) || `(${Expresion(resultado)})`
+
+        resultado.res *= signo;
+    }
+
+    function Termino(resultado) {
+        let resultado1, resultado2;
+        Factor(resultado1);
+        Factor(resultado2);
+        resultado1 *= resultado2;
+        Factor(resultado2);
+        resultado1 /= resultado2;
+        resultado.res = resultado1;
+    }
+    function Expresion(resultado) {
+        let resultado1, resultado2;
+        Termino(resultado1);
+        Termino(resultado2);
+        resultado1 += resultado2;
+        Termino(resultado2);
+        resultado1 -= resultado2;
+        resultado.res = resultado1;
+    }
+
+    function Instruccion() {
+        let resultado = {res: 0};
+        Expresion(resultado);
+        console.log(resultado);
+    }
+
+*/
+Factor <ref resultado> =					(.let signo = 1;.)
+	[		"-"									(.signo = -1;.) 
+	]
+	( 		Number <ref resultado>
+		  | "(" Expresion < ref resultado> ")"
+	)											(. resultado *= signo; .)
+	.
+
+/*----------------------------------------------------------------------------------*/
+Number <ref resultado> = numero				(. resultado = ultimoToken.obtenerValor(); .)
+.
+
 END ArchivoPrueba1

@@ -1,6 +1,5 @@
-import {Colors, Console} from './Console';
 import {
-    CLOSING_PARENTHESIS, CONCATENATION,
+    CLOSING_PARENTHESIS, CONCATENATION, ENDING_AUGMENTED,
     KLEENE, NULL_STATE,
     OPENING_PARENTHESIS,
     OPERATOR_ARRAY,
@@ -13,6 +12,20 @@ import {TreeNode} from './Tree';
 import {GraphNode} from './GraphNode';
 import {BinaryTree, JSONProj, ParenthesisPair} from './Structures';
 import fs from 'fs';
+import CConsole from './CConsole';
+import {IColors} from '../Interfaces/IConsole';
+import CError from './CError';
+
+const REPLACEMENTS: { [key: string]: string } = {
+    '.': '\u8889',
+    ' ': '\u8888',
+    '\n': '\u8890',
+    '+': '\u8891',
+    '-': '\u8892',
+};
+
+export const BACK_REPLACEMENTS: { [key: string]: string } = {};
+Object.keys(REPLACEMENTS).forEach((key) => BACK_REPLACEMENTS[REPLACEMENTS[key]] = key);
 
 
 export class Operator {
@@ -82,7 +95,7 @@ export class Question extends Operator {
 export class Or extends Operator {
     validate = (): boolean => {
         if (this.position == 0 || this.position == this.regex.length - 1) {
-            this.err = `[NO TARGET] The operator "|" cannot be the first or the last character of the regex`;
+            this.err = `The OR operator cannot be the first or the last character of the regex`;
             return false;
         }
 
@@ -92,7 +105,7 @@ export class Or extends Operator {
         let isValid = true;
 
         if (!Operator.isValidTarget(previousChar!)) {
-            this.err = `[NO TARGET] The operator "|" has no valid left target`;
+            this.err = `The OR operator has no valid left target`;
             isValid = false;
         }
 
@@ -100,7 +113,7 @@ export class Or extends Operator {
             if (this.err.length !== 0) {
                 this.err += ' nor a valid right target';
             } else {
-                this.err = `[NO TARGET] The operator "|" has no valid right target`;
+                this.err = `The OR operator has no valid right target`;
             }
             isValid = false;
         }
@@ -135,7 +148,7 @@ export class Language {
                 const mainMessage: string = `[SYNTAX ERROR] Invalid Syntax in position ${i + 1}.\n`;
                 const subMessage: string = `${operatorInstance.err}: `;
                 const messageDisplacement: number = subMessage.length;
-                const regexMessage: string = regex.substring(0, i) + Console.getWithColor(Colors.RED, currentChar) + regex.substring(i + 1) + '\n';
+                const regexMessage: string = regex.substring(0, i) + CConsole.getWithColor(IColors.RED, currentChar) + regex.substring(i + 1) + '\n';
 
                 const messageDisplacer: string = ' '.repeat(messageDisplacement + i);
                 errors.push(
@@ -185,9 +198,9 @@ export class Language {
 
             while (inverted.length) {
                 const {character, position} = inverted.pop()!;
-                regexVector[position] = Console.getWithColor(Colors.RED, regexVector[position]);
+                regexVector[position] = CConsole.getWithColor(IColors.RED, regexVector[position]);
                 const message = `[UNGROUPED SYMBOL] For operand in regex "${regex}": `;
-                const subMessage = regex.substring(0, position) + Console.getWithColor(Colors.RED, character) + regex.substring(position + 1);
+                const subMessage = regex.substring(0, position) + CConsole.getWithColor(IColors.RED, character) + regex.substring(position + 1);
                 const messagePointer = ' '.repeat(message.length + position) + '^ Missing operand';
 
                 console.log(message + subMessage + '\n' + messagePointer);
@@ -203,7 +216,7 @@ export class Language {
         }
 
         if (regex.length === 1) {
-            return regex + '#';
+            return regex + ENDING_AUGMENTED;
         }
 
         let augmentedRegex = '';
@@ -212,21 +225,21 @@ export class Language {
             const currentChar = regex[i];
             const nextChar = i + 1 < regex.length ? regex[i + 1] : ' ';
 
-            const currentCharIsBiOperator = currentChar == '(' || currentChar == '|';
-            const nextCharIgnoresConcatenation = nextChar == '|' || nextChar == '*' || nextChar == '+' || nextChar == '?' || nextChar == ')';
+            const currentCharIsBiOperator = currentChar === OPENING_PARENTHESIS || currentChar === OR;
+            const nextCharIgnoresConcatenation = nextChar === OR || nextChar === KLEENE || nextChar === POSITIVE || nextChar === QUESTION || nextChar === CLOSING_PARENTHESIS;
 
             if (!(currentCharIsBiOperator || nextCharIgnoresConcatenation)) {
                 augmentedRegex += currentChar;
 
                 if (i + 1 < regex.length) {
-                    augmentedRegex += '.';
+                    augmentedRegex += CONCATENATION;
                 }
             } else {
                 augmentedRegex += currentChar;
             }
         }
 
-        return augmentedRegex + '.#';
+        return augmentedRegex + CONCATENATION + ENDING_AUGMENTED;
     }
 
     /**
@@ -271,9 +284,9 @@ export class Language {
 
             if (currentChar === POSITIVE) {
                 finalRegex += regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition);
-                finalRegex += (regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)) + '*';
+                finalRegex += (regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)) + KLEENE;
             } else if (currentChar === QUESTION) {
-                finalRegex += `(${NULL_STATE}|${regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)})`;
+                finalRegex += `${OPENING_PARENTHESIS}${NULL_STATE}${OR}${regex.substring(leftPosition, rightPosition + 1) || regex.charAt(leftPosition)}${CLOSING_PARENTHESIS}`;
             }
         }
         return finalRegex;
@@ -281,17 +294,13 @@ export class Language {
 
     static augment(regex: string): string {
         const specialExpanded = Language.replaceSpecial(regex);
-        const final = Language.augmentSpecial(specialExpanded);
+        return Language.augmentSpecial(specialExpanded);
         // Clean extra dots
-        let lastWasConcatenation = false;
-        const finalArr: string[] = [];
-        for (const letter of final.split('')) {
-            if (letter === '.') {
-                if (lastWasConcatenation) continue;
-            }
-            finalArr.push(letter);
-        }
-        return finalArr.join('');
+        // const finalArr: string[] = [];
+        // for (const letter of final.split('')) {
+        //     finalArr.push(letter);
+        // }
+        // return finalArr.join('');
     }
 }
 
@@ -385,7 +394,22 @@ export class NFA {
                     */
 
                     if (!root.getLeft() || root.getRight()) {
-                        throw new Error('There seems to be a problem with the Kleene operator');
+                        const beforeMessage = 'There is an error with a ';
+                        const operator = CConsole.getWithColor(IColors.RED, 'Kleene (*)');
+                        const from = 0;
+                        const to = operator.length;
+                        const afterMessage = ' Operator';
+                        const message = beforeMessage + operator + afterMessage;
+                        CError.generateErrorLexer(
+                            {
+                                message,
+                                from,
+                                to,
+                                fatal: true,
+                                title: `Invalid Parsing in Syntax Tree`,
+                                lineContent: 'Kleene (*) operator has a right child but no left child.',
+                            },
+                        );
                     }
 
                     const beginning = new GraphNode({counter});
@@ -416,7 +440,22 @@ export class NFA {
                     */
 
                     if (!root.getLeft() || root.getRight()) {
-                        throw new Error('There seems to be a problem with the positive operator.');
+                        const beforeMessage = 'There is an error with a ';
+                        const operator = CConsole.getWithColor(IColors.RED, 'Positive (+)');
+                        const from = 0;
+                        const to = operator.length;
+                        const afterMessage = ' Operator';
+                        const message = beforeMessage + operator + afterMessage;
+                        CError.generateErrorLexer(
+                            {
+                                message,
+                                from,
+                                to,
+                                fatal: true,
+                                title: `Invalid Parsing in Syntax Tree`,
+                                lineContent: 'Positive (+) operator has a right child but no left child.',
+                            },
+                        );
                     }
 
                     const middleForced = NFA.from(root.getLeft(), counter)!;
@@ -452,7 +491,22 @@ export class NFA {
                     return {beginning: middle.beginning, end: middle.end};
                 }
                 default: {
-                    throw new Error('Unimplemented operator.');
+                    const beforeMessage = 'There is an error with an ';
+                    const operator = CConsole.getWithColor(IColors.RED, `Unknown (${value})`);
+                    const from = 0;
+                    const to = operator.length;
+                    const afterMessage = ' Operator';
+                    const message = beforeMessage + operator + afterMessage;
+                    CError.generateErrorLexer(
+                        {
+                            message,
+                            from,
+                            to,
+                            fatal: true,
+                            title: `Invalid Parsing in Syntax Tree`,
+                            lineContent: `Unknown (${value}) operator has a right child but no left child.`,
+                        },
+                    );
                 }
             }
         } else {
@@ -465,12 +519,14 @@ export class NFA {
 
             const beginning = new GraphNode({counter});
             const end = new GraphNode({counter});
-            beginning.addTransition({to: end, using: value});
+            beginning.addTransition({to: end.getId(), using: value});
+            // beginning.addTransition({to: end, using: value});
             if (value === '#') {
                 end.setAcceptance(true);
             }
             return {beginning, end};
         }
+        return null;
     }
 }
 
@@ -492,29 +548,42 @@ export interface TransitionTableRow {
     transitions: TransitionTableTransitionColumns[];
 }
 
+function replaceBack(toReplace: string): string {
+    return BACK_REPLACEMENTS[toReplace] ?? toReplace;
+}
+
+
+function safeReplacement(toReplace: string) {
+    return REPLACEMENTS[toReplace] ?? toReplace;
+}
+
 export class DFA {
 
     public dfa: GraphNode[];
     public readonly regex: string;
 
-    match(toMatch: string) {
-        let current = this.dfa[0]; // Grab the initial state
+    transitionsTable: any[] = [];
+    match = (toMatch: string) => {
+        let current = this.transitionsTable; // Grab the initial state
+        let currentState = 0;
+        let isAcceptance = false;
+        let found: any;
 
         for (const letter of toMatch) {
-            const found = current.getTransitions().filter((transition) => transition.using === letter);
-            if (!found.length) {
+            found = current.find(trans => trans.from === currentState && trans.using === letter);
+            if (!found) {
                 return false;
             }
-            current = found[0].to;
+            currentState = found.to;
         }
+        found = current.find(trans => trans.from === currentState)
+        return found?.isAcceptance;
 
-        return current.isAcceptance();
 
-
-    }
+    };
 
     static getAcceptanceStates(nextPosTable: NextPositionsTable[]) {
-        return nextPosTable.filter((row) => row.content === '#');
+        return nextPosTable.filter((row) => row.content === ENDING_AUGMENTED);
     }
 
     static directly(transitionTable: TransitionTableRow[], followPosTable: NextPositionsTable[]) {
@@ -541,7 +610,8 @@ export class DFA {
                 // Find the equivalent
                 const transitionEquivalentNode = dfaStates.find(node => node.getId() === parseInt(nodeId))!;
                 // Create the transition
-                node.addTransition({to: transitionEquivalentNode, using});
+                // node.addTransition({to: transitionEquivalentNode, using});
+                node.addTransition({to: transitionEquivalentNode.getId(), using});
             }
         }
         return dfaStates;
@@ -681,7 +751,11 @@ export class DFA {
 
     static generate(regex: string, ignoreAugment?: boolean) {
         const alphabet: string[] = Language.getLanguage(regex);
-        const augmented: string = ignoreAugment ? regex : regex.length === 1 ? `${regex}.#` : Language.augment(regex);
+        const augmented: string = ignoreAugment
+            ? regex
+            : regex.length === 1
+                ? `${regex}${CONCATENATION}${ENDING_AUGMENTED}`
+                : Language.augment(regex);
         const syntaxTree: TreeNode = TreeNode.from(augmented)!;
 
         const saveIn: BinaryTree[] = [];
@@ -702,6 +776,11 @@ export class DFA {
     }
 
     constructor(dfa: GraphNode[], regex: string) {
+        this.transitionsTable = dfa.flatMap((node) => {
+            const id = node.getId();
+            const isAcceptance = node.isAcceptance();
+            return node.getTransitions().map(trans => ({from: id, isAcceptance, ...trans}));
+        });
         this.dfa = dfa;
         this.regex = regex;
     }

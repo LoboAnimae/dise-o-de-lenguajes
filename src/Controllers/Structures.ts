@@ -1,5 +1,8 @@
 import {CLOSING_PARENTHESIS, OPENING_PARENTHESIS} from './Constants';
 import {TreeNode} from './Tree';
+import GlobalEventEmitter from './CEvents';
+import CConsole from './CConsole';
+import {IColors} from '../Interfaces/IConsole';
 
 export interface ParenthesisPair {
     leftPosition: number;
@@ -16,21 +19,50 @@ export interface BinaryTree {
 
 
 export class JSONProj {
-    static getSubgroup(regex: string, fromPosition: number): ParenthesisPair | null {
-        if (!(regex.includes(OPENING_PARENTHESIS) && regex.includes(CLOSING_PARENTHESIS))) {
+    static getSubgroup(regex: string, fromPosition: number, separator?: { opening: string; closing: string; }): ParenthesisPair | null {
+        const opening = separator?.opening || OPENING_PARENTHESIS;
+        const closing = separator?.closing || CLOSING_PARENTHESIS;
+        const length = opening.length;
+        if (opening.length !== closing.length) {
+            const openingText = CConsole.getWithColor(IColors.RED, opening);
+            const closingText = CConsole.getWithColor(IColors.RED, closing);
+            const comparison = CConsole.getWithColor(IColors.YELLOW, `${opening.length} !== ${closing.length}`);
+            GlobalEventEmitter.emit('fatal-error', {
+                name: 'JSONProj-getSubgroup',
+                msg: `Length of opening tag'${openingText}' is not the same as ${closingText} (${comparison})`,
+            });
+        }
+
+
+        if (!(regex.includes(opening) && regex.includes(closing))) {
             return null;
         }
 
         const parenthesisStack: number[] = [];
 
         for (let i = 0; i < regex.length; ++i) {
-            const currentChar: string = regex[i];
-            if (currentChar === OPENING_PARENTHESIS) {
+            let currentString = '';
+            for (let j = 0; j < length; ++j) {
+                currentString += regex[j + i];
+            }
+            if (currentString === opening) {
+                if (opening === closing && parenthesisStack.length) {
+                    const lastParenthesis: number = parenthesisStack.pop()!;
+                    if (!parenthesisStack.length) {
+                        return {
+                            leftPosition: lastParenthesis + fromPosition + 1 + (length - 1),
+                            rightPosition: i + fromPosition,
+                        };
+                    }
+                }
                 parenthesisStack.push(i);
-            } else if (currentChar === CLOSING_PARENTHESIS) {
+            } else if (currentString === closing) {
                 const lastParenthesis: number = parenthesisStack.pop()!;
                 if (!parenthesisStack.length) {
-                    return {leftPosition: lastParenthesis + fromPosition + 1, rightPosition: i + fromPosition - 1};
+                    return {
+                        leftPosition: lastParenthesis + fromPosition + 1 + (length - 1),
+                        rightPosition: i + fromPosition,
+                    };
                 }
             }
         }

@@ -11,18 +11,73 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Backup">
-      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba2reform.atg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3 v 2.0.atg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/react/src/output/ArchivoPrueba2Entrada(1).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/react/src/output/ArchivoPrueba3Entrada v 2.0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/react/src/output/input5.txt" afterDir="false" />
+    <list default="true" id="13905576-dfca-4c1a-a1ef-4cbf92d194c3" name="Changes" comment="Forgot to push everything lol">
+      <change afterPath="$PROJECT_DIR$/config/vault/default/ArchivoPrueba0.atg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/vault/default/ArchivoPrueba1.atg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/vault/default/output.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CBuffer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CCompilerWrapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CConsole.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CEvents.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CFatalError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CGrammar.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CIterable.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/COrOperation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CPreprocessor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CScanner.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CToken.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CCharacters.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CCompiler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CCompilerPart.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CEnd.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CKeywords.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CProductions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CompilerParts/CTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CFunction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CGrouper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CIf.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/COperation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CProductionContent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CRawContent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CToken.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Operations/CWhile.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/Singletons.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IBuffer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/ICompiler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/ICompilerParts/ICompilerPart.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IConsole.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IGenerics.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IIterable.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IOperation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IOrObject.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IPreprocessor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IScanner.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/IToken.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba1.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba1.atg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba2.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba2reform.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba3 v 2.0.atg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ArchivoPrueba3.atg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react" beforeDir="false" afterPath="$PROJECT_DIR$/react" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/src/output/dfa_output.json" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/dfa_output.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react/src/output/lexer.js" beforeDir="false" afterPath="$PROJECT_DIR$/react/src/output/lexer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ArchivoPrueba4.atg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/default.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/vault/default/some_file.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/react" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/Automaton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Automaton.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CCompiler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/CFileSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/CFileSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/Console.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/Constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/GraphNode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/GraphNode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/Structures.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Structures.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/Tree.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/Tree.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/IFileSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/IFileSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,13 +90,14 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -70,7 +126,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;cmake.loaded.for.project&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/react/src/output&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/yagdrassyl/Documents/Code/University/dise-o-de-lenguajes/config/vault/default&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JavaScript&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
@@ -80,18 +136,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/config/vault/default" />
       <recent name="$PROJECT_DIR$/react/src/output" />
       <recent name="$PROJECT_DIR$/react/src" />
       <recent name="$PROJECT_DIR$/output" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/Testing" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Controllers/Operations" />
       <recent name="$PROJECT_DIR$/Testing" />
       <recent name="$PROJECT_DIR$/react/src" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/cpp" />
     </key>
   </component>
   <component name="RunManager" selected="npm.debug">
@@ -156,7 +212,21 @@
       <workItem from="1651982520278" duration="217000" />
       <workItem from="1652024408772" duration="5044000" />
       <workItem from="1652046883480" duration="316000" />
-      <workItem from="1653080264277" duration="638000" />
+      <workItem from="1653080264277" duration="654000" />
+      <workItem from="1653081355891" duration="14352000" />
+      <workItem from="1653247655831" duration="38678000" />
+      <workItem from="1653358229484" duration="21789000" />
+      <workItem from="1653522977245" duration="6000" />
+      <workItem from="1653590783309" duration="1947000" />
+      <workItem from="1653674841455" duration="1528000" />
+      <workItem from="1653677574759" duration="6866000" />
+      <workItem from="1653755927797" duration="25638000" />
+      <workItem from="1653842317569" duration="18483000" />
+      <workItem from="1653933204838" duration="6000" />
+      <workItem from="1653959215905" duration="12398000" />
+      <workItem from="1653972385346" duration="46779000" />
+      <workItem from="1654180374849" duration="17845000" />
+      <workItem from="1654215103828" duration="95144000" />
     </task>
     <task id="LOCAL-00001" summary="Changed overall structure to follow better practices">
       <created>1650866541666</created>
@@ -263,7 +333,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651966598487</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Backup">
+      <created>1653080908089</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1653080908089</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,29 +371,63 @@
     <MESSAGE value="Scanner finished" />
     <MESSAGE value="Raw files with javascript delete the \n" />
     <MESSAGE value="Backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Backup" />
+    <MESSAGE value="Forgot to push everything lol" />
+    <option name="LAST_COMMIT_MESSAGE" value="Forgot to push everything lol" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <condition expression="nodeId === '11'" language="TypeScript" />
-          <url>file://$PROJECT_DIR$/src/Controllers/Automaton.ts</url>
-          <line>538</line>
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/react/src/output/lexer.js</url>
           <line>148</line>
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/Server.ts</url>
-          <line>84</line>
+          <url>file://$PROJECT_DIR$/src/Controllers/Operations/CGrouper.ts</url>
+          <line>12</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="362" />
+          <option name="timeStamp" value="904" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Controllers/Operations/CIf.ts</url>
+          <line>36</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="910" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Controllers/Operations/CIf.ts</url>
+          <line>16</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="912" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Controllers/CCompilerWrapper.ts</url>
+          <line>223</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="951" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Controllers/Automaton.ts</url>
+          <line>521</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1073" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/Controllers/CompilerParts/CCompilerPart.ts</url>
+          <line>30</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1083" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="js.build_tools.npm">
+        <watch expression="regex.slice(39)" language="TypeScript" />
+        <watch expression="content" language="TypeScript" />
+        <watch expression="foundTokens.length" language="TypeScript" />
+        <watch expression="foundTokens" language="TypeScript" />
+        <watch expression="current[currentState]" language="TypeScript" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

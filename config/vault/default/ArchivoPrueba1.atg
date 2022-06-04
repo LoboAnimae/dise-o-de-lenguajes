@@ -1,0 +1,91 @@
+COMPILER ArchivoPrueba1
+
+CHARACTERS
+/*
+letra = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+*/
+digito = "0123456789".
+
+TOKENS
+
+numero = digito{digito}.
+IGNORE = CHR(9) + CHR(10) + CHR(13) + CHR(20). // tabulador, salto de línea, retorno de carro y espacio en blanco
+
+PRODUCTIONS
+
+/*
+    function EstadoInicial() {
+        while
+    }
+*/
+
+EstadoInicial = {Instruccion ";"}.
+
+/*---------------------------------------------------------------------------------*/
+
+/*
+    function Instruccion() {
+        let resultado = {res: 0};
+        Expresion(resultado);
+        console.log(resultado);
+    }
+*/
+
+Instruccion =									(. resultado = [0] .)
+	Expresion <ref resultado>					(. print(str(resultado[0])) .)
+    .
+
+/*---------------------------------------------------------------------------------*/
+	/*
+	function Expresion(resultado) {
+	    keyword.set('+', 1);
+	    keyword.set('-', 2);
+	    // t is The current token
+	    // la is The lookahead token
+	    while ( la.kind === 1 || la.kind === 2) {
+	        if (la.kind === 1) {
+	            Get();
+	            Termino(s);
+	            resultado1 += resultado2;
+	        } else if (la.kind === 2) {
+	            Get();
+	            Termino(s);
+	            resultado1 -= resultado2;
+	        }
+	    }
+	    resultado.res = resultado1;
+	}
+	*/
+
+Expresion <ref resultado> =					(. resultado1, resultado2 = [0], [0] .)
+	Termino <ref resultado1>
+
+
+
+	{		"+" Termino <ref resultado2>		(. resultado1[0] += resultado2[0] .)
+		  | "-" Termino <ref resultado2>		(. resultado1[0] -= resultado2[0] .)
+	}											(. resultado[0] = resultado1[0] .)
+	.
+
+/*---------------------------------------------------------------------------------*/
+Termino <ref resultado> =					(. resultado1, resultado2 =  [0], [0] .)
+	Factor <ref resultado1>
+	{		"*" Factor <ref resultado2>			(. resultado1, resultado2 = [0], [0] .)
+		  | "/" Factor <ref resultado2>			(. resultado1 /= resultado2[0] .)
+	}											(. resultado[0] = resultado1[0] .)
+	.
+
+/*---------------------------------------------------------------------------------*/
+Factor <ref resultado> =					(. signo = 1 .)
+	[		"-"									(. signo = -1 .)
+	]
+	( 		Number <ref resultado>
+		  | "(" Expresion <ref resultado> ")"
+	)											(. resultado[0] *= signo .)
+	.
+
+/*---------------------------------------------------------------------------------*/
+Number <ref resultado> = numero				(. resultado[0] = float(scanner.scan()) .)
+.
+
+END ArchivoPrueba1
